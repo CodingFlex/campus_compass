@@ -1,34 +1,40 @@
+// box_text.dart
+import 'package:campus_compass/utils/shared/text_styles.dart';
 import 'package:flutter/material.dart';
-
-import '../shared/app_colors.dart';
-import '../shared/styles.dart';
+// Make sure to adjust the path as needed
 
 class BoxText extends StatelessWidget {
   final String text;
   final TextStyle style;
   final TextAlign alignment;
 
-  const BoxText.headingOne(this.text, {TextAlign align = TextAlign.start})
+  BoxText.headingOne(this.text, {TextAlign align = TextAlign.start})
       : style = heading1Style,
         alignment = align;
-  const BoxText.headingTwo(this.text, {TextAlign align = TextAlign.start})
+
+  BoxText.headingTwo(this.text, {TextAlign align = TextAlign.start})
       : style = heading2Style,
         alignment = align;
-  const BoxText.headingThree(this.text, {TextAlign align = TextAlign.start})
+
+  BoxText.headingThree(this.text, {TextAlign align = TextAlign.start})
       : style = heading3Style,
         alignment = align;
-  const BoxText.headline(this.text, {TextAlign align = TextAlign.start})
+
+  BoxText.headline(this.text, {TextAlign align = TextAlign.center})
       : style = headlineStyle,
         alignment = align;
-  const BoxText.subheading(this.text, {TextAlign align = TextAlign.start})
+
+  BoxText.subheading(this.text, {TextAlign align = TextAlign.start})
       : style = subheadingStyle,
         alignment = align;
-  const BoxText.caption(this.text, {TextAlign align = TextAlign.start})
+
+  BoxText.caption(this.text, {TextAlign align = TextAlign.start})
       : style = captionStyle,
         alignment = align;
 
   BoxText.body(this.text,
-      {Color color = kcMediumGreyColor, TextAlign align = TextAlign.start})
+      {Color color = const Color(0xFF8A8A8A),
+      TextAlign align = TextAlign.start})
       : style = bodyStyle.copyWith(color: color),
         alignment = align;
 

@@ -25,12 +25,13 @@ class _SplashScreenState extends State<SplashScreen> {
         colors: [kcPrimaryColor, kcMediumGreyColor],
       ),
       childWidget: SizedBox(
-        height: 100,
-        child: Image.asset(Assets.onboarding1),
+        height: 400,
+        child: Image.asset(Assets.splash, scale: 1),
       ),
-      duration: const Duration(milliseconds: 300),
       asyncNavigationCallback: () async {
-        _navigationService.navigateTo(Routes.onboardingPage);
+        Future.delayed(const Duration(milliseconds: 3000), () {
+          _navigationService.navigateTo(Routes.onboardingPage);
+        });
         // var response = await userRepository.getUserData();
         // if (response.status == 200 && response.data.isAuthenticated) {
         //   GoRouter.of(context).goNamed("home");

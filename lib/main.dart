@@ -6,12 +6,11 @@ import 'app/app.locator.dart';
 import 'app/app.router.dart';
 
 void main() async {
+  setupLocator();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
   runApp(const MyApp());
-
-  setupLocator();
 }
 
 class MyApp extends StatelessWidget {

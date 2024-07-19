@@ -42,6 +42,9 @@ dependencies:
   dio: ^5.4.3+1
   introduction_screen: ^3.1.14
   another_flutter_splash_screen: ^1.2.1
+  font_awesome_flutter: ^10.7.0
+  google_fonts: 5.1.0
+  auth_buttons: ^3.0.1
 
 dev_dependencies:
   flutter_test:
