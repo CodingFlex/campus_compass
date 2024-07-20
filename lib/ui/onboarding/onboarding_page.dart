@@ -6,6 +6,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 
 import 'package:campus_compass/constants/assets.dart';
+import 'package:stacked_services/stacked_services.dart';
+
+import '../../app/app.locator.dart';
+import '../../app/app.router.dart';
 
 class OnboardingPage extends StatefulWidget {
   const OnboardingPage({super.key});
@@ -16,14 +20,15 @@ class OnboardingPage extends StatefulWidget {
 
 class OnboardingPageState extends State<OnboardingPage> {
   final introKey = GlobalKey<IntroductionScreenState>();
+  final _navigationService = locator<NavigationService>();
 
   @override
   Widget build(BuildContext context) {
     const bodyStyle = TextStyle(fontSize: 19.0);
 
     const pageDecoration = PageDecoration(
-      titleTextStyle: TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700),
-      bodyTextStyle: bodyStyle,
+      titleTextStyle: headlineStyle,
+      bodyTextStyle: heading1Style,
       bodyPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
       pageColor: Colors.white,
       imagePadding: EdgeInsets.zero,
@@ -37,44 +42,43 @@ class OnboardingPageState extends State<OnboardingPage> {
       curve: Curves.elasticIn,
       pages: [
         PageViewModel(
-          titleWidget: Align(
-            alignment: Alignment.center,
-            child: Text(
-              'Navigate Your Campus',
-              style: headlineStyle,
-            ),
-          ),
-          bodyWidget: Text(
-            'Your pocket guide to classrooms, events, and everything in between',
-            style: heading1Style,
-          ),
-          image: Align(
-            alignment: Alignment.bottomCenter,
-            child: Image.asset(
-              Assets.onboarding2,
-            ),
-          ),
-          decoration: pageDecoration,
-        ),
-        PageViewModel(
-          titleWidget: Text(
-            'Unlock Your Campus Potential',
-            style: headlineStyle,
-          ),
-          bodyWidget: Text(
-            'Discover hidden gems, connect with peers, and make the most of your university life',
-            style: heading1Style,
-          ),
+          title: "Navigate Your Campus",
+          body:
+              "Your pocket guide to classrooms, events, and everything in between",
           image: Align(
             alignment: Alignment.bottomCenter,
             child: Image.asset(
               Assets.onboarding1,
+              scale: 1.5,
             ),
           ),
-          decoration: pageDecoration,
+          decoration: pageDecoration.copyWith(
+            bodyFlex: 6,
+            imageFlex: 6,
+            safeArea: 80,
+          ),
+        ),
+        PageViewModel(
+          title: 'Unleash Your Campus Experience',
+          body:
+              'Discover hidden gems, connect with peers, and make the most of your university life',
+          image: Align(
+            alignment: Alignment.bottomCenter,
+            child: Image.asset(
+              Assets.onboarding2,
+              scale: 1.5,
+            ),
+          ),
+          decoration: pageDecoration.copyWith(
+            bodyFlex: 6,
+            imageFlex: 6,
+            safeArea: 80,
+          ),
         ),
       ],
-      onDone: () {},
+      onDone: () {
+        _navigationService.navigateTo(Routes.signInPage);
+      },
       onSkip: () {}, // You can override onSkip callback
       showSkipButton: true,
       skipOrBackFlex: 0,

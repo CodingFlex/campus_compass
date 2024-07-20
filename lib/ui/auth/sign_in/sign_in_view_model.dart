@@ -1,6 +1,6 @@
 import 'package:stacked/stacked.dart';
 
-class AuthViewModel extends BaseViewModel {
+class SignInPageModel extends BaseViewModel {
   // final FirebaseAuthenticationService? _firebaseAuthenticationService =
   //     locator<FirebaseAuthenticationService>();
 

@@ -1,3 +1,4 @@
+import 'package:campus_compass/utils/shared/text_styles.dart';
 import 'package:flutter/material.dart';
 
 import '../shared/app_colors.dart';
@@ -33,12 +34,12 @@ class BoxInputField extends StatelessWidget {
       data: ThemeData(primaryColor: kcPrimaryColor),
       child: TextField(
         controller: controller,
-        style: TextStyle(height: 1),
+        style: bodyStyle,
         obscureText: password,
         decoration: InputDecoration(
           hintText: placeholder,
           contentPadding:
-              const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+              const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
           filled: true,
           fillColor: kcVeryLightGreyColor,
           prefixIcon: leading,

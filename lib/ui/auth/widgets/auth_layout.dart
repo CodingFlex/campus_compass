@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:auth_buttons/auth_buttons.dart';
+import 'package:campus_compass/constants/assets.dart';
+import 'package:campus_compass/utils/shared/text_styles.dart';
 import 'package:flutter/material.dart';
 
 import '../../../utils/shared/app_colors.dart';
@@ -10,6 +12,7 @@ import '../../../utils/widgets/box_text.dart';
 class AuthenticationLayout extends StatelessWidget {
   final String? title;
   final String? subtitle;
+  final bool? signin;
   final String? mainButtonTitle;
   final Widget? form;
   final bool showTermsText;
@@ -25,6 +28,7 @@ class AuthenticationLayout extends StatelessWidget {
   const AuthenticationLayout({
     Key? key,
     this.title,
+    this.signin,
     this.subtitle,
     this.mainButtonTitle,
     this.form,
@@ -57,9 +61,16 @@ class AuthenticationLayout extends StatelessWidget {
               ),
               onPressed: onBackPressed,
             ),
+          if (signin == true)
+            Center(
+              child: Image.asset(
+                Assets.splash,
+                scale: 2,
+              ),
+            ),
           Text(
             title!,
-            style: TextStyle(fontSize: 34),
+            style: headlineStyle,
           ),
           verticalSpaceSmall,
           Align(
@@ -68,7 +79,7 @@ class AuthenticationLayout extends StatelessWidget {
               width: screenWidthPercentage(context, percentage: 0.7),
               child: BoxText.body(
                 subtitle!,
-                color: Colors.grey.shade400,
+                color: Colors.grey.shade600,
               ),
             ),
           ),
@@ -107,31 +118,30 @@ class AuthenticationLayout extends StatelessWidget {
                     )
                   : Text(
                       mainButtonTitle!,
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14),
+                      style: subheadingStyle.copyWith(color: Colors.white),
                     ),
             ),
           ),
           verticalSpaceRegular,
-          if (onCreateAccountTapped != null)
-            GestureDetector(
-              onTap: onCreateAccountTapped,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Don\'t have an account?'),
-                  horizontalSpaceTiny,
-                  Text(
-                    'Create an account',
-                    style: TextStyle(
-                      color: kcPrimaryColor,
-                    ),
-                  )
-                ],
-              ),
+          GestureDetector(
+            onTap: onCreateAccountTapped,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                    signin == true
+                        ? 'Don\'t have an account?'
+                        : 'Already have an account?',
+                    style: bodyStyle),
+                horizontalSpaceTiny,
+                Text(
+                  signin == true ? 'Create an account' : 'Sign in',
+                  style: bodyStyle.copyWith(color: kcPrimaryColor),
+                )
+              ],
             ),
+          ),
+          verticalSpaceSmall,
           if (showTermsText)
             BoxText.body(
               'By signing up you agree to our terms, conditions and privacy policy.',
@@ -149,23 +159,27 @@ class AuthenticationLayout extends StatelessWidget {
               // darkMode: true,
               text: 'CONTINUE WITH APPLE',
               style: AuthButtonStyle(
+                borderColor: Colors.black,
+                borderWidth: 0.5,
+                buttonColor: Colors.white,
                 iconSize: 24,
+                iconBackground: Colors.white,
+                buttonType: AuthButtonType.icon,
                 height: 50,
-                textStyle: TextStyle(color: Colors.white),
-                buttonType: AuthButtonType.secondary,
+                textStyle: bodyStyle,
               ),
             ),
-          verticalSpaceRegular,
           GoogleAuthButton(
             onPressed: onSignInWithGoogle ?? () {},
-            text: 'CONTINUE WITH GOOGLE',
             style: AuthButtonStyle(
-              buttonColor: Color(0xff4285F4),
+              borderColor: Colors.black,
+              borderWidth: 0.5,
+              buttonColor: Colors.white,
               iconSize: 24,
               iconBackground: Colors.white,
-              buttonType: AuthButtonType.secondary,
+              buttonType: AuthButtonType.icon,
               height: 50,
-              textStyle: TextStyle(color: Colors.white),
+              textStyle: bodyStyle,
             ),
           )
         ],

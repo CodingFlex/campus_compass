@@ -13,16 +13,19 @@ import 'package:stacked/stacked.dart';
 
 import 'package:stacked_services/stacked_services.dart';
 
-import '../ui/auth/sign_in.dart';
+import '../ui/auth/sign_in/sign_in.dart';
+import '../ui/auth/sign_up/sign_up.dart';
 import '../ui/onboarding/splash.dart';
 
 class Routes {
   static const signInPage = '/signIn-page';
+  static const signUpPage = '/signUp-page';
   static const splashPage = '/splash-page';
   static const onboardingPage = '/onboarding-page';
 
   static const all = <String>{
     signInPage,
+    signUpPage,
     splashPage,
     onboardingPage,
   };
@@ -33,6 +36,10 @@ class StackedRouter extends RouterBase {
     RouteDef(
       Routes.signInPage,
       page: SignInPage,
+    ),
+    RouteDef(
+      Routes.signUpPage,
+      page: SignUpPage,
     ),
     RouteDef(
       Routes.splashPage,
@@ -48,6 +55,12 @@ class StackedRouter extends RouterBase {
     SignInPage: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => SignInPage(),
+        settings: data,
+      );
+    },
+    SignUpPage: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => SignUpPage(),
         settings: data,
       );
     },

@@ -5,15 +5,15 @@ import 'package:google_fonts/google_fonts.dart';
 // Define your text styles
 final TextStyle heading1Style = GoogleFonts.robotoSerif(
   fontWeight: FontWeight.bold,
-  fontSize: 32,
+  fontSize: 28,
 );
 
-final TextStyle heading2Style = GoogleFonts.openSans(
+final TextStyle heading2Style = GoogleFonts.robotoSerif(
   fontWeight: FontWeight.bold,
   fontSize: 24,
 );
 
-final TextStyle heading3Style = GoogleFonts.openSans(
+final TextStyle heading3Style = GoogleFonts.robotoSerif(
   fontWeight: FontWeight.bold,
   fontSize: 20,
 );
@@ -23,17 +23,17 @@ final TextStyle headlineStyle = GoogleFonts.robotoSerif(
   fontSize: 30,
 );
 
-final TextStyle subheadingStyle = GoogleFonts.openSans(
+final TextStyle subheadingStyle = GoogleFonts.robotoSerif(
   fontWeight: FontWeight.w500,
   fontSize: 16,
 );
 
-final TextStyle captionStyle = GoogleFonts.openSans(
+final TextStyle captionStyle = GoogleFonts.robotoSerif(
   fontWeight: FontWeight.w400,
   fontSize: 14,
 );
 
-final TextStyle bodyStyle = GoogleFonts.openSans(
+final TextStyle bodyStyle = GoogleFonts.robotoSerif(
   fontWeight: FontWeight.normal,
   fontSize: 14,
 );

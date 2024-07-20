@@ -25,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
         colors: [kcPrimaryColor, kcMediumGreyColor],
       ),
       childWidget: SizedBox(
-        height: 400,
+        height: 350,
         child: Image.asset(Assets.splash, scale: 1),
       ),
       asyncNavigationCallback: () async {
