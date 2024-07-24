@@ -1,4 +1,3 @@
-import 'package:campus_compass/utils/shared/styles.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,6 +9,7 @@ import 'package:stacked_services/stacked_services.dart';
 
 import '../../app/app.locator.dart';
 import '../../app/app.router.dart';
+import '../../utils/shared/text_styles.dart';
 
 class OnboardingPage extends StatefulWidget {
   const OnboardingPage({super.key});
@@ -26,9 +26,9 @@ class OnboardingPageState extends State<OnboardingPage> {
   Widget build(BuildContext context) {
     const bodyStyle = TextStyle(fontSize: 19.0);
 
-    const pageDecoration = PageDecoration(
-      titleTextStyle: headlineStyle,
-      bodyTextStyle: heading1Style,
+    final pageDecoration = PageDecoration(
+      titleTextStyle: headlineStyle.copyWith(fontSize: 32.0),
+      bodyTextStyle: bodyStyle.copyWith(fontSize: 30.0),
       bodyPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
       pageColor: Colors.white,
       imagePadding: EdgeInsets.zero,
@@ -49,13 +49,13 @@ class OnboardingPageState extends State<OnboardingPage> {
             alignment: Alignment.bottomCenter,
             child: Image.asset(
               Assets.onboarding1,
-              scale: 1.5,
+              scale: 2,
             ),
           ),
           decoration: pageDecoration.copyWith(
             bodyFlex: 6,
-            imageFlex: 6,
-            safeArea: 80,
+            imageFlex: 8,
+            safeArea: 50,
           ),
         ),
         PageViewModel(
@@ -66,13 +66,13 @@ class OnboardingPageState extends State<OnboardingPage> {
             alignment: Alignment.bottomCenter,
             child: Image.asset(
               Assets.onboarding2,
-              scale: 1.5,
+              scale: 2,
             ),
           ),
           decoration: pageDecoration.copyWith(
             bodyFlex: 6,
-            imageFlex: 6,
-            safeArea: 80,
+            imageFlex: 7,
+            safeArea: 50,
           ),
         ),
       ],

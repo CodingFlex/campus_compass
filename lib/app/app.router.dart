@@ -6,6 +6,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 
+import 'package:campus_compass/ui/map/maps.dart';
 import 'package:campus_compass/ui/onboarding/onboarding_page.dart';
 import 'package:flutter/material.dart';
 
@@ -22,12 +23,14 @@ class Routes {
   static const signUpPage = '/signUp-page';
   static const splashPage = '/splash-page';
   static const onboardingPage = '/onboarding-page';
+  static const mapPage = '/map-page';
 
   static const all = <String>{
     signInPage,
     signUpPage,
     splashPage,
     onboardingPage,
+    mapPage,
   };
 }
 
@@ -48,6 +51,10 @@ class StackedRouter extends RouterBase {
     RouteDef(
       Routes.onboardingPage,
       page: OnboardingPage,
+    ),
+    RouteDef(
+      Routes.mapPage,
+      page: MapScreen,
     ),
   ];
 
@@ -73,6 +80,12 @@ class StackedRouter extends RouterBase {
     OnboardingPage: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => OnboardingPage(),
+        settings: data,
+      );
+    },
+    MapScreen: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => MapScreen(),
         settings: data,
       );
     },
@@ -120,6 +133,20 @@ extension NavigatorStateExtension on NavigationService {
         transition,
   ]) async {
     return navigateTo<dynamic>(Routes.onboardingPage,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToMapScreen([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.mapPage,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

@@ -1,11 +1,16 @@
+import 'package:campus_compass/ui/map/maps.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
 
 import '../../../utils/shared/ui_helpers.dart';
 import '../../../utils/widgets/box_input_field.dart';
+import '../../map/DataHandler/appData.dart';
+import '../../map2/bottomsheet.dart';
+import '../../map2/map.dart';
 import '../widgets/auth_layout.dart';
 import 'sign_up_view.form.dart';
+import 'package:provider/provider.dart';
 import 'sign_up_viewmodel.dart';
 
 @FormView(fields: [
@@ -23,7 +28,22 @@ class SignUpPage extends StatelessWidget with $SignUpPage {
       builder: (context, model, child) => Scaffold(
           body: AuthenticationLayout(
         busy: model.isBusy,
-        // onMainButtonTapped: model.saveData,
+        onMainButtonTapped: () {
+          // model.save();
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ChangeNotifierProvider(
+                create: (context) => AppData(),
+                child: MapScreen2(),
+              ),
+            ),
+          );
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => MapScreen()),
+          // );
+        },
         // onBackPressed: model.navigateBack,
         // validationMessage: model.validationMessage,
         title: 'Join Our Campus Community',

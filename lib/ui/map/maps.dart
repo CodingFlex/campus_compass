@@ -38,7 +38,7 @@ class _MapScreenState extends State<MapScreen> {
           child: Column(
             children: [
               Image.asset(
-                'assets/images/logos/UniXpl.png',
+                'assets/images/flex_logo.png',
                 height: 20,
                 width: 50,
               ),
@@ -59,7 +59,7 @@ class _MapScreenState extends State<MapScreen> {
             padding: const EdgeInsets.all(8.0),
             child: CircleAvatar(
               radius: 18.0,
-              backgroundImage: AssetImage('currentUser.imageUrl'),
+              backgroundImage: AssetImage('assets/images/flex_logo.png'),
             ),
           ),
         ],

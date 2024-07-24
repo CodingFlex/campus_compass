@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../shared/app_colors.dart';
-import '../shared/styles.dart';
+import '../shared/text_styles.dart';
 
 class BoxButton extends StatelessWidget {
   final String title;
