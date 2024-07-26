@@ -56,8 +56,24 @@ class SignUpPage extends StatelessWidget with $SignUpPage {
                 controller: fullNameController,
                 placeholder: 'Full name',
                 leading: Icon(
-                  Icons.person,
-                  color: const Color.fromARGB(255, 201, 201, 201),
+                  Icons.person_2_outlined,
+                  color: Color.fromARGB(255, 80, 80, 80),
+                )),
+            verticalSpaceRegular,
+            BoxInputField(
+                controller: fullNameController,
+                placeholder: 'School',
+                leading: Icon(
+                  Icons.school_outlined,
+                  color: Color.fromARGB(255, 80, 80, 80),
+                )),
+            verticalSpaceRegular,
+            BoxInputField(
+                controller: fullNameController,
+                placeholder: 'Matric number',
+                leading: Icon(
+                  Icons.person_2_outlined,
+                  color: Color.fromARGB(255, 80, 80, 80),
                 )),
             verticalSpaceRegular,
             BoxInputField(
@@ -65,8 +81,8 @@ class SignUpPage extends StatelessWidget with $SignUpPage {
                 password: true,
                 placeholder: 'Email',
                 leading: Icon(
-                  Icons.email,
-                  color: const Color.fromARGB(255, 201, 201, 201),
+                  Icons.email_outlined,
+                  color: Color.fromARGB(255, 80, 80, 80),
                 )),
             verticalSpaceRegular,
             BoxInputField(
@@ -75,7 +91,7 @@ class SignUpPage extends StatelessWidget with $SignUpPage {
                 placeholder: 'Confirm password',
                 leading: Icon(
                   Icons.lock_open,
-                  color: const Color.fromARGB(255, 201, 201, 201),
+                  color: Color.fromARGB(255, 80, 80, 80),
                 )),
           ],
         ),

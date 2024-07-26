@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 import 'app/app.locator.dart';
@@ -12,6 +13,7 @@ import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platf
 
 import 'package:provider/provider.dart';
 
+import 'services/user_details_service.dart';
 import 'ui/map/DataHandler/appData.dart';
 
 void main() async {
@@ -25,6 +27,7 @@ void main() async {
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
+  initializeLocationAndSave();
   runApp(MyApp());
   // MultiProvider(
   //   providers: [
@@ -60,6 +63,41 @@ Future<AndroidMapRenderer?> initializeMapRenderer() async {
   }
 
   return completer.future;
+}
+
+void initializeLocationAndSave() async {
+  // Ensure all permissions are collected for Locations
+
+  bool? _serviceEnabled;
+
+  LocationPermission _permission;
+
+  _serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  if (!_serviceEnabled) {}
+
+  _permission = await Geolocator.checkPermission();
+
+  if (_permission == LocationPermission.denied) {
+    _permission = await Geolocator.requestPermission();
+  }
+  final UserDetailsService _userDetailsService = locator<UserDetailsService>();
+  _userDetailsService.getUserDetails();
+
+  // Get the current usesr location
+
+  // Position position = await Geolocator.getCurrentPosition(
+  //     desiredAccuracy: LocationAccuracy.best);
+
+  // LatLng currentLocation = LatLng(position.latitude, position.longitude);
+
+  // // Get the current user address
+  // String currentAddress =
+  //     (await getParsedReverseGeocoding(currentLocation))['place'];
+
+  // // Store the user location in sharedPreferences
+  // sharedPreferences.setDouble('latitude', position.latitude);
+  // sharedPreferences.setDouble('longitude', position.longitude);
+  // sharedPreferences.setString('current-address', currentAddress);
 }
 
 class MyApp extends StatelessWidget {

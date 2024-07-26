@@ -6,6 +6,8 @@ import '../shared/app_colors.dart';
 class BoxInputField extends StatelessWidget {
   final TextEditingController controller;
   final String placeholder;
+  final double? height;
+  final double? width;
   final Widget? leading;
   final Widget? trailing;
   final bool password;
@@ -23,6 +25,8 @@ class BoxInputField extends StatelessWidget {
     this.trailing,
     this.trailingTapped,
     this.password = false,
+    this.height,
+    this.width,
   }) : super(key: key);
 
   @override
@@ -32,34 +36,38 @@ class BoxInputField extends StatelessWidget {
       ///
       /// We can also avoid this by changing the [primarySwatch] in MaterialApp
       data: ThemeData(primaryColor: kcPrimaryColor),
-      child: TextField(
-        controller: controller,
-        style: bodyStyle,
-        obscureText: password,
-        decoration: InputDecoration(
-          hintText: placeholder,
-          contentPadding:
-              const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-          filled: true,
-          fillColor: kcVeryLightGreyColor,
-          prefixIcon: leading,
-          suffixIcon: trailing != null
-              ? GestureDetector(
-                  onTap: trailingTapped,
-                  child: trailing,
-                )
-              : null,
-          border: circularBorder.copyWith(
-            borderSide: BorderSide(color: kcLightGreyColor),
-          ),
-          errorBorder: circularBorder.copyWith(
-            borderSide: BorderSide(color: Colors.red),
-          ),
-          focusedBorder: circularBorder.copyWith(
-            borderSide: BorderSide(color: kcPrimaryColor),
-          ),
-          enabledBorder: circularBorder.copyWith(
-            borderSide: BorderSide(color: kcLightGreyColor),
+      child: Container(
+        height: height,
+        width: width,
+        child: TextField(
+          controller: controller,
+          style: bodyStyle,
+          obscureText: password,
+          decoration: InputDecoration(
+            hintText: placeholder,
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+            filled: true,
+            fillColor: kcVeryLightGreyColor,
+            prefixIcon: leading,
+            suffixIcon: trailing != null
+                ? GestureDetector(
+                    onTap: trailingTapped,
+                    child: trailing,
+                  )
+                : null,
+            border: circularBorder.copyWith(
+              borderSide: BorderSide(color: kcLightGreyColor),
+            ),
+            errorBorder: circularBorder.copyWith(
+              borderSide: BorderSide(color: Colors.red),
+            ),
+            focusedBorder: circularBorder.copyWith(
+              borderSide: BorderSide(color: kcPrimaryColor),
+            ),
+            enabledBorder: circularBorder.copyWith(
+              borderSide: BorderSide(color: kcLightGreyColor),
+            ),
           ),
         ),
       ),

@@ -41,8 +41,8 @@ class SignInPage extends StatelessWidget with $SignInPage {
                 controller: emailController,
                 placeholder: 'Email',
                 leading: Icon(
-                  Icons.email,
-                  color: const Color.fromARGB(255, 201, 201, 201),
+                  Icons.email_outlined,
+                  color: Color.fromARGB(255, 80, 80, 80),
                 )),
             verticalSpaceRegular,
             BoxInputField(
@@ -51,7 +51,7 @@ class SignInPage extends StatelessWidget with $SignInPage {
                 placeholder: 'Password',
                 leading: Icon(
                   Icons.lock_open,
-                  color: const Color.fromARGB(255, 201, 201, 201),
+                  color: Color.fromARGB(255, 80, 80, 80),
                 )),
           ],
         ),

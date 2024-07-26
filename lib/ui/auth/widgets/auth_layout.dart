@@ -122,7 +122,12 @@ class AuthenticationLayout extends StatelessWidget {
                     ),
             ),
           ),
-          verticalSpaceRegular,
+          verticalSpaceSmall,
+          if (showTermsText)
+            BoxText.body(
+              'By signing up you agree to our terms, conditions and privacy policy.',
+            ),
+          verticalSpaceTiny,
           GestureDetector(
             onTap: onCreateAccountTapped,
             child: Row(
@@ -141,18 +146,13 @@ class AuthenticationLayout extends StatelessWidget {
               ],
             ),
           ),
-          verticalSpaceSmall,
-          if (showTermsText)
-            BoxText.body(
-              'By signing up you agree to our terms, conditions and privacy policy.',
-            ),
-          verticalSpaceRegular,
+          verticalSpaceTiny,
           Align(
               alignment: Alignment.center,
               child: BoxText.body(
                 'Or',
               )),
-          verticalSpaceRegular,
+          verticalSpaceTiny,
           if (Platform.isIOS)
             AppleAuthButton(
               onPressed: onSignInWithApple ?? () {},
@@ -166,10 +166,11 @@ class AuthenticationLayout extends StatelessWidget {
                 iconBackground: Colors.white,
                 buttonType: AuthButtonType.icon,
                 height: 50,
-                textStyle: bodyStyle,
+                textStyle: bodyStyle.copyWith(color: Colors.black),
               ),
             ),
           GoogleAuthButton(
+            text: 'CONTINUE WITH GOOGLE',
             onPressed: onSignInWithGoogle ?? () {},
             style: AuthButtonStyle(
               borderColor: Colors.black,
@@ -177,9 +178,9 @@ class AuthenticationLayout extends StatelessWidget {
               buttonColor: Colors.white,
               iconSize: 24,
               iconBackground: Colors.white,
-              buttonType: AuthButtonType.icon,
+              buttonType: AuthButtonType.secondary,
               height: 50,
-              textStyle: bodyStyle,
+              textStyle: bodyStyle.copyWith(color: Colors.black),
             ),
           )
         ],

@@ -1,11 +1,15 @@
+import 'package:campus_compass/ui/map2/assistants/assistantMethods.dart';
 import 'package:campus_compass/utils/shared/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:stacked/stacked.dart';
 import 'package:draggable_bottom_sheet/draggable_bottom_sheet.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:async';
 
+import '../../app/app.locator.dart';
+import '../../services/user_details_service.dart';
 import '../../utils/widgets/box_input_field.dart';
 import 'map_viewmodel.dart';
 
@@ -33,8 +37,10 @@ class MapWidget extends StatefulWidget {
 }
 
 class _MapWidgetState extends State<MapWidget> {
+  final UserDetailsService _userDetailsService = locator<UserDetailsService>();
   final Completer<GoogleMapController> _controllerGoogleMap = Completer();
-  late GoogleMapController newGoogleMapController;
+  GoogleMapController? googleMapController;
+
   double bottomPaddingOfMap = 0;
 
   Set<Polyline> polylineSet = {};
@@ -46,20 +52,32 @@ class _MapWidgetState extends State<MapWidget> {
     super.initState();
   }
 
-  void locatePosition() {
-    // Add your location logic here
+  void locatePosition() async {
+    LatLng latLatPosition = LatLng(
+        _userDetailsService.currentPosition!.latitude,
+        _userDetailsService.currentPosition!.longitude);
+
+    CameraPosition cameraPosition =
+        new CameraPosition(target: latLatPosition, zoom: 18);
+
+    googleMapController = await _controllerGoogleMap.future;
+    googleMapController
+        ?.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+
+    String address = await AssistantMethods.searchCoordinateAddress(
+        _userDetailsService.currentPosition!, context);
+    print("This is your Address :: " + address);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: DraggableBottomSheet(
-        minExtent: 150,
-        barrierColor: kcPrimaryColor,
+        minExtent: 170,
         useSafeArea: false,
         curve: Curves.easeIn,
         previewWidget: PreviewWidget(),
-        expandedWidget: ExpandedWidget(),
+        expandedWidget: PreviewWidget(),
         backgroundWidget: BackgroundWidget(
           controllerGoogleMap: _controllerGoogleMap,
           bottomPaddingOfMap: bottomPaddingOfMap,
@@ -67,8 +85,9 @@ class _MapWidgetState extends State<MapWidget> {
           markersSet: markersSet,
           circlesSet: circlesSet,
           locatePosition: locatePosition,
+          currentPosition: _userDetailsService.currentPosition,
         ),
-        maxExtent: MediaQuery.of(context).size.height * 0.8,
+        maxExtent: MediaQuery.of(context).size.height * 0.9,
         onDragging: (pos) {},
       ),
     );

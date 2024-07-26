@@ -19,8 +19,8 @@ class PreviewWidget extends StatelessWidget {
         decoration: const BoxDecoration(
           color: Color.fromARGB(255, 255, 255, 255),
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(25),
-            topRight: Radius.circular(25),
+            topLeft: Radius.circular(40),
+            topRight: Radius.circular(40),
           ),
         ),
         child: Column(
@@ -36,17 +36,24 @@ class PreviewWidget extends StatelessWidget {
                 ),
               ),
             ),
+            verticalSpaceRegular,
             Text(
               'Hey, where would you like to go?',
-              style: headlineStyle.copyWith(fontSize: 20),
+              style: headlineStyle.copyWith(fontSize: 19, color: Colors.black),
             ),
-            horizontalSpaceLarge,
-            BoxInputField(
-              controller: model.searchLocation,
-              placeholder: 'Search Location',
-              leading: Icon(
-                Icons.search,
-                color: Color.fromARGB(255, 166, 166, 166),
+            verticalSpaceTiny,
+            verticalSpaceTiny,
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: BoxInputField(
+                width: 300,
+                height: 50,
+                controller: model.searchLocation,
+                placeholder: 'Search Location',
+                leading: const Icon(
+                  Icons.search,
+                  color: Colors.black,
+                ),
               ),
             ),
           ],
