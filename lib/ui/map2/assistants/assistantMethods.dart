@@ -19,6 +19,7 @@ class AssistantMethods {
 
     if (response != "failed") {
       //placeAddress = response["results"][0]["formatted_address"];
+      print(response);
       st1 = response["results"][0]["address_components"][0]["long_name"];
       st2 = response["results"][0]["address_components"][1]["long_name"];
       placeAddress = st1 + ", " + st2;
@@ -32,8 +33,8 @@ class AssistantMethods {
       userStartAddress.latitude = position.latitude;
       userStartAddress.placeName = placeAddress;
 
-      Provider.of<AppData>(context, listen: false)
-          .updateStartAddress(userStartAddress);
+      // Provider.of<AppData>(context, listen: false)
+      //     .updateStartAddress(userStartAddress);
     }
 
     return placeAddress;

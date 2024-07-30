@@ -88,7 +88,7 @@ class SignUpPage extends StatelessWidget with $SignUpPage {
             BoxInputField(
                 controller: passwordController,
                 password: true,
-                placeholder: 'Confirm password',
+                placeholder: 'Password',
                 leading: Icon(
                   Icons.lock_open,
                   color: Color.fromARGB(255, 80, 80, 80),

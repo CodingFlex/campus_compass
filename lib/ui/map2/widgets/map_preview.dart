@@ -1,15 +1,25 @@
 // preview_widget.dart
+import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:stacked/stacked.dart';
+
 import 'package:campus_compass/utils/shared/app_colors.dart';
 import 'package:campus_compass/utils/shared/ui_helpers.dart';
 import 'package:campus_compass/utils/widgets/box_text.dart';
-import 'package:flutter/material.dart';
-import 'package:stacked/stacked.dart';
 
 import '../../../utils/shared/text_styles.dart';
 import '../../../utils/widgets/box_input_field.dart';
 import '../map_viewmodel.dart';
 
 class PreviewWidget extends StatelessWidget {
+  final bool? isExpanded;
+  String? address;
+
+  PreviewWidget({
+    Key? key,
+    this.isExpanded,
+    this.address,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<MapViewModel>.reactive(
@@ -36,24 +46,43 @@ class PreviewWidget extends StatelessWidget {
                 ),
               ),
             ),
-            verticalSpaceRegular,
+            verticalSpaceSmall,
             Text(
               'Hey, where would you like to go?',
               style: headlineStyle.copyWith(fontSize: 19, color: Colors.black),
             ),
             verticalSpaceTiny,
             verticalSpaceTiny,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(5),
+                  child: Icon(Icons.location_on_rounded, color: kcPrimaryColor),
+                ),
+                Flexible(
+                  child: Text(
+                    address != null
+                        ? 'Current location: $address'
+                        : 'Loading...',
+                    style: headlineStyle.copyWith(
+                      fontSize: 16,
+                      color: kcPrimaryColor,
+                    ),
+                    overflow: TextOverflow.clip,
+                  ),
+                ),
+              ],
+            ),
+            verticalSpaceTiny,
             Align(
               alignment: Alignment.bottomCenter,
               child: BoxInputField(
-                width: 300,
+                width: 350,
                 height: 50,
                 controller: model.searchLocation,
                 placeholder: 'Search Location',
-                leading: const Icon(
-                  Icons.search,
-                  color: Colors.black,
-                ),
+                leading: const Icon(Icons.search, color: kcMediumGreyColor),
               ),
             ),
           ],

@@ -35,6 +35,7 @@ class AssistantMethods {
       Provider.of<AppData>(context, listen: false)
           .updateStartAddress(userStartAddress);
     }
+    print('placeAddress: $placeAddress');
 
     return placeAddress;
   }

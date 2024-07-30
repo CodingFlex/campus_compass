@@ -23,7 +23,7 @@ class UserDetailsService {
 
   Future<void> getUserDetails() async {
     Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+        desiredAccuracy: LocationAccuracy.best);
     currentPosition = position;
 
     LatLng latLatPosition = LatLng(position.latitude, position.longitude);

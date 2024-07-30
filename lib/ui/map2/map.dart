@@ -40,6 +40,7 @@ class _MapWidgetState extends State<MapWidget> {
   final UserDetailsService _userDetailsService = locator<UserDetailsService>();
   final Completer<GoogleMapController> _controllerGoogleMap = Completer();
   GoogleMapController? googleMapController;
+  String? address;
 
   double bottomPaddingOfMap = 0;
 
@@ -67,17 +68,21 @@ class _MapWidgetState extends State<MapWidget> {
     String address = await AssistantMethods.searchCoordinateAddress(
         _userDetailsService.currentPosition!, context);
     print("This is your Address :: " + address);
+
+    setState(() {
+      this.address = address;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: DraggableBottomSheet(
-        minExtent: 170,
+        minExtent: 195,
         useSafeArea: false,
         curve: Curves.easeIn,
-        previewWidget: PreviewWidget(),
-        expandedWidget: PreviewWidget(),
+        previewWidget: PreviewWidget(isExpanded: false, address: address),
+        expandedWidget: PreviewWidget(isExpanded: true, address: address),
         backgroundWidget: BackgroundWidget(
           controllerGoogleMap: _controllerGoogleMap,
           bottomPaddingOfMap: bottomPaddingOfMap,

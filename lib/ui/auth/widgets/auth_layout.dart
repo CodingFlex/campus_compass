@@ -64,8 +64,8 @@ class AuthenticationLayout extends StatelessWidget {
           if (signin == true)
             Center(
               child: Image.asset(
-                Assets.splash,
-                scale: 2,
+                Assets.splash2,
+                scale: 1.75,
               ),
             ),
           Text(

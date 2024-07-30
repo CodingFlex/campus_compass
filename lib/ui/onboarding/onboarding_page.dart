@@ -66,7 +66,7 @@ class OnboardingPageState extends State<OnboardingPage> {
             alignment: Alignment.bottomCenter,
             child: Image.asset(
               Assets.onboarding2,
-              scale: 2,
+              scale: 1.5,
             ),
           ),
           decoration: pageDecoration.copyWith(
