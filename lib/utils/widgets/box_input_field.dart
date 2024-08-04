@@ -12,6 +12,7 @@ class BoxInputField extends StatelessWidget {
   final Widget? trailing;
   final bool password;
   final void Function()? trailingTapped;
+  final String? Function(String?)? validator; // Added validator parameter
 
   final circularBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(8),
@@ -27,6 +28,7 @@ class BoxInputField extends StatelessWidget {
     this.password = false,
     this.height,
     this.width,
+    this.validator,
   }) : super(key: key);
 
   @override
@@ -68,7 +70,17 @@ class BoxInputField extends StatelessWidget {
             enabledBorder: circularBorder.copyWith(
               borderSide: BorderSide(color: kcLightGreyColor),
             ),
+            errorText: validator != null
+                ? validator!(controller.text)
+                : null, // Validation error text
           ),
+          // onChanged: (value) {
+
+          //   if (validator != null) {
+          //     // You may need to call setState or some state update method here
+          //     validator!(value);
+          //   }
+          // },
         ),
       ),
     );

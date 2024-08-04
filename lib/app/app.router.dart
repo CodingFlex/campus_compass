@@ -6,7 +6,9 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 
+import 'package:campus_compass/ui/auth/otp/verify_mail_screen.dart';
 import 'package:campus_compass/ui/map/maps.dart';
+import 'package:campus_compass/ui/map2/map.dart';
 import 'package:campus_compass/ui/onboarding/onboarding_page.dart';
 import 'package:flutter/material.dart';
 
@@ -23,6 +25,7 @@ class Routes {
   static const signUpPage = '/signUp-page';
   static const splashPage = '/splash-page';
   static const onboardingPage = '/onboarding-page';
+  static const verifyMail = '/verifyMail-page';
   static const mapPage = '/map-page';
 
   static const all = <String>{
@@ -31,6 +34,7 @@ class Routes {
     splashPage,
     onboardingPage,
     mapPage,
+    verifyMail
   };
 }
 
@@ -53,8 +57,12 @@ class StackedRouter extends RouterBase {
       page: OnboardingPage,
     ),
     RouteDef(
+      Routes.verifyMail,
+      page: VerifyMail,
+    ),
+    RouteDef(
       Routes.mapPage,
-      page: MapScreen,
+      page: MapScreen2,
     ),
   ];
 
@@ -83,9 +91,15 @@ class StackedRouter extends RouterBase {
         settings: data,
       );
     },
-    MapScreen: (data) {
+    VerifyMail: (data) {
       return MaterialPageRoute<dynamic>(
-        builder: (context) => MapScreen(),
+        builder: (context) => VerifyMail(),
+        settings: data,
+      );
+    },
+    MapScreen2: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => MapScreen2(),
         settings: data,
       );
     },
@@ -105,6 +119,20 @@ extension NavigatorStateExtension on NavigationService {
         transition,
   ]) async {
     return navigateTo<dynamic>(Routes.signInPage,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToSignUpPage([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.signUpPage,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -133,6 +161,20 @@ extension NavigatorStateExtension on NavigationService {
         transition,
   ]) async {
     return navigateTo<dynamic>(Routes.onboardingPage,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToVerifyMailPage([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.verifyMail,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

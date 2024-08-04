@@ -22,18 +22,20 @@ class SignInPage extends StatelessWidget with $SignInPage {
   @override
   Widget build(BuildContext context) {
     final _navigationService = locator<NavigationService>();
-    return ViewModelBuilder<SignUpPageModel>.reactive(
-      //onViewModelReady: (model) => listenToFormUpdated(model),
+    return ViewModelBuilder<SignInPageViewModel>.reactive(
+      onViewModelReady: (model) => syncFormWithViewModel(model),
+      onDispose: (model) => disposeForm(),
       builder: (context, model, child) => Scaffold(
           body: AuthenticationLayout(
         busy: model.isBusy,
         signin: true,
-        // onMainButtonTapped: model.saveData,
+        onMainButtonTapped: () => model.signIn(),
         // onCreateAccountTapped: model.navigateToCreateAccount,
-        // validationMessage: model.validationMessage,
+        validationMessage: model.validationMessage,
         title: 'Welcome Back',
         subtitle: 'Sign in to access your personalized campus guide',
         mainButtonTitle: 'Sign In',
+        onCreateAccountTapped: () => _navigationService.navigateToSignUpPage(),
 
         form: Column(
           children: [
@@ -61,7 +63,7 @@ class SignInPage extends StatelessWidget with $SignInPage {
         // onSignInWithGoogle: model.useGoogleAuthentication,
         // onSignInWithApple: model.useAppleAuthentication,
       )),
-      viewModelBuilder: () => SignUpPageModel(),
+      viewModelBuilder: () => SignInPageViewModel(),
     );
   }
 }

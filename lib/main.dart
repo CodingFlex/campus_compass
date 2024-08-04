@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:toastification/toastification.dart';
 
 import 'app/app.locator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -17,53 +18,56 @@ import 'services/user_details_service.dart';
 import 'ui/map/DataHandler/appData.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   setupLocator();
-  final GoogleMapsFlutterPlatform mapsImplementation =
-      GoogleMapsFlutterPlatform.instance;
-  if (mapsImplementation is GoogleMapsFlutterAndroid) {
-    mapsImplementation.useAndroidViewSurface = true;
-    initializeMapRenderer();
-  }
+  // final GoogleMapsFlutterPlatform mapsImplementation =
+  //     GoogleMapsFlutterPlatform.instance;
+  // if (mapsImplementation is GoogleMapsFlutterAndroid) {
+  //   mapsImplementation.useAndroidViewSurface = true;
+  //   initializeMapRenderer();
+  // }
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
+
   initializeLocationAndSave();
-  runApp(MyApp());
-  // MultiProvider(
-  //   providers: [
-  //     ChangeNotifierProvider(create: (context) => AppData()),
-  //     // Add other providers here if needed
-  //   ],
-  //   child: MyApp(),
-  // );
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => AppData()),
+        // Add other providers here if needed
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
-Completer<AndroidMapRenderer?>? _initializedRendererCompleter;
+// Completer<AndroidMapRenderer?>? _initializedRendererCompleter;
 
-Future<AndroidMapRenderer?> initializeMapRenderer() async {
-  if (_initializedRendererCompleter != null) {
-    return _initializedRendererCompleter!.future;
-  }
+// Future<AndroidMapRenderer?> initializeMapRenderer() async {
+//   if (_initializedRendererCompleter != null) {
+//     return _initializedRendererCompleter!.future;
+//   }
 
-  final Completer<AndroidMapRenderer?> completer =
-      Completer<AndroidMapRenderer?>();
-  _initializedRendererCompleter = completer;
+//   final Completer<AndroidMapRenderer?> completer =
+//       Completer<AndroidMapRenderer?>();
+//   _initializedRendererCompleter = completer;
 
-  WidgetsFlutterBinding.ensureInitialized();
+//   WidgetsFlutterBinding.ensureInitialized();
 
-  final GoogleMapsFlutterPlatform mapsImplementation =
-      GoogleMapsFlutterPlatform.instance;
-  if (mapsImplementation is GoogleMapsFlutterAndroid) {
-    unawaited(mapsImplementation
-        .initializeWithRenderer(AndroidMapRenderer.latest)
-        .then((AndroidMapRenderer initializedRenderer) =>
-            completer.complete(initializedRenderer)));
-  } else {
-    completer.complete(null);
-  }
+//   final GoogleMapsFlutterPlatform mapsImplementation =
+//       GoogleMapsFlutterPlatform.instance;
+//   if (mapsImplementation is GoogleMapsFlutterAndroid) {
+//     unawaited(mapsImplementation
+//         .initializeWithRenderer(AndroidMapRenderer.latest)
+//         .then((AndroidMapRenderer initializedRenderer) =>
+//             completer.complete(initializedRenderer)));
+//   } else {
+//     completer.complete(null);
+//   }
 
-  return completer.future;
-}
+//   return completer.future;
+// }
 
 void initializeLocationAndSave() async {
   // Ensure all permissions are collected for Locations
@@ -105,11 +109,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      navigatorKey: StackedService.navigatorKey,
-      onGenerateRoute: StackedRouter().onGenerateRoute,
-      initialRoute: Routes.splashPage,
+    return ToastificationWrapper(
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        navigatorKey: StackedService.navigatorKey,
+        onGenerateRoute: StackedRouter().onGenerateRoute,
+        initialRoute: Routes.splashPage,
+      ),
     );
   }
 }
