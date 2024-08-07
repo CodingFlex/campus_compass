@@ -3,6 +3,7 @@ import 'package:pocketbase/pocketbase.dart';
 
 class PocketBaseService {
   final PocketBase pb;
+  static const url = 'https://campus-compass.pockethost.io/';
 
-  PocketBaseService() : pb = PocketBase('http://10.0.2.2:8090/');
+  PocketBaseService() : pb = PocketBase(url);
 }

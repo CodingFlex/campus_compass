@@ -40,6 +40,7 @@ class _MapWidgetState extends State<MapWidget> {
   final UserDetailsService _userDetailsService = locator<UserDetailsService>();
   final Completer<GoogleMapController> _controllerGoogleMap = Completer();
   GoogleMapController? googleMapController;
+  String? get name => _userDetailsService.name;
   String? address;
 
   double bottomPaddingOfMap = 0;
@@ -81,8 +82,10 @@ class _MapWidgetState extends State<MapWidget> {
         minExtent: 195,
         useSafeArea: false,
         curve: Curves.easeIn,
-        previewWidget: PreviewWidget(isExpanded: false, address: address),
-        expandedWidget: PreviewWidget(isExpanded: true, address: address),
+        previewWidget:
+            PreviewWidget(isExpanded: false, address: address, name: name),
+        expandedWidget:
+            PreviewWidget(isExpanded: true, address: address, name: name),
         backgroundWidget: BackgroundWidget(
           controllerGoogleMap: _controllerGoogleMap,
           bottomPaddingOfMap: bottomPaddingOfMap,

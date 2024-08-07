@@ -1,9 +1,13 @@
 // background_widget.dart
 import 'dart:async';
 import 'package:campus_compass/constants/assets.dart';
+import 'package:campus_compass/utils/shared/app_colors.dart';
+import 'package:campus_compass/utils/shared/ui_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+import '../../../utils/shared/text_styles.dart';
 
 class BackgroundWidget extends StatelessWidget {
   final Completer<GoogleMapController> controllerGoogleMap;

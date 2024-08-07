@@ -1,4 +1,7 @@
 // preview_widget.dart
+import 'package:campus_compass/constants/assets.dart';
+import 'package:campus_compass/ui/map/divider.dart';
+import 'package:campus_compass/ui/map2/widgets/tile.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:stacked/stacked.dart';
@@ -14,10 +17,12 @@ import '../map_viewmodel.dart';
 class PreviewWidget extends StatelessWidget {
   final bool? isExpanded;
   String? address;
+  String? name;
 
   PreviewWidget({
     Key? key,
     this.isExpanded,
+    this.name,
     this.address,
   }) : super(key: key);
   @override
@@ -48,7 +53,7 @@ class PreviewWidget extends StatelessWidget {
             ),
             verticalSpaceSmall,
             Text(
-              'Hey, where would you like to go?',
+              'Hey $name, where would you like to go?',
               style: headlineStyle.copyWith(fontSize: 19, color: Colors.black),
             ),
             verticalSpaceTiny,
@@ -58,7 +63,7 @@ class PreviewWidget extends StatelessWidget {
               children: [
                 Container(
                   padding: const EdgeInsets.all(5),
-                  child: Icon(Icons.location_on_rounded, color: kcPrimaryColor),
+                  child: Image.asset(Assets.location, height: 30, width: 25),
                 ),
                 Flexible(
                   child: Text(
@@ -78,13 +83,37 @@ class PreviewWidget extends StatelessWidget {
             Align(
               alignment: Alignment.bottomCenter,
               child: BoxInputField(
-                width: 350,
-                height: 50,
                 controller: model.searchLocation,
+                width: 350,
+                height: 45,
+                onChanged: (value) async {
+                  print(value);
+                  print('stuff is printed here');
+                  model.findPlace(value);
+                },
                 placeholder: 'Search Location',
                 leading: const Icon(Icons.search, color: kcMediumGreyColor),
               ),
             ),
+            (model.placePredictionList.isNotEmpty)
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 8.0, horizontal: 16.0),
+                    child: ListView.separated(
+                      padding: const EdgeInsets.all(0),
+                      itemBuilder: (context, index) {
+                        return PlaceButton(
+                          placePredictions: model.placePredictionList[index],
+                        );
+                      },
+                      separatorBuilder: (BuildContext context, int index) =>
+                          DividerWidget(),
+                      itemCount: model.placePredictionList.length,
+                      shrinkWrap: true,
+                      physics: const ClampingScrollPhysics(),
+                    ),
+                  )
+                : Container(),
           ],
         ),
       ),

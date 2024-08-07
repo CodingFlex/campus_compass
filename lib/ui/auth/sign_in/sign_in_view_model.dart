@@ -21,7 +21,6 @@ class SignInPageViewModel extends FormViewModel {
       emailValue,
       passwordValue,
     );
-
     setBusy(false);
     notifyListeners();
   }

@@ -4,9 +4,10 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../app/app.locator.dart';
+import '../utils/user_secure_storage.dart';
 
 class UserDetailsService {
-  String? surname;
+  String? name;
   String? otherNames;
   String? currentLevel;
   String? idCard;
@@ -27,6 +28,7 @@ class UserDetailsService {
     currentPosition = position;
 
     LatLng latLatPosition = LatLng(position.latitude, position.longitude);
+    name = await UserSecureStorage.getName();
 
     // CameraPosition cameraPosition =
     //     new CameraPosition(target: latLatPosition, zoom: 14);

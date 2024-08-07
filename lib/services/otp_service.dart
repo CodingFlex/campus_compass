@@ -17,7 +17,7 @@ class OTPService {
   Future<void> sendOtp(String email) async {
     try {
       _storedEmail = email; // Store the email address
-      _emailOTP.setTheme(theme: "v3");
+      _emailOTP.setTheme(theme: "v1");
       await _emailOTP.setConfig(
         appEmail: "dunmadeoluwatunmise@gmail.com",
         appName: "Campus Compass",

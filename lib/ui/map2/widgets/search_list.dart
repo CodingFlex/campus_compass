@@ -91,7 +91,7 @@
 //                 color: user.isFollowedByMe ? Colors.blue[700] : Color(0xffffff),
 //                 borderRadius: BorderRadius.circular(5),
 //                 border: Border.all(color: user.isFollowedByMe ? Colors.transparent : Colors.grey.shade700,)
-//               ),
+//             å÷  ),
 //               child: Center(
 //                 child: Text(user.isFollowedByMe ? 'Unfollow' : 'Follow', style: TextStyle(color: user.isFollowedByMe ? Colors.white : Colors.white))
 //               )

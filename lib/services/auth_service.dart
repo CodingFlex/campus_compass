@@ -1,8 +1,3 @@
-import 'package:dio/dio.dart';
-
-import 'package:email_otp/email_otp.dart';
-import 'package:flutter/material.dart';
-
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -20,7 +15,6 @@ class AuthService {
   final _pocketBaseService = locator<PocketBaseService>();
   final _otpService = locator<OTPService>();
   FlutterSecureStorage secureStorage = FlutterSecureStorage();
-  final pb = PocketBase('http://10.0.2.2:8090/');
 
   Future<void> signUp(
     String? fullNameValue,
@@ -76,18 +70,24 @@ class AuthService {
 
   Future<void> signIn(String? emailValue, String? passwordValue) async {
     try {
-      final authData = await pb
+      final authData = await _pocketBaseService.pb
           .collection('users')
           .authWithPassword(emailValue!, passwordValue!);
       print(authData.record);
-      _navigationService.clearStackAndShow(Routes.mapPage);
+      await secureStorage.write(key: "_accesskey", value: authData.token);
+      await secureStorage.write(
+        key: "email",
+        value: authData.record?.data['email'],
+      );
+      await secureStorage.write(
+        key: "name",
+        value: authData.record?.data['name'],
+      );
       ToastService.showSuccess(
         title: 'Success',
         description: 'Sign in successful',
       );
-      // Store user information
-      await secureStorage.write(key: "_accesskey", value: authData.token);
-      await secureStorage.write(key: "email", value: emailValue);
+      _navigationService.clearStackAndShow(Routes.mapPage);
     } catch (e) {
       print('Error during sign up: $e');
 

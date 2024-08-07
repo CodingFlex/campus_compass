@@ -13,6 +13,7 @@ class BoxInputField extends StatelessWidget {
   final bool password;
   final void Function()? trailingTapped;
   final String? Function(String?)? validator; // Added validator parameter
+  final void Function(String)? onChanged;
 
   final circularBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(8),
@@ -24,6 +25,7 @@ class BoxInputField extends StatelessWidget {
     this.placeholder = '',
     this.leading,
     this.trailing,
+    this.onChanged,
     this.trailingTapped,
     this.password = false,
     this.height,
@@ -43,6 +45,7 @@ class BoxInputField extends StatelessWidget {
         width: width,
         child: TextField(
           controller: controller,
+          onChanged: onChanged,
           style: bodyStyle,
           obscureText: password,
           decoration: InputDecoration(
@@ -74,13 +77,6 @@ class BoxInputField extends StatelessWidget {
                 ? validator!(controller.text)
                 : null, // Validation error text
           ),
-          // onChanged: (value) {
-
-          //   if (validator != null) {
-          //     // You may need to call setState or some state update method here
-          //     validator!(value);
-          //   }
-          // },
         ),
       ),
     );

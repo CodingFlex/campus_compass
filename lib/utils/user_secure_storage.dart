@@ -16,6 +16,10 @@ class UserSecureStorage {
   static const _school = 'school';
   static const _accessKey = 'accesskey';
 
+  static Future setName(String name) async =>
+      await _storage.write(key: _name, value: name);
+
+  static Future<String?> getName() async => await _storage.read(key: _name);
   static Future setEmail(String email) async =>
       await _storage.write(key: _email, value: email);
 
