@@ -1,5 +1,6 @@
-import 'package:campus_compass/utils/shared/text_styles.dart';
 import 'package:flutter/material.dart';
+
+import 'package:campus_compass/utils/shared/text_styles.dart';
 
 import '../shared/app_colors.dart';
 
@@ -14,6 +15,7 @@ class BoxInputField extends StatelessWidget {
   final void Function()? trailingTapped;
   final String? Function(String?)? validator; // Added validator parameter
   final void Function(String)? onChanged;
+  final FocusNode? focusNode;
 
   final circularBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(8),
@@ -23,14 +25,15 @@ class BoxInputField extends StatelessWidget {
     Key? key,
     required this.controller,
     this.placeholder = '',
-    this.leading,
-    this.trailing,
-    this.onChanged,
-    this.trailingTapped,
-    this.password = false,
     this.height,
     this.width,
+    this.leading,
+    this.trailing,
+    this.password = false,
+    this.trailingTapped,
     this.validator,
+    this.onChanged,
+    this.focusNode,
   }) : super(key: key);
 
   @override
@@ -46,6 +49,7 @@ class BoxInputField extends StatelessWidget {
         child: TextField(
           controller: controller,
           onChanged: onChanged,
+          focusNode: focusNode,
           style: bodyStyle,
           obscureText: password,
           decoration: InputDecoration(

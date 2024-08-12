@@ -40,6 +40,7 @@ class SignUpPage extends StatelessWidget with $SignUpPage {
           body: AuthenticationLayout(
         busy: model.isBusy,
         onMainButtonTapped: () async {
+          FocusManager.instance.primaryFocus?.unfocus();
           await model.signUp();
           // model.save();
           // Navigator.push(

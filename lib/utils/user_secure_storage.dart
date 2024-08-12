@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class UserSecureStorage {
   static final _storage = FlutterSecureStorage();
@@ -15,6 +16,59 @@ class UserSecureStorage {
   static const _level = 'level';
   static const _school = 'school';
   static const _accessKey = 'accesskey';
+  static const _latitude = 'latitude';
+  static const _longitude = 'longitude';
+  static const _currentAddress = 'current-address';
+
+  static const _source = 'source';
+  static const _destination = 'destination';
+
+  // Methods for source
+  static Future setSource(String source) async =>
+      await _storage.write(key: _source, value: source);
+
+  static Future<String?> getSource() async => await _storage.read(key: _source);
+
+  // Methods for destination
+  static Future setDestination(String destination) async =>
+      await _storage.write(key: _destination, value: destination);
+
+  static Future<String?> getDestination() async =>
+      await _storage.read(key: _destination);
+
+  // Methods for latitude and longitude
+  static Future setLatitude(double latitude) async =>
+      await _storage.write(key: _latitude, value: latitude.toString());
+
+  static Future<double?> getLatitude() async {
+    final value = await _storage.read(key: _latitude);
+    return value != null ? double.parse(value) : null;
+  }
+
+  static Future setLongitude(double longitude) async =>
+      await _storage.write(key: _longitude, value: longitude.toString());
+
+  static Future<double?> getLongitude() async {
+    final value = await _storage.read(key: _longitude);
+    return value != null ? double.parse(value) : null;
+  }
+
+  // Method to get LatLng
+  static Future<LatLng?> getCurrentLatLng() async {
+    final lat = await getLatitude();
+    final lng = await getLongitude();
+    if (lat != null && lng != null) {
+      return LatLng(lat, lng);
+    }
+    return null;
+  }
+
+  // Methods for current address
+  static Future setCurrentAddress(String address) async =>
+      await _storage.write(key: _currentAddress, value: address);
+
+  static Future<String?> getCurrentAddress() async =>
+      await _storage.read(key: _currentAddress);
 
   static Future setName(String name) async =>
       await _storage.write(key: _name, value: name);

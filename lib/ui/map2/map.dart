@@ -77,15 +77,24 @@ class _MapWidgetState extends State<MapWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final mapViewmodel = locator<MapViewModel>();
     return Scaffold(
       body: DraggableBottomSheet(
-        minExtent: 195,
+        minExtent: mapViewmodel.isAnyFieldFocused
+            ? MediaQuery.of(context).size.height * 0.9
+            : 275,
         useSafeArea: false,
         curve: Curves.easeIn,
-        previewWidget:
-            PreviewWidget(isExpanded: false, address: address, name: name),
-        expandedWidget:
-            PreviewWidget(isExpanded: true, address: address, name: name),
+        previewWidget: PreviewWidget(
+          isExpanded: false,
+          address: address,
+          name: name,
+        ),
+        expandedWidget: PreviewWidget(
+          isExpanded: true,
+          address: address,
+          name: name,
+        ),
         backgroundWidget: BackgroundWidget(
           controllerGoogleMap: _controllerGoogleMap,
           bottomPaddingOfMap: bottomPaddingOfMap,

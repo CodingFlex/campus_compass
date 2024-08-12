@@ -1,3 +1,4 @@
+import 'package:campus_compass/utils/shared/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class ProgressDialog extends StatelessWidget {
@@ -21,7 +22,7 @@ class ProgressDialog extends StatelessWidget {
             children: [
               SizedBox(width: 6.0),
               CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+                valueColor: AlwaysStoppedAnimation<Color>(kcPrimaryColor),
               ),
               SizedBox(width: 26.0),
               Text(

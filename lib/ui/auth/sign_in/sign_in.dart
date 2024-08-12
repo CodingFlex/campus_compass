@@ -29,7 +29,10 @@ class SignInPage extends StatelessWidget with $SignInPage {
           body: AuthenticationLayout(
         busy: model.isBusy,
         signin: true,
-        onMainButtonTapped: () => model.signIn(),
+        onMainButtonTapped: () {
+          FocusManager.instance.primaryFocus?.unfocus();
+          model.signIn();
+        },
         // onCreateAccountTapped: model.navigateToCreateAccount,
         validationMessage: model.validationMessage,
         title: 'Welcome Back',

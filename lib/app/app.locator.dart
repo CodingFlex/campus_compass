@@ -8,6 +8,7 @@
 
 import 'package:campus_compass/services/otp_service.dart';
 import 'package:campus_compass/services/user_details_service.dart';
+import 'package:campus_compass/ui/map2/map_viewmodel.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:stacked_shared/stacked_shared.dart';
 
@@ -32,4 +33,5 @@ Future<void> setupLocator({
   locator.registerLazySingleton(() => UserDetailsService());
   locator.registerSingleton(PocketBaseService());
   locator.registerSingleton(OTPService());
+  locator.registerLazySingleton(() => MapViewModel());
 }

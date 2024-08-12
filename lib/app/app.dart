@@ -1,6 +1,7 @@
 import 'package:campus_compass/services/pocketbase_service.dart';
 import 'package:campus_compass/ui/auth/sign_in/sign_in.dart';
 import 'package:campus_compass/ui/map/maps.dart';
+import 'package:campus_compass/ui/map2/map_viewmodel.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:stacked/stacked_annotations.dart';
 
@@ -27,6 +28,7 @@ import '../services/auth_service.dart';
     LazySingleton(classType: UserDetailsService),
     LazySingleton(classType: PocketBaseService),
     LazySingleton(classType: OTPService),
+    LazySingleton(classType: MapViewModel),
   ],
   logger: StackedLogger(),
 )

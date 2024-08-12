@@ -29,6 +29,8 @@ class UserDetailsService {
 
     LatLng latLatPosition = LatLng(position.latitude, position.longitude);
     name = await UserSecureStorage.getName();
+    UserSecureStorage.setLongitude(position.longitude);
+    UserSecureStorage.setLatitude(position.latitude);
 
     // CameraPosition cameraPosition =
     //     new CameraPosition(target: latLatPosition, zoom: 14);
