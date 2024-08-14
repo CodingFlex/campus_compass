@@ -8,10 +8,8 @@ import '../utils/user_secure_storage.dart';
 
 class UserDetailsService {
   String? name;
-  String? otherNames;
-  String? currentLevel;
-  String? idCard;
-  String? matricnumber;
+  String? userAddress;
+
   String? faculty;
   Position? currentPosition;
   String? token;
@@ -32,13 +30,7 @@ class UserDetailsService {
     UserSecureStorage.setLongitude(position.longitude);
     UserSecureStorage.setLatitude(position.latitude);
 
-    // CameraPosition cameraPosition =
-    //     new CameraPosition(target: latLatPosition, zoom: 14);
-    // newGoogleMapController
-    //     .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
-
-    // String address =
-    //     await AssistantMethods.searchCoordinateAddress(position, context);
-    // print("This is your Address :: " + address);
+    userAddress = await UserSecureStorage.getCurrentAddress();
+    name = await UserSecureStorage.getName();
   }
 }

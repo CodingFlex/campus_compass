@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:campus_compass/services/user_location_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
@@ -85,7 +86,10 @@ void initializeLocationAndSave() async {
     _permission = await Geolocator.requestPermission();
   }
   final UserDetailsService _userDetailsService = locator<UserDetailsService>();
-  _userDetailsService.getUserDetails();
+  final UserLocationService _userLocationService =
+      locator<UserLocationService>();
+  await _userDetailsService.getUserDetails();
+  await _userLocationService.locatePosition();
 
   // Get the current usesr location
 

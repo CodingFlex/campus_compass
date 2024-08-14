@@ -1,4 +1,5 @@
 import 'package:campus_compass/services/pocketbase_service.dart';
+import 'package:campus_compass/services/user_location_service.dart';
 import 'package:campus_compass/ui/auth/sign_in/sign_in.dart';
 import 'package:campus_compass/ui/map/maps.dart';
 import 'package:campus_compass/ui/map2/map_viewmodel.dart';
@@ -26,6 +27,7 @@ import '../services/auth_service.dart';
     LazySingleton(classType: DialogService),
     LazySingleton(classType: AuthService),
     LazySingleton(classType: UserDetailsService),
+    LazySingleton(classType: UserLocationService),
     LazySingleton(classType: PocketBaseService),
     LazySingleton(classType: OTPService),
     LazySingleton(classType: MapViewModel),

@@ -1,15 +1,12 @@
+import 'package:campus_compass/utils/user_secure_storage.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:provider/provider.dart';
-
-import '../DataHandler/appData.dart';
 import '../models/address.dart';
 import '../models/directiondetails.dart';
 import 'requestAssistant.dart';
 
 class AssistantMethods {
-  static Future<String> searchCoordinateAddress(
-      Position position, context) async {
+  static Future<String> searchCoordinateAddress(Position position) async {
     String placeAddress = "";
     String st1, st2;
     final url = Uri.tryParse(
@@ -32,11 +29,10 @@ class AssistantMethods {
       userStartAddress.longitude = position.longitude;
       userStartAddress.latitude = position.latitude;
       userStartAddress.placeName = placeAddress;
-
-      // Provider.of<AppData>(context, listen: false)
-      //     .updateStartAddress(userStartAddress);
+      await UserSecureStorage.setCurrentAddress(userStartAddress.toString());
+      await UserSecureStorage.setLongitude(position.longitude);
+      await UserSecureStorage.setLatitude(position.latitude);
     }
-
     return placeAddress;
   }
 

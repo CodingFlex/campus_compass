@@ -16,7 +16,7 @@ class MapTextField extends StatelessWidget {
       alignment: Alignment.bottomCenter,
       child: BoxInputField(
         controller:
-            isDestination == true ? model.startLocation : model.destLocation,
+            isDestination == true ? model.destLocation : model.startLocation,
         width: 350,
         height: 50,
         onChanged: (value) {

@@ -50,12 +50,14 @@ class BoxInputField extends StatelessWidget {
           controller: controller,
           onChanged: onChanged,
           focusNode: focusNode,
-          style: bodyStyle,
+          style: bodyStyle.copyWith(
+            overflow: TextOverflow.ellipsis,
+          ),
+          maxLines: 1,
           obscureText: password,
           decoration: InputDecoration(
             hintText: placeholder,
-            contentPadding:
-                const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 20),
             filled: true,
             fillColor: kcVeryLightGreyColor,
             prefixIcon: leading,

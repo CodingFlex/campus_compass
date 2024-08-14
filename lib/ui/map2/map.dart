@@ -14,98 +14,41 @@ import '../../utils/widgets/box_input_field.dart';
 import 'map_viewmodel.dart';
 
 import 'widgets/map_background.dart';
-import 'widgets/map_expanded.dart';
+
 import 'widgets/map_preview.dart';
 
-class MapScreen2 extends StatefulWidget {
-  @override
-  State<MapScreen2> createState() => _MapScreen2State();
-}
-
-class _MapScreen2State extends State<MapScreen2> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: MapWidget(),
-    );
-  }
-}
-
-class MapWidget extends StatefulWidget {
-  @override
-  State<MapWidget> createState() => _MapWidgetState();
-}
-
-class _MapWidgetState extends State<MapWidget> {
-  final UserDetailsService _userDetailsService = locator<UserDetailsService>();
-  final Completer<GoogleMapController> _controllerGoogleMap = Completer();
-  GoogleMapController? googleMapController;
-  String? get name => _userDetailsService.name;
-  String? address;
-
+class MapScreen2 extends StatelessWidget {
   double bottomPaddingOfMap = 0;
 
-  Set<Polyline> polylineSet = {};
-  Set<Marker> markersSet = {};
-  Set<Circle> circlesSet = {};
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  void locatePosition() async {
-    LatLng latLatPosition = LatLng(
-        _userDetailsService.currentPosition!.latitude,
-        _userDetailsService.currentPosition!.longitude);
-
-    CameraPosition cameraPosition =
-        new CameraPosition(target: latLatPosition, zoom: 18);
-
-    googleMapController = await _controllerGoogleMap.future;
-    googleMapController
-        ?.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
-
-    String address = await AssistantMethods.searchCoordinateAddress(
-        _userDetailsService.currentPosition!, context);
-    print("This is your Address :: " + address);
-
-    setState(() {
-      this.address = address;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    final mapViewmodel = locator<MapViewModel>();
-    return Scaffold(
-      body: DraggableBottomSheet(
-        minExtent: mapViewmodel.isAnyFieldFocused
-            ? MediaQuery.of(context).size.height * 0.9
-            : 275,
-        useSafeArea: false,
-        curve: Curves.easeIn,
-        previewWidget: PreviewWidget(
-          isExpanded: false,
-          address: address,
-          name: name,
+    return ViewModelBuilder<MapViewModel>.reactive(
+      viewModelBuilder: () => MapViewModel(),
+      builder: (context, model, child) => Scaffold(
+        body: DraggableBottomSheet(
+          minExtent: model.isAnyFieldFocused
+              ? MediaQuery.of(context).size.height * 0.9
+              : 300,
+          useSafeArea: false,
+          curve: Curves.easeIn,
+          previewWidget: PreviewWidget(
+            isExpanded: false,
+            model: model,
+          ),
+          expandedWidget: PreviewWidget(
+            isExpanded: true,
+            model: model,
+          ),
+          backgroundWidget: BackgroundWidget(
+            controllerGoogleMap: model.controllerGoogleMap,
+            bottomPaddingOfMap: bottomPaddingOfMap,
+            polylineSet: model.polylineSet,
+            markersSet: model.markersSet,
+            circlesSet: model.circlesSet,
+          ),
+          maxExtent: MediaQuery.of(context).size.height * 0.9,
+          onDragging: (pos) {},
         ),
-        expandedWidget: PreviewWidget(
-          isExpanded: true,
-          address: address,
-          name: name,
-        ),
-        backgroundWidget: BackgroundWidget(
-          controllerGoogleMap: _controllerGoogleMap,
-          bottomPaddingOfMap: bottomPaddingOfMap,
-          polylineSet: polylineSet,
-          markersSet: markersSet,
-          circlesSet: circlesSet,
-          locatePosition: locatePosition,
-          currentPosition: _userDetailsService.currentPosition,
-        ),
-        maxExtent: MediaQuery.of(context).size.height * 0.9,
-        onDragging: (pos) {},
       ),
     );
   }

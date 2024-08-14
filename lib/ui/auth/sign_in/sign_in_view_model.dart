@@ -6,11 +6,14 @@ import 'package:stacked_services/stacked_services.dart';
 import '../../../app/app.locator.dart';
 import '../../../app/app.router.dart';
 import '../../../services/auth_service.dart';
+import '../../../utils/user_secure_storage.dart';
 
 class SignInPageViewModel extends FormViewModel {
   final formKey = GlobalKey<FormState>();
   final _authService = locator<AuthService>();
   final _navigationService = locator<NavigationService>();
+  String? name;
+  String? userAddress;
 
   /// to check if the form is validated
   signIn() async {
@@ -21,6 +24,11 @@ class SignInPageViewModel extends FormViewModel {
       emailValue,
       passwordValue,
     );
+    loadDetails() async {
+      userAddress = await UserSecureStorage.getCurrentAddress();
+      name = await UserSecureStorage.getName();
+    }
+
     setBusy(false);
     notifyListeners();
   }

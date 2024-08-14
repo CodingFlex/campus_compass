@@ -2,6 +2,7 @@
 import 'dart:async';
 import 'package:campus_compass/app/app.locator.dart';
 import 'package:campus_compass/constants/assets.dart';
+import 'package:campus_compass/services/user_location_service.dart';
 import 'package:campus_compass/ui/map2/map_viewmodel.dart';
 import 'package:campus_compass/utils/shared/app_colors.dart';
 import 'package:campus_compass/utils/shared/ui_helpers.dart';
@@ -17,8 +18,6 @@ class BackgroundWidget extends StatelessWidget {
   final Set<Polyline> polylineSet;
   final Set<Marker> markersSet;
   final Set<Circle> circlesSet;
-  final Function locatePosition;
-  final Position? currentPosition;
 
   BackgroundWidget({
     required this.controllerGoogleMap,
@@ -26,8 +25,6 @@ class BackgroundWidget extends StatelessWidget {
     required this.polylineSet,
     required this.markersSet,
     required this.circlesSet,
-    required this.locatePosition,
-    required this.currentPosition,
   });
 
   static final CameraPosition _kGooglePlex = CameraPosition(
@@ -37,7 +34,7 @@ class BackgroundWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mapViewmodel = locator<MapViewModel>();
+    final _locatePosition = locator<UserLocationService>();
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -88,8 +85,7 @@ class BackgroundWidget extends StatelessWidget {
         markers: markersSet,
         circles: circlesSet,
         onMapCreated: (GoogleMapController controller) {
-          controllerGoogleMap.complete(controller);
-          locatePosition();
+          _locatePosition.controllerGoogleMap.complete(controller);
         },
         compassEnabled: true,
       ),

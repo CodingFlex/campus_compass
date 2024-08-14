@@ -13,65 +13,75 @@ import 'package:stacked/stacked.dart';
 
 class PlaceButton extends StatelessWidget {
   final PlacePredictions placePredictions;
+  final MapViewModel model;
 
-  PlaceButton({required this.placePredictions, required bool isDestination});
+  PlaceButton({required this.placePredictions, required this.model});
 
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<MapViewModel>.reactive(
-      viewModelBuilder: () => MapViewModel(),
-      builder: (context, model, child) => Container(
-        padding: const EdgeInsets.all(0),
-        child: TextButton(
-          style: TextButton.styleFrom(padding: EdgeInsets.all(10)),
-          onPressed: () {
-            // model.updatePlace();
-            // model.getPlaceAddressDetails(placePredictions.place_id, context);
-            // Update the appropriate TextField
-            print('clicked');
-            if (model.isResponseForDestination) {
-              model.destLocation.text = placePredictions.main_text;
-              UserSecureStorage.setSource(json.encode(placePredictions));
-            } else {
-              model.startLocation.text = placePredictions.main_text;
-              UserSecureStorage.setDestination(json.encode(placePredictions));
-            }
+    return Container(
+      padding: const EdgeInsets.all(0),
+      child: TextButton(
+        style: TextButton.styleFrom(padding: EdgeInsets.all(10)),
+        onPressed: () async {
+          // model.updatePlace();
+
+          if (model.isResponseForDestination == true) {
+            model.destLocation.text = placePredictions.main_text;
+            await UserSecureStorage.setDestination(placePredictions.place_id);
             model.placePredictionList.clear();
-            FocusManager.instance.primaryFocus?.unfocus();
-          },
-          child: Container(
-            child: Column(
-              children: [
-                SizedBox(width: 10.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Image.asset(Assets.location, height: 30, width: 25),
-                    Gap(14),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            placePredictions.main_text,
-                            overflow: TextOverflow.ellipsis,
-                            style: subheadingStyle.copyWith(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Gap(3),
-                          Text(
-                            placePredictions.secondary_text,
-                            overflow: TextOverflow.ellipsis,
-                            style: bodyStyle.copyWith(color: Colors.black),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ],
-            ),
+            if (model.startLocation.text.isNotEmpty) {
+              model.showProceedButton = true;
+            }
+          } else {
+            model.startLocation.text = placePredictions.main_text;
+            await UserSecureStorage.setSource(placePredictions.place_id);
+            model.placePredictionList.clear();
+            if (model.destLocation.text.isNotEmpty) {
+              model.showProceedButton = true;
+            }
+          }
+
+          model.isLoading = true;
+          model.isLoadingRouteDetails = true;
+          FocusManager.instance.primaryFocus?.unfocus();
+          model.getPlaceAddressDetails(
+            placePredictions.place_id,
+            context,
+            isDestination: model.isResponseForDestination,
+          );
+        },
+        child: Container(
+          child: Column(
+            children: [
+              SizedBox(width: 10.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Image.asset(Assets.location, height: 30, width: 25),
+                  Gap(14),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          placePredictions.main_text,
+                          overflow: TextOverflow.ellipsis,
+                          style: subheadingStyle.copyWith(
+                              color: Colors.black, fontWeight: FontWeight.bold),
+                        ),
+                        Gap(3),
+                        Text(
+                          placePredictions.secondary_text,
+                          overflow: TextOverflow.ellipsis,
+                          style: bodyStyle.copyWith(color: Colors.black),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ],
           ),
         ),
       ),
