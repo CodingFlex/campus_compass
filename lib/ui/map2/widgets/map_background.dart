@@ -57,16 +57,13 @@ class BackgroundWidget extends StatelessWidget {
             ),
           ),
         ),
-        actions: const <Widget>[
+        actions: <Widget>[
           Padding(
-            padding: const EdgeInsets.all(12.0),
+            padding: EdgeInsets.symmetric(
+                vertical: 0.0, horizontal: 20.0), // Adjust padding as needed
             child: CircleAvatar(
-              radius: 30.0,
-              backgroundColor: Colors.white,
-              child: Icon(
-                Icons.person_2_outlined,
-                color: Colors.black,
-              ),
+              radius: 20,
+              backgroundImage: AssetImage(Assets.personplaceholder),
               // backgroundImage: AssetImage(Assets.splash),
             ),
           ),
@@ -79,6 +76,7 @@ class BackgroundWidget extends StatelessWidget {
         mapType: MapType.normal,
         initialCameraPosition: _kGooglePlex,
         myLocationEnabled: true,
+        myLocationButtonEnabled: false,
         zoomGesturesEnabled: true,
         zoomControlsEnabled: true,
         polylines: polylineSet,

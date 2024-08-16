@@ -26,11 +26,18 @@ class UserDetailsService {
     currentPosition = position;
 
     LatLng latLatPosition = LatLng(position.latitude, position.longitude);
-    name = await UserSecureStorage.getName();
     UserSecureStorage.setLongitude(position.longitude);
     UserSecureStorage.setLatitude(position.latitude);
-
-    userAddress = await UserSecureStorage.getCurrentAddress();
+    String address = await AssistantMethods.searchCoordinateAddress(
+      currentPosition!,
+    );
+    print("IM GETTING HERE");
+    print("This is your Address :: " + address);
+    UserSecureStorage.setCurrentAddress(address);
     name = await UserSecureStorage.getName();
+
+    userAddress = address;
+
+    print(name);
   }
 }

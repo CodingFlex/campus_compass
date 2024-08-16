@@ -17,13 +17,21 @@ import 'widgets/map_background.dart';
 
 import 'widgets/map_preview.dart';
 
-class MapScreen2 extends StatelessWidget {
+class MapScreen2 extends StatefulWidget {
+  @override
+  State<MapScreen2> createState() => _MapScreen2State();
+}
+
+class _MapScreen2State extends State<MapScreen2> {
   double bottomPaddingOfMap = 0;
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<MapViewModel>.reactive(
       viewModelBuilder: () => MapViewModel(),
+      onViewModelReady: (model) async {
+        await model.getUserDetails();
+      },
       builder: (context, model, child) => Scaffold(
         body: DraggableBottomSheet(
           minExtent: model.isAnyFieldFocused

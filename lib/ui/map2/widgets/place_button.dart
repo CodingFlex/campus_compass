@@ -45,11 +45,11 @@ class PlaceButton extends StatelessWidget {
           model.isLoading = true;
           model.isLoadingRouteDetails = true;
           FocusManager.instance.primaryFocus?.unfocus();
-          model.getPlaceAddressDetails(
-            placePredictions.place_id,
-            context,
-            isDestination: model.isResponseForDestination,
-          );
+          // model.getPlaceAddressDetails(
+          //   placePredictions.place_id,
+          //   context,
+          //   isDestination: model.isResponseForDestination,
+          // );
         },
         child: Container(
           child: Column(

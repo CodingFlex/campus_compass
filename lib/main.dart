@@ -17,21 +17,16 @@ import 'package:provider/provider.dart';
 
 import 'services/user_details_service.dart';
 import 'ui/map/DataHandler/appData.dart';
+import 'ui/map2/map_viewmodel.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   setupLocator();
-  // final GoogleMapsFlutterPlatform mapsImplementation =
-  //     GoogleMapsFlutterPlatform.instance;
-  // if (mapsImplementation is GoogleMapsFlutterAndroid) {
-  //   mapsImplementation.useAndroidViewSurface = true;
-  //   initializeMapRenderer();
-  // }
+  initializeLocationAndSave();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
 
-  initializeLocationAndSave();
   runApp(
     MultiProvider(
       providers: [
@@ -43,34 +38,11 @@ void main() async {
   );
 }
 
-// Completer<AndroidMapRenderer?>? _initializedRendererCompleter;
-
-// Future<AndroidMapRenderer?> initializeMapRenderer() async {
-//   if (_initializedRendererCompleter != null) {
-//     return _initializedRendererCompleter!.future;
-//   }
-
-//   final Completer<AndroidMapRenderer?> completer =
-//       Completer<AndroidMapRenderer?>();
-//   _initializedRendererCompleter = completer;
-
-//   WidgetsFlutterBinding.ensureInitialized();
-
-//   final GoogleMapsFlutterPlatform mapsImplementation =
-//       GoogleMapsFlutterPlatform.instance;
-//   if (mapsImplementation is GoogleMapsFlutterAndroid) {
-//     unawaited(mapsImplementation
-//         .initializeWithRenderer(AndroidMapRenderer.latest)
-//         .then((AndroidMapRenderer initializedRenderer) =>
-//             completer.complete(initializedRenderer)));
-//   } else {
-//     completer.complete(null);
-//   }
-
-//   return completer.future;
-// }
-
-void initializeLocationAndSave() async {
+Future<void> initializeLocationAndSave() async {
+  final UserDetailsService _userDetailsService = locator<UserDetailsService>();
+  final UserLocationService _userLocationService =
+      locator<UserLocationService>();
+  final _mapviewmodel = locator<MapViewModel>();
   // Ensure all permissions are collected for Locations
 
   bool? _serviceEnabled;
@@ -85,27 +57,8 @@ void initializeLocationAndSave() async {
   if (_permission == LocationPermission.denied) {
     _permission = await Geolocator.requestPermission();
   }
-  final UserDetailsService _userDetailsService = locator<UserDetailsService>();
-  final UserLocationService _userLocationService =
-      locator<UserLocationService>();
   await _userDetailsService.getUserDetails();
   await _userLocationService.locatePosition();
-
-  // Get the current usesr location
-
-  // Position position = await Geolocator.getCurrentPosition(
-  //     desiredAccuracy: LocationAccuracy.best);
-
-  // LatLng currentLocation = LatLng(position.latitude, position.longitude);
-
-  // // Get the current user address
-  // String currentAddress =
-  //     (await getParsedReverseGeocoding(currentLocation))['place'];
-
-  // // Store the user location in sharedPreferences
-  // sharedPreferences.setDouble('latitude', position.latitude);
-  // sharedPreferences.setDouble('longitude', position.longitude);
-  // sharedPreferences.setString('current-address', currentAddress);
 }
 
 class MyApp extends StatelessWidget {

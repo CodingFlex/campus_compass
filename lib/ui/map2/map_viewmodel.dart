@@ -27,8 +27,9 @@ class MapViewModel extends ReactiveViewModel {
   Address? initialPosition;
   Address? finalPosition;
 
-  String? get userAddress => userDetailsService.userAddress;
-  String? get name => userDetailsService.name;
+  String? userAddress;
+  String? get userAddress1 => userDetailsService.userAddress;
+  String? name;
 
   double bottomPaddingOfMap = 0;
   bool showProceedButton = false;
@@ -49,6 +50,24 @@ class MapViewModel extends ReactiveViewModel {
   bool isResponseForDestination = false;
   bool isLoading = false;
   bool isLoadingRouteDetails = false;
+
+  getUserDetails() async {
+    name = await UserSecureStorage.getName();
+    print('getting user details');
+    userAddress = await UserSecureStorage.getCurrentAddress();
+    print(userAddress);
+
+    // if (userAddress == null) {
+    //   await userLocationService.locatePosition(
+    //     onComplete: () {
+    //       notifyListeners();
+    //       getUserDetails();
+    //     },
+    //   );
+    // } else {}
+
+    notifyListeners();
+  }
 
   void onChangeHandler(String value, bool isDestination) {
     isLoading = true;
@@ -71,7 +90,7 @@ class MapViewModel extends ReactiveViewModel {
     if (userDetailsService.userAddress != null) {
       startLocation.text = userDetailsService.userAddress!;
     } else {
-      userLocationService.getUserLocation();
+      userDetailsService.getUserDetails();
       userLocationService.locatePosition();
     }
     notifyListeners();

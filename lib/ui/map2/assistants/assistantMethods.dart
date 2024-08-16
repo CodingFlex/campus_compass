@@ -20,6 +20,7 @@ class AssistantMethods {
       st1 = response["results"][0]["address_components"][0]["long_name"];
       st2 = response["results"][0]["address_components"][1]["long_name"];
       placeAddress = st1 + ", " + st2;
+      UserSecureStorage.setCurrentAddress(placeAddress);
 
       Address userStartAddress = new Address(
           latitude: position.latitude,
@@ -29,9 +30,6 @@ class AssistantMethods {
       userStartAddress.longitude = position.longitude;
       userStartAddress.latitude = position.latitude;
       userStartAddress.placeName = placeAddress;
-      await UserSecureStorage.setCurrentAddress(userStartAddress.toString());
-      await UserSecureStorage.setLongitude(position.longitude);
-      await UserSecureStorage.setLatitude(position.latitude);
     }
     return placeAddress;
   }

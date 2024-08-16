@@ -19,16 +19,16 @@ class UserLocationService {
 
   UserLocationService();
 
-  Future<void> getUserLocation() async {
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.best);
-    currentPosition = position;
+  // Future<void> getUserLocation() async {
+  //   Position position = await Geolocator.getCurrentPosition(
+  //       desiredAccuracy: LocationAccuracy.best);
+  //   currentPosition = position;
 
-    LatLng latLatPosition = LatLng(position.latitude, position.longitude);
+  //   LatLng latLatPosition = LatLng(position.latitude, position.longitude);
 
-    UserSecureStorage.setLongitude(position.longitude);
-    UserSecureStorage.setLatitude(position.latitude);
-  }
+  //   UserSecureStorage.setLongitude(position.longitude);
+  //   UserSecureStorage.setLatitude(position.latitude);
+  // }
 
   Future<void> locatePosition() async {
     LatLng latLatPosition = LatLng(userDetailsService.currentPosition!.latitude,
@@ -40,13 +40,5 @@ class UserLocationService {
     googleMapController = await controllerGoogleMap.future;
     googleMapController
         ?.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
-
-    String address = await AssistantMethods.searchCoordinateAddress(
-      userDetailsService.currentPosition!,
-    );
-
-    UserSecureStorage.setCurrentAddress(address);
-    print("IM GETTING HERE");
-    print("This is your Address :: " + address);
   }
 }

@@ -18,11 +18,11 @@ import '../../../utils/shared/text_styles.dart';
 import '../../../utils/widgets/box_input_field.dart';
 import '../map_viewmodel.dart';
 
-class PreviewWidget extends StatelessWidget {
+class RouteWidget extends StatelessWidget {
   final bool? isExpanded;
   final MapViewModel model;
 
-  PreviewWidget({
+  RouteWidget({
     Key? key,
     this.isExpanded,
     required this.model,
@@ -53,55 +53,17 @@ class PreviewWidget extends StatelessWidget {
             ),
           ),
           verticalSpaceSmall,
-          RichText(
-            text: TextSpan(
-              style: headlineStyle.copyWith(fontSize: 19, color: Colors.black),
-              children: [
-                const TextSpan(text: 'Hey '),
-                WidgetSpan(
-                  child: Shimmer.fromColors(
-                    baseColor: Colors.black,
-                    highlightColor: Color.fromARGB(255, 230, 185, 237),
-                    enabled: model.name == null,
-                    child: Text(
-                      model.name ?? 'Loading...',
-                      style: headlineStyle.copyWith(
-                          color: Colors.black, fontSize: 19),
-                    ),
-                  ),
-                ),
-                const TextSpan(text: ', where to?'),
-              ],
-            ),
+          Text(
+            model.destLocation.text,
+            style: headlineStyle.copyWith(color: Colors.black, fontSize: 19),
           ),
           verticalSpaceSmall,
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Container(
-                  padding: const EdgeInsets.all(10),
-                  child: const Icon(
-                    Icons.person,
-                    color: kcPrimaryColor,
-                  )),
-              Flexible(
-                child: SizedBox(
-                  child: Shimmer.fromColors(
-                    baseColor: Colors.black,
-                    direction: ShimmerDirection.rtl,
-                    highlightColor: Color.fromARGB(255, 230, 185, 237),
-                    enabled: model.userAddress == null,
-                    child: Text(
-                      'Current location: ${model.userAddress}',
-                      style: headlineStyle.copyWith(
-                        fontSize: 16,
-                        color: kcPrimaryColor,
-                      ),
-                      overflow: TextOverflow.clip,
-                    ),
-                  ),
-                ),
-              )
+              IconButton(onPressed: () {}, icon: Icon(Icons.bike_scooter)),
+              IconButton(onPressed: () {}, icon: Icon(Icons.directions_walk)),
+              IconButton(onPressed: () {}, icon: Icon(Icons.car_rental)),
             ],
           ),
           verticalSpaceSmall,

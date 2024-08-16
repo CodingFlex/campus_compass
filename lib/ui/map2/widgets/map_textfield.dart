@@ -17,8 +17,8 @@ class MapTextField extends StatelessWidget {
       child: BoxInputField(
         controller:
             isDestination == true ? model.destLocation : model.startLocation,
-        width: 350,
-        height: 50,
+        width: MediaQuery.sizeOf(context).width * 0.78,
+        height: 55,
         onChanged: (value) {
           model.onChangeHandler(value, isDestination);
         },
