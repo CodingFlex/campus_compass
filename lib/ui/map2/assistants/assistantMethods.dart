@@ -61,7 +61,7 @@ class AssistantMethods {
 
     directionDetails.durationValue =
         res["routes"][0]["legs"][0]["duration"]["value"];
-
+    print(directionDetails.distanceText);
     return directionDetails;
   }
 }

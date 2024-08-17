@@ -6,6 +6,7 @@ import 'package:campus_compass/services/user_location_service.dart';
 import 'package:campus_compass/ui/map2/assistants/assistantMethods.dart';
 import 'package:campus_compass/ui/map2/assistants/requestAssistant.dart';
 import 'package:campus_compass/ui/map2/models/address.dart';
+import 'package:campus_compass/ui/map2/models/directiondetails.dart';
 import 'package:campus_compass/ui/map2/models/placepredictions.dart';
 import 'package:campus_compass/utils/shared/app_colors.dart';
 import 'package:campus_compass/utils/user_secure_storage.dart';
@@ -25,7 +26,9 @@ class MapViewModel extends ReactiveViewModel {
   GoogleMapController? googleMapController;
 
   Address? initialPosition;
+
   Address? finalPosition;
+  DirectionDetails? tripDetails;
 
   String? userAddress;
   String? get userAddress1 => userDetailsService.userAddress;
@@ -50,6 +53,7 @@ class MapViewModel extends ReactiveViewModel {
   bool isResponseForDestination = false;
   bool isLoading = false;
   bool isLoadingRouteDetails = false;
+  bool extendBottomSheet = false;
 
   getUserDetails() async {
     name = await UserSecureStorage.getName();
@@ -70,6 +74,8 @@ class MapViewModel extends ReactiveViewModel {
   }
 
   void onChangeHandler(String value, bool isDestination) {
+    extendBottomSheet = true;
+    showProceedButton = false;
     isLoading = true;
     isResponseForDestination = isDestination;
     notifyListeners();
@@ -189,6 +195,7 @@ class MapViewModel extends ReactiveViewModel {
     initialPosition,
     finalPosition,
   ) async {
+    isLoadingRouteDetails = true;
     var startLatLng =
         LatLng(initialPosition!.latitude, initialPosition.longitude);
 
@@ -196,11 +203,13 @@ class MapViewModel extends ReactiveViewModel {
 
     var details =
         await AssistantMethods.obtainDirectionDetails(startLatLng, destLatLng);
+    tripDetails = details;
 
     // Navigator.pop(context);
 
     print("This is Encoded Points :: ");
     print(details?.encodedPoints);
+    print(details);
 
     PolylinePoints polylinePoints = PolylinePoints();
     List<PointLatLng> decodedPolyLinePointsResult =
@@ -219,11 +228,11 @@ class MapViewModel extends ReactiveViewModel {
     polylineSet.clear();
 
     Polyline polyline = Polyline(
-      color: Colors.amber,
+      color: Colors.purple,
       polylineId: PolylineId("PolylineID"),
-      jointType: JointType.round,
+      jointType: JointType.mitered,
       points: pLineCoordinates,
-      width: 5,
+      width: 8,
       startCap: Cap.roundCap,
       endCap: Cap.roundCap,
       geodesic: true,
@@ -250,21 +259,22 @@ class MapViewModel extends ReactiveViewModel {
       latLngBounds =
           LatLngBounds(southwest: startLatLng, northeast: destLatLng);
     }
-    userLocationService.newGoogleMapController
+    userLocationService.googleMapController!
         .animateCamera(CameraUpdate.newLatLngBounds(latLngBounds, 70));
 
     Marker startLocMarker = Marker(
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-      infoWindow:
-          InfoWindow(title: initialPosition!.placeName, snippet: "My Location"),
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
+      infoWindow: InfoWindow(
+          title: initialPosition!.placeName, snippet: "Start Location"),
       position: startLatLng,
       markerId: MarkerId("startId"),
     );
 
     Marker destLocMarker = Marker(
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+      flat: false,
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
       infoWindow: InfoWindow(
-          title: finalPosition!.placeName, snippet: "My Destination"),
+          title: finalPosition!.placeName, snippet: "Destination Location"),
       position: destLatLng,
       markerId: MarkerId("destId"),
     );
@@ -273,20 +283,20 @@ class MapViewModel extends ReactiveViewModel {
     markersSet.add(destLocMarker);
 
     Circle startLocCircle = Circle(
-      fillColor: Colors.blueGrey,
+      fillColor: Colors.purple,
       center: startLatLng,
-      radius: 12,
+      radius: 10,
       strokeWidth: 4,
-      strokeColor: Colors.blueGrey,
+      strokeColor: Colors.purpleAccent,
       circleId: CircleId("StartId"),
     );
 
     Circle destLocCircle = Circle(
-      fillColor: kcPrimaryColor,
+      fillColor: Colors.white,
       center: destLatLng,
-      radius: 12,
+      radius: 10,
       strokeWidth: 4,
-      strokeColor: Colors.pinkAccent,
+      strokeColor: Color.fromARGB(255, 8, 40, 21),
       circleId: CircleId("DestId"),
     );
 

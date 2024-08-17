@@ -1,4 +1,5 @@
 import 'package:campus_compass/ui/map2/assistants/assistantMethods.dart';
+import 'package:campus_compass/ui/map2/widgets/route_widget.dart';
 import 'package:campus_compass/utils/shared/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -39,20 +40,19 @@ class _MapScreen2State extends State<MapScreen2> {
               : 300,
           useSafeArea: false,
           curve: Curves.easeIn,
-          previewWidget: PreviewWidget(
-            isExpanded: false,
-            model: model,
-          ),
+          previewWidget: !model.isLoadingRouteDetails
+              ? PreviewWidget(
+                  isExpanded: false,
+                  model: model,
+                )
+              : RouteWidget(model: model),
           expandedWidget: PreviewWidget(
             isExpanded: true,
             model: model,
           ),
           backgroundWidget: BackgroundWidget(
-            controllerGoogleMap: model.controllerGoogleMap,
+            model: model,
             bottomPaddingOfMap: bottomPaddingOfMap,
-            polylineSet: model.polylineSet,
-            markersSet: model.markersSet,
-            circlesSet: model.circlesSet,
           ),
           maxExtent: MediaQuery.of(context).size.height * 0.9,
           onDragging: (pos) {},

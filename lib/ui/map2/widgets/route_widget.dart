@@ -1,4 +1,6 @@
 // preview_widget.dart
+import 'package:campus_compass/ui/map2/widgets/trip_type_button.dart';
+import 'package:campus_compass/utils/widgets/box_button.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
@@ -31,7 +33,7 @@ class RouteWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
       decoration: const BoxDecoration(
         color: Color.fromARGB(255, 255, 255, 255),
         borderRadius: BorderRadius.only(
@@ -40,6 +42,7 @@ class RouteWidget extends StatelessWidget {
         ),
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           Center(
             child: Container(
@@ -55,132 +58,70 @@ class RouteWidget extends StatelessWidget {
           verticalSpaceSmall,
           Text(
             model.destLocation.text,
-            style: headlineStyle.copyWith(color: Colors.black, fontSize: 19),
+            style: headlineStyle.copyWith(color: Colors.black, fontSize: 22),
           ),
           verticalSpaceSmall,
           Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment:
+                MainAxisAlignment.spaceEvenly, // To space them out evenly
             children: [
-              IconButton(onPressed: () {}, icon: Icon(Icons.bike_scooter)),
-              IconButton(onPressed: () {}, icon: Icon(Icons.directions_walk)),
-              IconButton(onPressed: () {}, icon: Icon(Icons.car_rental)),
+              TripTypeButton(icon: FontAwesomeIcons.walking),
+              TripTypeButton(icon: FontAwesomeIcons.biking),
+              TripTypeButton(icon: FontAwesomeIcons.car),
             ],
           ),
-          verticalSpaceSmall,
+          const Gap(10),
           Container(
-            child: Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Column(
+            width: MediaQuery.sizeOf(context).width * 0.7,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: kcLightGreyColor,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Column(
                     children: [
-                      GestureDetector(
-                        onTap: () => model.useCurrentLocation(),
-                        child: const Icon(
-                          Icons.my_location,
-                          color: kcPrimaryColor,
-                        ),
-                      ),
-                      const Gap(3),
-                      Container(
-                        height: 10,
-                        width: 2, // Adjust this to make the dash slimmer
-                        decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(
-                              2), // Adjust this for rounded corners
-                        ),
-                      ),
-                      const Gap(3),
-                      Container(
-                        height: 10,
-                        width: 2, // Adjust this to make the dash slimmer
-                        decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(
-                              2), // Adjust this for rounded corners
-                        ),
-                      ),
-                      const Gap(3),
-                      Container(
-                        height: 10,
-                        width: 2, // Adjust this to make the dash slimmer
-                        decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(
-                              2), // Adjust this for rounded corners
-                        ),
-                      ),
-                      const Gap(3),
-                      const Icon(
-                        Icons.location_on_outlined,
-                        color: kcPrimaryColor,
-                      )
+                      Text('Trip Duration',
+                          style:
+                              bodyStyle.copyWith(fontWeight: FontWeight.w700)),
+                      Text(model.tripDetails!.durationText.toString(),
+                          style: heading3Style.copyWith(
+                              fontWeight: FontWeight.bold)),
                     ],
                   ),
-                ),
-                Column(
-                  children: [
-                    MapTextField(isDestination: false, model: model),
-                    verticalSpaceRegular,
-                    MapTextField(isDestination: true, model: model),
-                    (model.showProceedButton)
-                        ? GestureDetector(
-                            onTap: () {
-                              model.getPlaceDirection(
-                                model.initialPosition,
-                                model.finalPosition,
-                              );
-                            },
-                            child: Container(
-                              width: double.infinity,
-                              height: 50,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: kcPrimaryColor,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Text(
-                                'Proceed',
-                                style: bodyStyle.copyWith(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          )
-                        : Container(),
-                  ],
-                ),
-              ],
+                  Gap(30),
+                  Container(
+                    height: 50,
+                    width: 2, // Adjust this to make the dash slimmer
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(
+                          2), // Adjust this for rounded corners
+                    ),
+                  ),
+                  Gap(30),
+                  Column(
+                    children: [
+                      Text('Trip Distance',
+                          style:
+                              bodyStyle.copyWith(fontWeight: FontWeight.w700)),
+                      Text(model.tripDetails!.distanceText.toString(),
+                          style: heading3Style.copyWith(
+                              fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
-          verticalSpaceRegular,
-          model.isLoading
-              ? const LinearProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(kcPrimaryColor),
-                )
-              : Container(),
-          (model.placePredictionList.isNotEmpty)
-              ? Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 8.0, horizontal: 16.0),
-                  child: ListView.separated(
-                    padding: const EdgeInsets.all(0),
-                    itemBuilder: (context, index) {
-                      return PlaceButton(
-                        placePredictions: model.placePredictionList[index],
-                        model: model,
-                      );
-                    },
-                    separatorBuilder: (BuildContext context, int index) =>
-                        DividerWidget(),
-                    itemCount: model.placePredictionList.length,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                  ),
-                )
-              : Container(),
+          const Gap(10),
+          BoxButton(
+              title: 'Start Navigation',
+              width: MediaQuery.sizeOf(context).width * 0.5,
+              onTap: () {}),
         ],
       ),
     );

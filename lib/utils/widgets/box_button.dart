@@ -10,6 +10,7 @@ class BoxButton extends StatelessWidget {
   final void Function()? onTap;
   final bool outline;
   final Widget? leading;
+  final double width;
 
   const BoxButton({
     Key? key,
@@ -18,6 +19,7 @@ class BoxButton extends StatelessWidget {
     this.busy = false,
     this.onTap,
     this.leading,
+    this.width = double.infinity,
   })  : outline = false,
         super(key: key);
 
@@ -25,6 +27,7 @@ class BoxButton extends StatelessWidget {
     required this.title,
     this.onTap,
     this.leading,
+    required this.width,
   })  : disabled = false,
         busy = false,
         outline = true;
@@ -35,7 +38,7 @@ class BoxButton extends StatelessWidget {
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 350),
-        width: double.infinity,
+        width: width,
         height: 48,
         alignment: Alignment.center,
         decoration: !outline

@@ -13,18 +13,12 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../../utils/shared/text_styles.dart';
 
 class BackgroundWidget extends StatelessWidget {
-  final Completer<GoogleMapController> controllerGoogleMap;
   final double bottomPaddingOfMap;
-  final Set<Polyline> polylineSet;
-  final Set<Marker> markersSet;
-  final Set<Circle> circlesSet;
+  final MapViewModel model;
 
   BackgroundWidget({
-    required this.controllerGoogleMap,
     required this.bottomPaddingOfMap,
-    required this.polylineSet,
-    required this.markersSet,
-    required this.circlesSet,
+    required this.model,
   });
 
   static final CameraPosition _kGooglePlex = CameraPosition(
@@ -78,10 +72,11 @@ class BackgroundWidget extends StatelessWidget {
         myLocationEnabled: true,
         myLocationButtonEnabled: false,
         zoomGesturesEnabled: true,
-        zoomControlsEnabled: true,
-        polylines: polylineSet,
-        markers: markersSet,
-        circles: circlesSet,
+        zoomControlsEnabled: false,
+        buildingsEnabled: true,
+        polylines: model.polylineSet,
+        markers: model.markersSet,
+        circles: model.circlesSet,
         onMapCreated: (GoogleMapController controller) {
           _locatePosition.controllerGoogleMap.complete(controller);
         },

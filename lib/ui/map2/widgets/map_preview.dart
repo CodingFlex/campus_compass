@@ -92,7 +92,7 @@ class PreviewWidget extends StatelessWidget {
                     highlightColor: Color.fromARGB(255, 230, 185, 237),
                     enabled: model.userAddress == null,
                     child: Text(
-                      'Current location: ${model.userAddress}',
+                      'Current location: ${model.userAddress ?? 'Loading...'}',
                       style: headlineStyle.copyWith(
                         fontSize: 16,
                         color: kcPrimaryColor,
@@ -162,37 +162,67 @@ class PreviewWidget extends StatelessWidget {
                     MapTextField(isDestination: false, model: model),
                     verticalSpaceRegular,
                     MapTextField(isDestination: true, model: model),
-                    (model.showProceedButton)
-                        ? GestureDetector(
-                            onTap: () {
-                              model.getPlaceDirection(
-                                model.initialPosition,
-                                model.finalPosition,
-                              );
-                            },
-                            child: Container(
-                              width: double.infinity,
-                              height: 50,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: kcPrimaryColor,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Text(
-                                'Proceed',
-                                style: bodyStyle.copyWith(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          )
-                        : Container(),
                   ],
                 ),
               ],
             ),
           ),
+          (model.showProceedButton)
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 16.0, horizontal: 45),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: GestureDetector(
+                      onTap: () {
+                        print('tapping');
+                        print(model.initialPosition.toString());
+                        print(model.finalPosition.toString());
+                        if (model.initialPosition != null &&
+                            model.finalPosition != null &&
+                            model.initialPosition!.latitude != null &&
+                            model.initialPosition!.longitude != null &&
+                            model.finalPosition!.latitude != null &&
+                            model.finalPosition!.longitude != null) {
+                          model.getPlaceDirection(
+                            model.initialPosition!,
+                            model.finalPosition!,
+                          );
+                        } else {
+                          // Optionally show an error message or handle the case where positions are null
+                        }
+                      },
+                      child: Container(
+                        width: MediaQuery.sizeOf(context).width * 0.3,
+                        height: 50,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: kcPrimaryColor,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Show Route',
+                              style: bodyStyle.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Gap(5),
+                            Icon(
+                              FontAwesomeIcons.arrowRight,
+                              color: Colors.white,
+                              size: 20,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              : Container(),
           verticalSpaceRegular,
           model.isLoading
               ? const LinearProgressIndicator(

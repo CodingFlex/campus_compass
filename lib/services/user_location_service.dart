@@ -11,7 +11,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class UserLocationService {
   final UserDetailsService userDetailsService = locator<UserDetailsService>();
   final Completer<GoogleMapController> controllerGoogleMap = Completer();
-  late GoogleMapController newGoogleMapController;
 
   GoogleMapController? googleMapController;
   String? address;
