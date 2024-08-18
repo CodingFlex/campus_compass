@@ -33,6 +33,8 @@ class MapViewModel extends ReactiveViewModel {
   String? userAddress;
   String? get userAddress1 => userDetailsService.userAddress;
   String? name;
+  LatLng? startTripLatLng;
+  LatLng? destTripLatLng;
 
   double bottomPaddingOfMap = 0;
   bool showProceedButton = false;
@@ -198,8 +200,10 @@ class MapViewModel extends ReactiveViewModel {
     isLoadingRouteDetails = true;
     var startLatLng =
         LatLng(initialPosition!.latitude, initialPosition.longitude);
+    startTripLatLng = startLatLng;
 
     var destLatLng = LatLng(finalPosition!.latitude, finalPosition.longitude);
+    destTripLatLng = destLatLng;
 
     var details =
         await AssistantMethods.obtainDirectionDetails(startLatLng, destLatLng);
@@ -260,7 +264,7 @@ class MapViewModel extends ReactiveViewModel {
           LatLngBounds(southwest: startLatLng, northeast: destLatLng);
     }
     userLocationService.googleMapController!
-        .animateCamera(CameraUpdate.newLatLngBounds(latLngBounds, 70));
+        .animateCamera(CameraUpdate.newLatLngBounds(latLngBounds, 100));
 
     Marker startLocMarker = Marker(
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
@@ -281,6 +285,7 @@ class MapViewModel extends ReactiveViewModel {
 
     markersSet.add(startLocMarker);
     markersSet.add(destLocMarker);
+    notifyListeners();
 
     Circle startLocCircle = Circle(
       fillColor: Colors.purple,
@@ -302,5 +307,6 @@ class MapViewModel extends ReactiveViewModel {
 
     circlesSet.add(startLocCircle);
     circlesSet.add(destLocCircle);
+    notifyListeners();
   }
 }

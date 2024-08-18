@@ -1,4 +1,5 @@
 // preview_widget.dart
+import 'package:campus_compass/ui/map2/turn_by_turn.dart';
 import 'package:campus_compass/ui/map2/widgets/trip_type_button.dart';
 import 'package:campus_compass/utils/widgets/box_button.dart';
 import 'package:flutter/material.dart';
@@ -119,9 +120,23 @@ class RouteWidget extends StatelessWidget {
           ),
           const Gap(10),
           BoxButton(
+              leading: Icon(
+                FontAwesomeIcons.locationArrow,
+                color: Colors.white,
+              ),
               title: 'Start Navigation',
               width: MediaQuery.sizeOf(context).width * 0.5,
-              onTap: () {}),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) {
+                    return TurnByTurn(
+                      source: model.startTripLatLng,
+                      destination: model.destTripLatLng,
+                    );
+                  }),
+                );
+              }),
         ],
       ),
     );
