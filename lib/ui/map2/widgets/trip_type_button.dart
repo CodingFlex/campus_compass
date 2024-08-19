@@ -18,17 +18,17 @@ class TripTypeButton extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border.all(
             color: Colors.black, // Border color
-            width: 2, // Border width
+            width: 1.5, // Border width
           ),
           color: Colors.white, // Background color of the square
-          borderRadius: BorderRadius.circular(8), // Curved edges
+          borderRadius: BorderRadius.circular(5), // Curved edges
         ),
         padding: EdgeInsets.all(8), // Padding inside the square
         child: IconButton(
           iconSize: 25,
           onPressed: () {},
           icon: Icon(icon),
-          color: kcMediumGreyColor,
+          color: kcPrimaryColor,
 
           // Icon color
         ),

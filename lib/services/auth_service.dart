@@ -1,4 +1,6 @@
+import 'package:campus_compass/services/supplement_dataset_service.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -13,6 +15,8 @@ import 'pocketbase_service.dart';
 class AuthService {
   final _navigationService = locator<NavigationService>();
   final _pocketBaseService = locator<PocketBaseService>();
+  final _supplementDatasetService = locator<SupplementDatasetService>();
+
   final _otpService = locator<OTPService>();
   FlutterSecureStorage secureStorage = FlutterSecureStorage();
 
@@ -41,6 +45,7 @@ class AuthService {
         title: 'Sign up successful',
         description: 'Check your mail for OTP',
       );
+
       _navigationService.clearStackAndShow(Routes.verifyMail);
     } catch (e) {
       print('Error during sign up: $e');
@@ -68,6 +73,46 @@ class AuthService {
     }
   }
 
+  Future<void> signInWithGoogle() async {
+    print('started');
+    try {
+      // Initialize Google Sign-In
+      final GoogleSignIn googleSignIn = GoogleSignIn();
+
+      // Trigger the Google Sign-In flow
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+      print('started');
+      if (googleUser == null) {
+        throw Exception('Google Sign-In was canceled');
+      }
+
+      // Obtain the auth details from the request
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      // Use the obtained token to authenticate with PocketBase
+
+      final authData =
+          await _pocketBaseService.pb.collection('users').authWithOAuth2(
+        'google',
+        (url) async {},
+        createData: {
+          'name': googleUser.displayName,
+          'email': googleUser.email,
+        },
+      );
+
+      // At this point, the user is signed in
+      // You can access the user data with authData.record
+      print('Signed in: ${authData.record!.id}');
+
+      // Navigate to a new screen or update UI
+    } catch (e) {
+      print('Error during Google Sign-In: $e');
+      // Handle the error (show a snackbar, display an error message, etc.)
+    }
+  }
+
   Future<void> signIn(String? emailValue, String? passwordValue) async {
     try {
       final authData = await _pocketBaseService.pb
@@ -87,6 +132,7 @@ class AuthService {
         title: 'Success',
         description: 'Sign in successful',
       );
+      _supplementDatasetService.fetchDataSetRecords();
       _navigationService.clearStackAndShow(Routes.mapPage);
     } catch (e) {
       print('Error during sign up: $e');

@@ -34,7 +34,7 @@ class RouteWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+      padding: const EdgeInsets.only(top: 5, bottom: 10, left: 10, right: 10),
       decoration: const BoxDecoration(
         color: Color.fromARGB(255, 255, 255, 255),
         borderRadius: BorderRadius.only(
@@ -56,12 +56,14 @@ class RouteWidget extends StatelessWidget {
               ),
             ),
           ),
-          verticalSpaceSmall,
           Text(
             model.destLocation.text,
             style: headlineStyle.copyWith(color: Colors.black, fontSize: 22),
           ),
-          verticalSpaceSmall,
+          Text(
+            'Select a Transit type',
+            style: bodyStyle,
+          ),
           Row(
             mainAxisAlignment:
                 MainAxisAlignment.spaceEvenly, // To space them out evenly
@@ -71,7 +73,7 @@ class RouteWidget extends StatelessWidget {
               TripTypeButton(icon: FontAwesomeIcons.car),
             ],
           ),
-          const Gap(10),
+          const Gap(5),
           Container(
             width: MediaQuery.sizeOf(context).width * 0.7,
             decoration: BoxDecoration(
@@ -79,7 +81,7 @@ class RouteWidget extends StatelessWidget {
               color: kcLightGreyColor,
             ),
             child: Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(7.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -118,7 +120,7 @@ class RouteWidget extends StatelessWidget {
               ),
             ),
           ),
-          const Gap(10),
+          const Gap(2),
           BoxButton(
               leading: Icon(
                 FontAwesomeIcons.locationArrow,

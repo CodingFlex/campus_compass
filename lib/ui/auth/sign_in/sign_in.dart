@@ -1,3 +1,4 @@
+import 'package:campus_compass/services/auth_service.dart';
 import 'package:campus_compass/utils/shared/ui_helpers.dart';
 import 'package:campus_compass/utils/widgets/box_input_field.dart';
 import 'package:flutter/material.dart';
@@ -22,50 +23,54 @@ class SignInPage extends StatelessWidget with $SignInPage {
   @override
   Widget build(BuildContext context) {
     final _navigationService = locator<NavigationService>();
+    final _authService = locator<AuthService>();
     return ViewModelBuilder<SignInPageViewModel>.reactive(
       onViewModelReady: (model) => syncFormWithViewModel(model),
       onDispose: (model) => disposeForm(),
       builder: (context, model, child) => Scaffold(
           body: AuthenticationLayout(
-        busy: model.isBusy,
-        signin: true,
-        onMainButtonTapped: () {
-          FocusManager.instance.primaryFocus?.unfocus();
-          model.signIn();
-        },
-        // onCreateAccountTapped: model.navigateToCreateAccount,
-        validationMessage: model.validationMessage,
-        title: 'Welcome Back',
-        subtitle: 'Sign in to access your personalized campus guide',
-        mainButtonTitle: 'Sign In',
-        onCreateAccountTapped: () => _navigationService.navigateToSignUpPage(),
-
-        form: Column(
-          children: [
-            BoxInputField(
-                controller: emailController,
-                placeholder: 'Email',
-                leading: Icon(
-                  Icons.email_outlined,
-                  color: Color.fromARGB(255, 80, 80, 80),
-                )),
-            verticalSpaceRegular,
-            BoxInputField(
-                controller: passwordController,
-                password: true,
-                placeholder: 'Password',
-                leading: Icon(
-                  Icons.lock_open,
-                  color: Color.fromARGB(255, 80, 80, 80),
-                )),
-          ],
-        ),
-        onForgotPassword: () {
-          _navigationService.navigateTo(Routes.signUpPage);
-        },
-        // onSignInWithGoogle: model.useGoogleAuthentication,
-        // onSignInWithApple: model.useAppleAuthentication,
-      )),
+              busy: model.isBusy,
+              signin: true,
+              onMainButtonTapped: () {
+                FocusManager.instance.primaryFocus?.unfocus();
+                model.signIn();
+              },
+              // onCreateAccountTapped: model.navigateToCreateAccount,
+              validationMessage: model.validationMessage,
+              title: 'Welcome Back',
+              subtitle: 'Sign in to access your personalized campus guide',
+              mainButtonTitle: 'Sign In',
+              onCreateAccountTapped: () =>
+                  _navigationService.navigateToSignUpPage(),
+              form: Column(
+                children: [
+                  BoxInputField(
+                      controller: emailController,
+                      placeholder: 'Email',
+                      leading: Icon(
+                        Icons.email_outlined,
+                        color: Color.fromARGB(255, 80, 80, 80),
+                      )),
+                  verticalSpaceRegular,
+                  BoxInputField(
+                      controller: passwordController,
+                      password: true,
+                      placeholder: 'Password',
+                      leading: Icon(
+                        Icons.lock_open,
+                        color: Color.fromARGB(255, 80, 80, 80),
+                      )),
+                ],
+              ),
+              onForgotPassword: () {
+                _navigationService.navigateTo(Routes.signUpPage);
+              },
+              onSignInWithGoogle: () {
+                _authService.signInWithGoogle();
+              },
+              onSignInWithApple: () {
+                _authService.signInWithGoogle();
+              })),
       viewModelBuilder: () => SignInPageViewModel(),
     );
   }

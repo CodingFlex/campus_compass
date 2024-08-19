@@ -26,8 +26,8 @@ class _TurnByTurnState extends State<TurnByTurn> {
 
   MapBoxNavigation directions = MapBoxNavigation.instance;
   MapBoxOptions _options = MapBoxOptions();
-  double distanceRemaining = 0;
-  double durationRemaining = 0;
+  double? distanceRemaining = 0;
+  double? durationRemaining = 0;
   MapBoxNavigationViewController? _controller;
   final bool isMultipleStop = false;
   String instruction = "";
@@ -94,8 +94,8 @@ class _TurnByTurnState extends State<TurnByTurn> {
   }
 
   Future<void> _onRouteEvent(e) async {
-    distanceRemaining = (await directions.getDistanceRemaining())!;
-    durationRemaining = (await directions.getDurationRemaining())!;
+    distanceRemaining = await directions.getDistanceRemaining();
+    durationRemaining = await directions.getDurationRemaining();
 
     switch (e.eventType) {
       case MapBoxEvent.progress_change:
