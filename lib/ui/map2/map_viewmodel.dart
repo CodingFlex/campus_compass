@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:campus_compass/app/app.locator.dart';
+import 'package:campus_compass/services/auth_service.dart';
+import 'package:campus_compass/services/supplement_dataset_service.dart';
 import 'package:campus_compass/services/user_details_service.dart';
 import 'package:campus_compass/services/user_location_service.dart';
 import 'package:campus_compass/ui/map2/assistants/assistantMethods.dart';
@@ -13,23 +15,23 @@ import 'package:campus_compass/utils/user_secure_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:pocketbase/pocketbase.dart';
 import 'package:stacked/stacked.dart';
 
 import '../map/progress_dialog.dart';
 
 class MapViewModel extends ReactiveViewModel {
   final UserDetailsService userDetailsService = locator<UserDetailsService>();
+  final AuthService _authService = locator<AuthService>();
+  final SupplementDatasetService _supplementDatasetService =
+      locator<SupplementDatasetService>();
   final UserLocationService userLocationService =
       locator<UserLocationService>();
   final Completer<GoogleMapController> controllerGoogleMap = Completer();
-
   GoogleMapController? googleMapController;
-
   Address? initialPosition;
-
   Address? finalPosition;
   DirectionDetails? tripDetails;
-
   String? userAddress;
   String? get userAddress1 => userDetailsService.userAddress;
   String? name;
@@ -118,16 +120,6 @@ class MapViewModel extends ReactiveViewModel {
 
   void getPlaceAddressDetails(String placeId, context,
       {required bool isDestination}) async {
-    // showDialog(
-    //   context: context,
-    //   barrierDismissible: false,
-    //   builder: (BuildContext context) {
-    //     return ProgressDialog(
-    //       message: "Fetching route, please wait...",
-    //     );
-    //   },
-    // );
-
     final placeDetailsUrl = Uri.tryParse(
         "https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=AIzaSyCcgEzOMRr0OeiQ_L9Hp7ycMKi4v3D-oWs");
 
@@ -166,31 +158,57 @@ class MapViewModel extends ReactiveViewModel {
     setBusy(true);
     notifyListeners();
 
-    print(isResponseForDestination);
+    List<RecordModel> locationDataset = _supplementDatasetService.records;
+    List<Map<String, dynamic>> filteredPlaceList = [];
 
-    if (placeName.length > 1) {
-      final autoCompleteUrl = Uri.tryParse(
-          "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$placeName&location=7.3070,5.1398&radius=100&types=geocode&key=AIzaSyCcgEzOMRr0OeiQ_L9Hp7ycMKi4v3D-oWs");
-
-      var res = await RequestAssistant.getRequest(autoCompleteUrl);
-      if (res == "failed") {
-        return;
+    if (placeName.isNotEmpty) {
+      for (var record in locationDataset) {
+        if (record.data['place_name']
+            .toLowerCase()
+            .contains(placeName.toLowerCase())) {
+          filteredPlaceList.add(record.data);
+        }
       }
-      if (res["status"] == "OK") {
-        var predictions = res["predictions"];
+      // Parse filteredPlaceList to fit the PlacePredictions class
+      List<PlacePredictions> localPlacePredictions =
+          filteredPlaceList.map((record) {
+        return PlacePredictions(
+          main_text: record['place_name'],
+          secondary_text: record['place_type'],
+          place_id: record['id'].toString(),
+          image: record['image'],
+        );
+      }).toList();
 
-        var placesList = (predictions as List)
-            .map((e) => PlacePredictions.fromJson(e))
-            .toList();
+      // Combine localPlacePredictions with Google Places API results
+      if (placeName.length > 1) {
+        final autoCompleteUrl = Uri.tryParse(
+            "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$placeName&location=7.3070,5.1398&radius=100&types=geocode&key=AIzaSyCcgEzOMRr0OeiQ_L9Hp7ycMKi4v3D-oWs");
 
-        placePredictionList = placesList;
-        print(placePredictionList);
-
-        setBusy(false);
-        isLoading = false;
-        notifyListeners();
+        var res = await RequestAssistant.getRequest(autoCompleteUrl);
+        if (res == "failed") {
+          return;
+        }
+        if (res["status"] == "OK") {
+          final predictions = res["predictions"];
+          print(predictions);
+          final googlePlacePredictions = (predictions as List)
+              .map((e) => PlacePredictions.fromJson(e))
+              .toList();
+          placePredictionList = [
+            ...localPlacePredictions,
+            ...googlePlacePredictions,
+          ];
+        }
       }
+    } else {
+      // If placeName is empty, clear the predictions list
+      placePredictionList = [];
+      isLoading = false;
     }
+    setBusy(false);
+    isLoading = false;
+    notifyListeners();
   }
 
   Future<void> getPlaceDirection(

@@ -128,12 +128,12 @@ class AuthService {
         key: "name",
         value: authData.record?.data['name'],
       );
+      await _supplementDatasetService.fetchDataSetRecords();
+      _navigationService.clearStackAndShow(Routes.mapPage);
       ToastService.showSuccess(
         title: 'Success',
         description: 'Sign in successful',
       );
-      _supplementDatasetService.fetchDataSetRecords();
-      _navigationService.clearStackAndShow(Routes.mapPage);
     } catch (e) {
       print('Error during sign up: $e');
 

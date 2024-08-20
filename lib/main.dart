@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:campus_compass/services/map_renderer.dart';
 import 'package:campus_compass/services/user_location_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,6 +22,7 @@ import 'ui/map2/map_viewmodel.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // GMService.initializeMapRenderer();
   setupLocator();
   initializeLocationAndSave();
   SystemChrome.setPreferredOrientations([

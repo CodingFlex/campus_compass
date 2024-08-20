@@ -64,7 +64,7 @@ class PreviewWidget extends StatelessWidget {
                     highlightColor: Color.fromARGB(255, 230, 185, 237),
                     enabled: model.name == null,
                     child: Text(
-                      model.name ?? 'Loading...',
+                      model.name ?? '...',
                       style: headlineStyle.copyWith(
                           color: Colors.black, fontSize: 19),
                     ),

@@ -5,12 +5,11 @@ import '../app/app.locator.dart';
 
 class SupplementDatasetService {
   final _pocketBaseService = locator<PocketBaseService>();
-
-  Future<List<dynamic>> fetchDataSetRecords() async {
-    final records =
-        await _pocketBaseService.pb.collection('Locations').getFullList(
-              sort: '-place_name',
-            );
+  List<RecordModel> records = [];
+  Future<List<RecordModel>> fetchDataSetRecords() async {
+    records = await _pocketBaseService.pb.collection('Locations').getFullList(
+          sort: '-place_name',
+        );
     print(records);
     return records;
   }
