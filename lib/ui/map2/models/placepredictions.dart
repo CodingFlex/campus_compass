@@ -2,13 +2,17 @@ class PlacePredictions {
   late String secondary_text;
   late String main_text;
   late String place_id;
-  late String? image;
+  String? image;
+  bool? isSupplement;
+  List<double>? coordinates;
 
   PlacePredictions({
     required this.secondary_text,
     required this.main_text,
     required this.place_id,
     this.image,
+    this.isSupplement,
+    this.coordinates,
   });
 
   // Constructor for creating PlacePredictions from JSON

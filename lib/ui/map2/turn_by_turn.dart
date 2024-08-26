@@ -51,6 +51,8 @@ class _TurnByTurnState extends State<TurnByTurn> {
         voiceInstructionsEnabled: true,
         bannerInstructionsEnabled: true,
         mode: MapBoxNavigationMode.walking,
+        initialLatitude: widget.source?.latitude,
+        initialLongitude: widget.source?.longitude,
         isOptimized: true,
         units: VoiceUnits.metric,
         simulateRoute: true,
@@ -59,7 +61,7 @@ class _TurnByTurnState extends State<TurnByTurn> {
     // Configure waypoints
     sourceWaypoint = WayPoint(
         name: "Source",
-        latitude: widget.source?.longitude,
+        latitude: widget.source?.latitude,
         longitude: widget.source?.longitude);
     destinationWaypoint = WayPoint(
         name: "Destination",

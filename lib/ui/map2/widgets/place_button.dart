@@ -24,29 +24,34 @@ class PlaceButton extends StatelessWidget {
       child: TextButton(
         style: TextButton.styleFrom(padding: EdgeInsets.all(10)),
         onPressed: () async {
-          // model.updatePlace();
-
+          FocusManager.instance.primaryFocus?.unfocus();
           if (model.isResponseForDestination == true) {
             model.destLocation.text = placePredictions.main_text;
-            await UserSecureStorage.setDestination(placePredictions.place_id);
+            model.destInfo = placePredictions.secondary_text;
             model.placePredictionList.clear();
             if (model.startLocation.text.isNotEmpty) {
               model.showProceedButton = true;
             }
           } else {
             model.startLocation.text = placePredictions.main_text;
-            await UserSecureStorage.setSource(placePredictions.place_id);
             model.placePredictionList.clear();
             if (model.destLocation.text.isNotEmpty) {
               model.showProceedButton = true;
             }
           }
-          FocusManager.instance.primaryFocus?.unfocus();
-          model.getPlaceAddressDetails(
-            placePredictions.place_id,
-            context,
-            isDestination: model.isResponseForDestination,
-          );
+          if (placePredictions.isSupplement == true) {
+            model.initiateSupplementCoordinates(
+              placePredictions.coordinates![0],
+              placePredictions.coordinates![1],
+              placePredictions.main_text,
+            );
+          } else {
+            model.getPlaceAddressDetails(
+              placePredictions.place_id,
+              context,
+              isDestination: model.isResponseForDestination,
+            );
+          }
         },
         child: Container(
           child: Column(
@@ -55,7 +60,9 @@ class PlaceButton extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Image.asset(Assets.location, height: 30, width: 25),
+                  placePredictions.image != null && placePredictions.image != ""
+                      ? Image.asset(Assets.futa, height: 30, width: 25)
+                      : Image.asset(Assets.location, height: 30, width: 25),
                   Gap(14),
                   Expanded(
                     child: Column(

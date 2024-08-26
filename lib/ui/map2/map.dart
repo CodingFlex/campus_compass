@@ -1,3 +1,4 @@
+import 'package:campus_compass/services/user_location_service.dart';
 import 'package:campus_compass/ui/map2/assistants/assistantMethods.dart';
 import 'package:campus_compass/ui/map2/widgets/route_widget.dart';
 import 'package:campus_compass/utils/shared/app_colors.dart';
@@ -23,6 +24,8 @@ class MapScreen2 extends StatefulWidget {
   State<MapScreen2> createState() => _MapScreen2State();
 }
 
+final UserLocationService userLocationService = locator<UserLocationService>();
+
 class _MapScreen2State extends State<MapScreen2> {
   double bottomPaddingOfMap = 0;
 
@@ -32,6 +35,8 @@ class _MapScreen2State extends State<MapScreen2> {
       viewModelBuilder: () => MapViewModel(),
       onViewModelReady: (model) async {
         await model.getUserDetails();
+        model.getSupplementLocations();
+        await model.restartMapControllerService();
       },
       builder: (context, model, child) => Scaffold(
         body: DraggableBottomSheet(

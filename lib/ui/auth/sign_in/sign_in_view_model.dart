@@ -1,3 +1,5 @@
+import 'package:campus_compass/services/supplement_dataset_service.dart';
+import 'package:campus_compass/services/user_location_service.dart';
 import 'package:campus_compass/ui/auth/sign_in/sign_in_view.form.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -12,6 +14,8 @@ class SignInPageViewModel extends FormViewModel {
   final formKey = GlobalKey<FormState>();
   final _authService = locator<AuthService>();
   final _navigationService = locator<NavigationService>();
+  final _supplementDatasetService = locator<SupplementDatasetService>();
+  final userLocationService = locator<UserLocationService>();
   String? name;
   String? userAddress;
 
@@ -31,6 +35,11 @@ class SignInPageViewModel extends FormViewModel {
 
     setBusy(false);
     notifyListeners();
+  }
+
+  restartMapControllerService() {
+    print("RESTARTING MAP CONTROLLER SERVICES");
+    userLocationService.locatePosition();
   }
 
   /// calling the login endpoint

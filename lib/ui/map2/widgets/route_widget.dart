@@ -61,19 +61,9 @@ class RouteWidget extends StatelessWidget {
             style: headlineStyle.copyWith(color: Colors.black, fontSize: 22),
           ),
           Text(
-            'Select a Transit type',
-            style: bodyStyle,
+            model.destInfo.toString(),
+            style: subheadingStyle,
           ),
-          Row(
-            mainAxisAlignment:
-                MainAxisAlignment.spaceEvenly, // To space them out evenly
-            children: [
-              TripTypeButton(icon: FontAwesomeIcons.walking),
-              TripTypeButton(icon: FontAwesomeIcons.biking),
-              TripTypeButton(icon: FontAwesomeIcons.car),
-            ],
-          ),
-          const Gap(5),
           Container(
             width: MediaQuery.sizeOf(context).width * 0.7,
             decoration: BoxDecoration(
@@ -81,10 +71,11 @@ class RouteWidget extends StatelessWidget {
               color: kcLightGreyColor,
             ),
             child: Padding(
-              padding: const EdgeInsets.all(7.0),
+              padding: const EdgeInsets.all(10.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  TripTypeButton(icon: FontAwesomeIcons.walking),
                   Column(
                     children: [
                       Text('Trip Duration',
@@ -95,7 +86,6 @@ class RouteWidget extends StatelessWidget {
                               fontWeight: FontWeight.bold)),
                     ],
                   ),
-                  Gap(30),
                   Container(
                     height: 50,
                     width: 2, // Adjust this to make the dash slimmer
@@ -105,7 +95,6 @@ class RouteWidget extends StatelessWidget {
                           2), // Adjust this for rounded corners
                     ),
                   ),
-                  Gap(30),
                   Column(
                     children: [
                       Text('Trip Distance',

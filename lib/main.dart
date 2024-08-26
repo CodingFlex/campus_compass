@@ -40,7 +40,7 @@ void main() async {
   );
 }
 
-Future<void> initializeLocationAndSave() async {
+initializeLocationAndSave() async {
   final UserDetailsService _userDetailsService = locator<UserDetailsService>();
   final UserLocationService _userLocationService =
       locator<UserLocationService>();
@@ -61,6 +61,10 @@ Future<void> initializeLocationAndSave() async {
   }
   await _userDetailsService.getUserDetails();
   await _userLocationService.locatePosition();
+}
+
+Future<void> initializeApp() async {
+  await initializeLocationAndSave();
 }
 
 class MyApp extends StatelessWidget {

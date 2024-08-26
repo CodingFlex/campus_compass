@@ -11,26 +11,22 @@ class TripTypeButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      elevation: 10,
+      elevation: 8,
       child: Container(
-        height: 60,
-        width: 60,
+        height: 50,
+        width: 70,
         decoration: BoxDecoration(
           border: Border.all(
             color: Colors.black, // Border color
-            width: 1.5, // Border width
+            width: 0.2, // Border width
           ),
           color: Colors.white, // Background color of the square
           borderRadius: BorderRadius.circular(5), // Curved edges
         ),
         padding: EdgeInsets.all(8), // Padding inside the square
-        child: IconButton(
-          iconSize: 25,
-          onPressed: () {},
-          icon: Icon(icon),
+        child: Icon(
+          icon,
           color: kcPrimaryColor,
-
-          // Icon color
         ),
       ),
     );

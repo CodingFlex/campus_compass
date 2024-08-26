@@ -1,4 +1,5 @@
 import 'package:campus_compass/services/supplement_dataset_service.dart';
+import 'package:campus_compass/utils/user_secure_storage.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pocketbase/pocketbase.dart';
@@ -18,7 +19,7 @@ class AuthService {
   final _supplementDatasetService = locator<SupplementDatasetService>();
 
   final _otpService = locator<OTPService>();
-  FlutterSecureStorage secureStorage = FlutterSecureStorage();
+  UserSecureStorage secureStorage = UserSecureStorage();
 
   Future<void> signUp(
     String? fullNameValue,
@@ -118,18 +119,13 @@ class AuthService {
       final authData = await _pocketBaseService.pb
           .collection('users')
           .authWithPassword(emailValue!, passwordValue!);
-      print(authData.record);
-      await secureStorage.write(key: "_accesskey", value: authData.token);
-      await secureStorage.write(
-        key: "email",
-        value: authData.record?.data['email'],
-      );
-      await secureStorage.write(
-        key: "name",
-        value: authData.record?.data['name'],
-      );
-      await _supplementDatasetService.fetchDataSetRecords();
+      print(authData.token);
+      await UserSecureStorage.setAccessKey(authData.token);
+      await UserSecureStorage.setName(authData.record?.data['name']);
+      await UserSecureStorage.setEmail(authData.record?.data['email']);
+
       _navigationService.clearStackAndShow(Routes.mapPage);
+      await _supplementDatasetService.fetchDataSetRecords();
       ToastService.showSuccess(
         title: 'Success',
         description: 'Sign in successful',

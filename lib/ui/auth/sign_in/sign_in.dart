@@ -31,9 +31,10 @@ class SignInPage extends StatelessWidget with $SignInPage {
           body: AuthenticationLayout(
               busy: model.isBusy,
               signin: true,
-              onMainButtonTapped: () {
+              onMainButtonTapped: () async {
                 FocusManager.instance.primaryFocus?.unfocus();
                 model.signIn();
+                await model.restartMapControllerService();
               },
               // onCreateAccountTapped: model.navigateToCreateAccount,
               validationMessage: model.validationMessage,

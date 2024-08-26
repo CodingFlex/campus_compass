@@ -10,24 +10,13 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class UserLocationService {
   final UserDetailsService userDetailsService = locator<UserDetailsService>();
-  final Completer<GoogleMapController> controllerGoogleMap = Completer();
+  Completer<GoogleMapController> controllerGoogleMap = Completer();
 
   GoogleMapController? googleMapController;
   String? address;
   Position? currentPosition;
 
   UserLocationService();
-
-  // Future<void> getUserLocation() async {
-  //   Position position = await Geolocator.getCurrentPosition(
-  //       desiredAccuracy: LocationAccuracy.best);
-  //   currentPosition = position;
-
-  //   LatLng latLatPosition = LatLng(position.latitude, position.longitude);
-
-  //   UserSecureStorage.setLongitude(position.longitude);
-  //   UserSecureStorage.setLatitude(position.latitude);
-  // }
 
   Future<void> locatePosition() async {
     LatLng latLatPosition = LatLng(userDetailsService.currentPosition!.latitude,
@@ -36,8 +25,19 @@ class UserLocationService {
     CameraPosition cameraPosition =
         new CameraPosition(target: latLatPosition, zoom: 18);
 
-    googleMapController = await controllerGoogleMap.future;
     googleMapController
         ?.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+    print('MAP SETUP ');
+  }
+
+  void onMapCreated(GoogleMapController controller) {
+    controllerGoogleMap = Completer(); // Reset the Completer
+    controllerGoogleMap
+        .complete(controller); // Complete with the new controller
+    googleMapController = controller; // Update the googleMapController
+  }
+
+  void dispose() {
+    googleMapController?.dispose();
   }
 }

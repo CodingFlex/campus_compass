@@ -8,4 +8,5 @@ class Assets {
   static const String splash2 = 'assets/images/flexx-logo.png';
   static const String location = 'assets/images/Location-2.png';
   static const String personplaceholder = 'assets/images/personplaceholder.png';
+  static const String futa = 'assets/images/futa.jpeg';
 }

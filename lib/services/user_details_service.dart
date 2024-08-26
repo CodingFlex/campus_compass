@@ -31,13 +31,14 @@ class UserDetailsService {
     String address = await AssistantMethods.searchCoordinateAddress(
       currentPosition!,
     );
-    print("IM GETTING HERE");
-    print("This is your Address :: " + address);
     UserSecureStorage.setCurrentAddress(address);
     name = await UserSecureStorage.getName();
-
+    token = await UserSecureStorage.getAccessKey();
     userAddress = address;
+  }
 
-    print(name);
+  void getSecureStorageDetails() async {
+    name = await UserSecureStorage.getName();
+    token = await UserSecureStorage.getAccessKey();
   }
 }

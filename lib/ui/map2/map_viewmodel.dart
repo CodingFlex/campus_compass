@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:campus_compass/app/app.locator.dart';
+import 'package:campus_compass/app/app.router.dart';
 import 'package:campus_compass/services/auth_service.dart';
+import 'package:campus_compass/services/pocketbase_service.dart';
 import 'package:campus_compass/services/supplement_dataset_service.dart';
 import 'package:campus_compass/services/user_details_service.dart';
 import 'package:campus_compass/services/user_location_service.dart';
@@ -17,11 +19,14 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 import '../map/progress_dialog.dart';
 
 class MapViewModel extends ReactiveViewModel {
   final UserDetailsService userDetailsService = locator<UserDetailsService>();
+  final NavigationService navigationService = locator<NavigationService>();
+  final PocketBaseService pocketBaseService = locator<PocketBaseService>();
   final AuthService _authService = locator<AuthService>();
   final SupplementDatasetService _supplementDatasetService =
       locator<SupplementDatasetService>();
@@ -35,8 +40,11 @@ class MapViewModel extends ReactiveViewModel {
   String? userAddress;
   String? get userAddress1 => userDetailsService.userAddress;
   String? name;
+  String? destInfo;
   LatLng? startTripLatLng;
   LatLng? destTripLatLng;
+  double? localSelectionLongitude;
+  double? localSelectionLatitude;
 
   double bottomPaddingOfMap = 0;
   bool showProceedButton = false;
@@ -59,6 +67,14 @@ class MapViewModel extends ReactiveViewModel {
   bool isLoadingRouteDetails = false;
   bool extendBottomSheet = false;
 
+  getSupplementLocations() {
+    if (_supplementDatasetService.records.isEmpty) {
+      _supplementDatasetService.fetchDataSetRecords();
+    } else {
+      return;
+    }
+  }
+
   getUserDetails() async {
     name = await UserSecureStorage.getName();
     print('getting user details');
@@ -77,11 +93,26 @@ class MapViewModel extends ReactiveViewModel {
     notifyListeners();
   }
 
+  void logOut() {
+    // Navigate back to the sign-in page
+    navigationService.clearStackAndShow(Routes.signInPage);
+    // Clear the auth store
+    UserSecureStorage.clearUserData();
+    pocketBaseService.pb.authStore.clear();
+    // userLocationService.logout();
+  }
+
+  void resetMap() {
+    dispose();
+    userDetailsService.getUserDetails();
+    //userLocationService.locatePosition();
+  }
+
   void onChangeHandler(String value, bool isDestination) {
+    isResponseForDestination = isDestination;
     extendBottomSheet = true;
     showProceedButton = false;
     isLoading = true;
-    isResponseForDestination = isDestination;
     notifyListeners();
 
     if (searchOnStoppedTyping != null) {
@@ -102,6 +133,7 @@ class MapViewModel extends ReactiveViewModel {
     } else {
       userDetailsService.getUserDetails();
       userLocationService.locatePosition();
+      startLocation.text = userDetailsService.userAddress!;
     }
     notifyListeners();
   }
@@ -118,8 +150,33 @@ class MapViewModel extends ReactiveViewModel {
     notifyListeners();
   }
 
-  void getPlaceAddressDetails(String placeId, context,
-      {required bool isDestination}) async {
+  restartMapControllerService() {
+    print("RESTARTING MAP CONTROLLER SERVICES");
+    userLocationService.locatePosition();
+  }
+
+  void initiateSupplementCoordinates(
+    double localSelectionLongitude,
+    double localSelectionLatitude,
+    String localSelectionPlaceName,
+  ) async {
+    Address address = Address();
+    address.placeName = localSelectionPlaceName;
+    address.latitude = localSelectionLatitude;
+    address.longitude = localSelectionLongitude;
+
+    if (isResponseForDestination) {
+      finalPosition = address;
+    } else {
+      initialPosition = address;
+    }
+  }
+
+  void getPlaceAddressDetails(
+    String placeId,
+    context, {
+    required bool isDestination,
+  }) async {
     final placeDetailsUrl = Uri.tryParse(
         "https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=AIzaSyCcgEzOMRr0OeiQ_L9Hp7ycMKi4v3D-oWs");
 
@@ -154,7 +211,7 @@ class MapViewModel extends ReactiveViewModel {
     }
   }
 
-  findPlace(String placeName, bool isDestination) async {
+  void findPlace(String placeName, bool isDestination) async {
     setBusy(true);
     notifyListeners();
 
@@ -177,6 +234,10 @@ class MapViewModel extends ReactiveViewModel {
           secondary_text: record['place_type'],
           place_id: record['id'].toString(),
           image: record['image'],
+          isSupplement: record['isSupplement'],
+          coordinates: (record['coordinates'] as List<dynamic>)
+              .map((item) => item as double)
+              .toList(),
         );
       }).toList();
 
@@ -306,7 +367,7 @@ class MapViewModel extends ReactiveViewModel {
     notifyListeners();
 
     Circle startLocCircle = Circle(
-      fillColor: Colors.purple,
+      fillColor: Colors.white,
       center: startLatLng,
       radius: 10,
       strokeWidth: 4,
@@ -319,12 +380,22 @@ class MapViewModel extends ReactiveViewModel {
       center: destLatLng,
       radius: 10,
       strokeWidth: 4,
-      strokeColor: Color.fromARGB(255, 8, 40, 21),
+      strokeColor: Color.fromARGB(255, 0, 0, 0),
       circleId: CircleId("DestId"),
     );
 
     circlesSet.add(startLocCircle);
     circlesSet.add(destLocCircle);
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    userLocationService.dispose();
+    startLocation.dispose();
+    destLocation.dispose();
+    userLocationService.dispose();
+    print('DISPOSING');
+    super.dispose();
   }
 }

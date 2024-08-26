@@ -32,11 +32,25 @@ class PreviewWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(20),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: Color.fromARGB(255, 255, 255, 255),
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(40),
           topRight: Radius.circular(40),
+        ),
+        border: Border(
+          top: BorderSide(
+            color: kcPrimaryColor, // adjust the color as needed
+            width: 2, // adjust the width as needed
+          ),
+          left: BorderSide(
+            color: kcPrimaryColor, // adjust the color as needed
+            width: 2, // adjust the width as needed
+          ),
+          right: BorderSide(
+            color: kcPrimaryColor, // adjust the color as needed
+            width: 2, // adjust the width as needed
+          ),
         ),
       ),
       child: Column(
