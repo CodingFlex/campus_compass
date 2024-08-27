@@ -32,7 +32,7 @@ class MapViewModel extends ReactiveViewModel {
       locator<SupplementDatasetService>();
   final UserLocationService userLocationService =
       locator<UserLocationService>();
-  final Completer<GoogleMapController> controllerGoogleMap = Completer();
+  Completer<GoogleMapController> controllerGoogleMap = Completer();
   GoogleMapController? googleMapController;
   Address? initialPosition;
   Address? finalPosition;
@@ -67,14 +67,6 @@ class MapViewModel extends ReactiveViewModel {
   bool isLoadingRouteDetails = false;
   bool extendBottomSheet = false;
 
-  getSupplementLocations() {
-    if (_supplementDatasetService.records.isEmpty) {
-      _supplementDatasetService.fetchDataSetRecords();
-    } else {
-      return;
-    }
-  }
-
   getUserDetails() async {
     name = await UserSecureStorage.getName();
     print('getting user details');
@@ -89,7 +81,28 @@ class MapViewModel extends ReactiveViewModel {
     //     },
     //   );
     // } else {}
+    notifyListeners();
+  }
 
+  void getSupplementLocations() {
+    if (_supplementDatasetService.records.isEmpty) {
+      _supplementDatasetService.fetchDataSetRecords();
+    } else {
+      return;
+    }
+  }
+
+  void onMapCreated(GoogleMapController controller) {
+    LatLng latLatPosition = LatLng(userDetailsService.currentPosition!.latitude,
+        userDetailsService.currentPosition!.longitude);
+    CameraPosition cameraPosition =
+        new CameraPosition(target: latLatPosition, zoom: 18);
+    controllerGoogleMap = Completer(); // Reset the Completer
+    controllerGoogleMap
+        .complete(controller); // Complete with the new controller
+    googleMapController = controller;
+    googleMapController?.animateCamera(CameraUpdate.newCameraPosition(
+        cameraPosition)); // Update the googleMapController
     notifyListeners();
   }
 
@@ -103,7 +116,6 @@ class MapViewModel extends ReactiveViewModel {
   }
 
   void resetMap() {
-    dispose();
     userDetailsService.getUserDetails();
     //userLocationService.locatePosition();
   }
@@ -342,7 +354,7 @@ class MapViewModel extends ReactiveViewModel {
       latLngBounds =
           LatLngBounds(southwest: startLatLng, northeast: destLatLng);
     }
-    userLocationService.googleMapController!
+    googleMapController!
         .animateCamera(CameraUpdate.newLatLngBounds(latLngBounds, 100));
 
     Marker startLocMarker = Marker(
@@ -389,13 +401,13 @@ class MapViewModel extends ReactiveViewModel {
     notifyListeners();
   }
 
-  @override
-  void dispose() {
-    userLocationService.dispose();
-    startLocation.dispose();
-    destLocation.dispose();
-    userLocationService.dispose();
-    print('DISPOSING');
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   userLocationService.dispose();
+  //   startLocation.dispose();
+  //   destLocation.dispose();
+  //   userLocationService.dispose();
+  //   print('DISPOSING');
+  //   super.dispose();
+  // }
 }

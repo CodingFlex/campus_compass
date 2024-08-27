@@ -131,7 +131,7 @@ class BackgroundWidget extends StatelessWidget {
           polylines: model.polylineSet,
           markers: model.markersSet,
           circles: model.circlesSet,
-          onMapCreated: _locatePosition.onMapCreated,
+          onMapCreated: model.onMapCreated,
           compassEnabled: true,
         ),
       ),

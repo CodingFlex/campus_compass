@@ -27,14 +27,6 @@ class UserLocationService {
 
     googleMapController
         ?.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
-    print('MAP SETUP ');
-  }
-
-  void onMapCreated(GoogleMapController controller) {
-    controllerGoogleMap = Completer(); // Reset the Completer
-    controllerGoogleMap
-        .complete(controller); // Complete with the new controller
-    googleMapController = controller; // Update the googleMapController
   }
 
   void dispose() {
