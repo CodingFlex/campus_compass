@@ -142,6 +142,11 @@ class MapViewModel extends ReactiveViewModel {
   void useCurrentLocation() {
     if (userDetailsService.userAddress != null) {
       startLocation.text = userDetailsService.userAddress!;
+      Address address = Address();
+      address.placeName = userDetailsService.userAddress;
+      address.latitude = userDetailsService.currentPosition!.latitude;
+      address.longitude = userDetailsService.currentPosition!.longitude;
+      initialPosition = address;
     } else {
       userDetailsService.getUserDetails();
       userLocationService.locatePosition();
@@ -289,6 +294,7 @@ class MapViewModel extends ReactiveViewModel {
     finalPosition,
   ) async {
     isLoadingRouteDetails = true;
+    notifyListeners();
     var startLatLng =
         LatLng(initialPosition!.latitude, initialPosition.longitude);
     startTripLatLng = startLatLng;

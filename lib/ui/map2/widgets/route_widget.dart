@@ -65,50 +65,66 @@ class RouteWidget extends StatelessWidget {
             style: subheadingStyle,
           ),
           Container(
-            width: MediaQuery.sizeOf(context).width * 0.7,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: kcLightGreyColor,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TripTypeButton(icon: FontAwesomeIcons.walking),
-                  Column(
-                    children: [
-                      Text('Trip Duration',
-                          style:
-                              bodyStyle.copyWith(fontWeight: FontWeight.w700)),
-                      Text(model.tripDetails!.durationText.toString(),
-                          style: heading3Style.copyWith(
-                              fontWeight: FontWeight.bold)),
-                    ],
-                  ),
-                  Container(
-                    height: 50,
-                    width: 2, // Adjust this to make the dash slimmer
-                    decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(
-                          2), // Adjust this for rounded corners
-                    ),
-                  ),
-                  Column(
-                    children: [
-                      Text('Trip Distance',
-                          style:
-                              bodyStyle.copyWith(fontWeight: FontWeight.w700)),
-                      Text(model.tripDetails!.distanceText.toString(),
-                          style: heading3Style.copyWith(
-                              fontWeight: FontWeight.bold)),
-                    ],
-                  ),
-                ],
+              width: MediaQuery.sizeOf(context).width * 0.7,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: kcLightGreyColor,
               ),
-            ),
-          ),
+              child: model.tripDetails?.durationText != null
+                  ? Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          TripTypeButton(icon: FontAwesomeIcons.walking),
+                          Column(
+                            children: [
+                              Text('Trip Duration',
+                                  style: bodyStyle.copyWith(
+                                      fontWeight: FontWeight.w700)),
+                              Text(model.tripDetails!.durationText.toString(),
+                                  style: heading3Style.copyWith(
+                                      fontWeight: FontWeight.bold)),
+                            ],
+                          ),
+                          Container(
+                            height: 50,
+                            width: 2, // Adjust this to make the dash slimmer
+                            decoration: BoxDecoration(
+                              color: Colors.black,
+                              borderRadius: BorderRadius.circular(
+                                  2), // Adjust this for rounded corners
+                            ),
+                          ),
+                          Column(
+                            children: [
+                              Text('Trip Distance',
+                                  style: bodyStyle.copyWith(
+                                      fontWeight: FontWeight.w700)),
+                              Text(model.tripDetails!.distanceText.toString(),
+                                  style: heading3Style.copyWith(
+                                      fontWeight: FontWeight.bold)),
+                            ],
+                          ),
+                        ],
+                      ),
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            'Fetching Route Details',
+                            style: bodyStyle,
+                          ),
+                          verticalSpaceSmall,
+                          LinearProgressIndicator(
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(kcPrimaryColor),
+                          ),
+                        ],
+                      ),
+                    )),
           const Gap(2),
           BoxButton(
               leading: Icon(
@@ -117,17 +133,19 @@ class RouteWidget extends StatelessWidget {
               ),
               title: 'Start Navigation',
               width: MediaQuery.sizeOf(context).width * 0.5,
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) {
-                    return TurnByTurn(
-                      source: model.startTripLatLng,
-                      destination: model.destTripLatLng,
-                    );
-                  }),
-                );
-              }),
+              onTap: model.tripDetails?.durationText != null
+                  ? () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) {
+                          return TurnByTurn(
+                            source: model.startTripLatLng,
+                            destination: model.destTripLatLng,
+                          );
+                        }),
+                      );
+                    }
+                  : null),
         ],
       ),
     );

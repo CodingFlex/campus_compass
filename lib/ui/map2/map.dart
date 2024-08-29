@@ -45,12 +45,10 @@ class _MapScreen2State extends State<MapScreen2> {
               : 300,
           useSafeArea: false,
           curve: Curves.easeIn,
-          previewWidget: !model.isLoadingRouteDetails
-              ? PreviewWidget(
-                  isExpanded: false,
-                  model: model,
-                )
-              : RouteWidget(model: model),
+          previewWidget: PreviewWidget(
+            isExpanded: false,
+            model: model,
+          ),
           expandedWidget: PreviewWidget(
             isExpanded: true,
             model: model,
