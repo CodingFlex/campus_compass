@@ -109,7 +109,7 @@ class BackgroundWidget extends StatelessWidget {
                       );
                       model.resetMap();
                     } else if (value == 2) {
-                      model.logOut();
+                      model.showLogOutConfirmationDialog();
                     }
                   },
                 ),

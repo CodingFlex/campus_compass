@@ -19,7 +19,6 @@ import 'sign_up_viewmodel.dart';
   FormTextField(
       name: 'fullName', validator: SignUpFormValidation.validateFullName),
   FormTextField(name: 'email', validator: SignUpFormValidation.validateEmail),
-  FormTextField(name: 'level', validator: SignUpFormValidation.validateLevel),
   FormTextField(
       name: 'password', validator: SignUpFormValidation.validatePassword),
   FormTextField(
@@ -71,14 +70,6 @@ class SignUpPage extends StatelessWidget with $SignUpPage {
                 placeholder: 'Full name',
                 leading: Icon(
                   Icons.person_2_outlined,
-                  color: Color.fromARGB(255, 80, 80, 80),
-                )),
-            verticalSpaceRegular,
-            BoxInputField(
-                controller: levelController,
-                placeholder: 'Level',
-                leading: Icon(
-                  Icons.school_outlined,
                   color: Color.fromARGB(255, 80, 80, 80),
                 )),
             verticalSpaceRegular,

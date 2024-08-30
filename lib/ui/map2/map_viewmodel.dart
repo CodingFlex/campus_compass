@@ -28,6 +28,7 @@ class MapViewModel extends ReactiveViewModel {
   final NavigationService navigationService = locator<NavigationService>();
   final PocketBaseService pocketBaseService = locator<PocketBaseService>();
   final AuthService _authService = locator<AuthService>();
+  final _dialogService = locator<DialogService>();
   final SupplementDatasetService _supplementDatasetService =
       locator<SupplementDatasetService>();
   final UserLocationService userLocationService =
@@ -66,6 +67,7 @@ class MapViewModel extends ReactiveViewModel {
   bool isLoading = false;
   bool isLoadingRouteDetails = false;
   bool extendBottomSheet = false;
+  bool? _logOutConfirmationResult;
 
   getUserDetails() async {
     name = await UserSecureStorage.getName();
@@ -404,6 +406,26 @@ class MapViewModel extends ReactiveViewModel {
 
     circlesSet.add(startLocCircle);
     circlesSet.add(destLocCircle);
+    notifyListeners();
+  }
+
+  Future<void> showLogOutConfirmationDialog() async {
+    var response = await _dialogService.showConfirmationDialog(
+      title: 'Log Out',
+      description: 'Are you sure you want to log out?',
+      confirmationTitle: 'Yes',
+      confirmationTitleColor: kcPrimaryColor,
+      cancelTitle: 'Cancel',
+      barrierDismissible: true,
+    );
+
+    _logOutConfirmationResult = response?.confirmed;
+    if (_logOutConfirmationResult == true) {
+      logOut();
+    } else {
+      return;
+    }
+
     notifyListeners();
   }
 

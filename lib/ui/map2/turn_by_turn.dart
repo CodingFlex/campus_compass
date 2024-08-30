@@ -25,7 +25,7 @@ class _TurnByTurnState extends State<TurnByTurn> {
   var wayPoints = <WayPoint>[];
 
   MapBoxNavigation directions = MapBoxNavigation.instance;
-  MapBoxOptions _options = MapBoxOptions();
+
   double? distanceRemaining = 0;
   double? durationRemaining = 0;
   MapBoxNavigationViewController? _controller;
@@ -34,10 +34,12 @@ class _TurnByTurnState extends State<TurnByTurn> {
   bool arrived = false;
   bool routeBuilt = false;
   bool isNavigating = false;
+  late MapBoxOptions _options;
 
   @override
   void initState() {
     super.initState();
+
     initialize();
   }
 
@@ -46,7 +48,7 @@ class _TurnByTurnState extends State<TurnByTurn> {
 
     // Setup directions and options
     MapBoxNavigation.instance.registerRouteEventListener(_onRouteEvent);
-    MapBoxNavigation.instance.setDefaultOptions(MapBoxOptions(
+    _options = MapBoxOptions(
         zoom: 18.0,
         voiceInstructionsEnabled: true,
         bannerInstructionsEnabled: true,
@@ -55,8 +57,12 @@ class _TurnByTurnState extends State<TurnByTurn> {
         initialLongitude: widget.source?.longitude,
         isOptimized: true,
         units: VoiceUnits.metric,
+        alternatives: true,
         simulateRoute: true,
-        language: "en"));
+        showEndOfRouteFeedback: true,
+        enableRefresh: true,
+        showReportFeedbackButton: true,
+        language: "en");
 
     // Configure waypoints
     sourceWaypoint = WayPoint(
@@ -126,6 +132,7 @@ class _TurnByTurnState extends State<TurnByTurn> {
         break;
       case MapBoxEvent.navigation_finished:
       case MapBoxEvent.navigation_cancelled:
+        Navigator.of(context).pop();
         routeBuilt = false;
         isNavigating = false;
         break;
