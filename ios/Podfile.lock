@@ -122,7 +122,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AppAuth: 501c04eda8a8d11f179dbe8637b7a91bb7e5d2fa
-  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_keyboard_visibility: 0339d06371254c3eb25eeb90ba8d17dca8f9c069
   flutter_mapbox_navigation: 1d7e1c22554f4e6543209f7f0063393c9a6d53bf
   flutter_secure_storage: d33dac7ae2ea08509be337e775f6b59f1ff45f12
