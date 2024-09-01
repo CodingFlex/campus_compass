@@ -34,106 +34,104 @@ class BackgroundWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final _locatePosition = locator<UserLocationService>();
     final NavigationService navigationService = locator<NavigationService>();
-    return GestureDetector(
-      child: Scaffold(
-        extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          leading: Padding(
-            padding: const EdgeInsets.all(5.0), // Adjust padding as needed
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: kcPrimaryColor, // adjust the color as needed
-                  width: 2, // adjust the width as needed
-                ),
-                borderRadius:
-                    BorderRadius.circular(10), // adjust the radius as needed
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        leading: Padding(
+          padding: const EdgeInsets.all(5.0), // Adjust padding as needed
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: kcPrimaryColor, // adjust the color as needed
+                width: 2, // adjust the width as needed
               ),
-              child: Center(
-                child: PopupMenuButton<int>(
-                  elevation: 5,
-                  color: Colors.white,
-                  position: PopupMenuPosition.under,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                        15), // adjust the radius as needed
-                    side: BorderSide(
-                      color: kcPrimaryColor, // adjust the color as needed
-                      width: 2, // adjust the width as needed
-                    ),
+              borderRadius:
+                  BorderRadius.circular(10), // adjust the radius as needed
+            ),
+            child: Center(
+              child: PopupMenuButton<int>(
+                elevation: 5,
+                color: Colors.white,
+                position: PopupMenuPosition.under,
+                shape: RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.circular(15), // adjust the radius as needed
+                  side: BorderSide(
+                    color: kcPrimaryColor, // adjust the color as needed
+                    width: 2, // adjust the width as needed
                   ),
-                  icon: Icon(
-                    Icons.menu_outlined,
-                    color: Colors.black,
-                    size: 25,
-                  ),
-                  itemBuilder: (context) => [
-                    PopupMenuItem(
-                      value: 1,
-                      child: Row(
-                        children: <Widget>[
-                          Icon(
-                            FontAwesomeIcons.homeAlt,
-                            size: 15,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text('Home', style: bodyStyle),
-                          ),
-                        ],
-                      ),
-                    ),
-                    PopupMenuItem(
-                      value: 2,
-                      child: Row(
-                        children: <Widget>[
-                          Icon(
-                            FontAwesomeIcons.signOut,
-                            size: 15,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text('Logout', style: bodyStyle),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                  onSelected: (value) {
-                    if (value == 1) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MapScreen2(),
-                        ),
-                      );
-                      model.resetMap();
-                    } else if (value == 2) {
-                      model.showLogOutConfirmationDialog();
-                    }
-                  },
                 ),
+                icon: Icon(
+                  Icons.menu_outlined,
+                  color: Colors.black,
+                  size: 25,
+                ),
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                    value: 1,
+                    child: Row(
+                      children: <Widget>[
+                        Icon(
+                          FontAwesomeIcons.homeAlt,
+                          size: 15,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text('Home', style: bodyStyle),
+                        ),
+                      ],
+                    ),
+                  ),
+                  PopupMenuItem(
+                    value: 2,
+                    child: Row(
+                      children: <Widget>[
+                        Icon(
+                          FontAwesomeIcons.signOut,
+                          size: 15,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text('Logout', style: bodyStyle),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+                onSelected: (value) {
+                  if (value == 1) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MapScreen2(),
+                      ),
+                    );
+                    model.resetMap();
+                  } else if (value == 2) {
+                    model.showLogOutConfirmationDialog();
+                  }
+                },
               ),
             ),
           ),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
         ),
-        body: GoogleMap(
-          padding: EdgeInsets.only(bottom: bottomPaddingOfMap),
-          mapType: MapType.normal,
-          initialCameraPosition: _kGooglePlex,
-          myLocationEnabled: true,
-          myLocationButtonEnabled: false,
-          zoomGesturesEnabled: true,
-          zoomControlsEnabled: false,
-          buildingsEnabled: true,
-          polylines: model.polylineSet,
-          markers: model.markersSet,
-          circles: model.circlesSet,
-          onMapCreated: model.onMapCreated,
-          compassEnabled: true,
-        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
+      body: GoogleMap(
+        padding: EdgeInsets.only(bottom: bottomPaddingOfMap),
+        mapType: MapType.normal,
+        initialCameraPosition: _kGooglePlex,
+        myLocationEnabled: true,
+        myLocationButtonEnabled: false,
+        zoomGesturesEnabled: true,
+        zoomControlsEnabled: false,
+        buildingsEnabled: true,
+        polylines: model.polylineSet,
+        markers: model.markersSet,
+        circles: model.circlesSet,
+        onMapCreated: model.onMapCreated,
+        compassEnabled: true,
       ),
     );
   }
