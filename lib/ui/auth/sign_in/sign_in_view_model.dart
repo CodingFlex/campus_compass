@@ -18,6 +18,37 @@ class SignInPageViewModel extends FormViewModel {
   final userLocationService = locator<UserLocationService>();
   String? name;
   String? userAddress;
+  bool _hasStartedTyping = false;
+  String? _validationMessage;
+
+  String? get validationMessage => _validationMessage;
+
+  void onPasswordChanged(String value) {
+    if (!_hasStartedTyping && value.isNotEmpty) {
+      _hasStartedTyping = true;
+    }
+    _validatePassword(value);
+    notifyListeners();
+  }
+
+  void _validatePassword(String value) {
+    if (!_hasStartedTyping) {
+      _validationMessage = null;
+    } else if (value.isEmpty) {
+      _validationMessage = "";
+    } else if (!RegExp(r"^.{8,}$").hasMatch(value)) {
+      _validationMessage = 'minimum of 8 characters';
+    } else if (!RegExp(r"^(?=.*[a-z])(?=.*[A-Z]).{6,}$").hasMatch(value)) {
+      _validationMessage = 'should contain at least small and capital letter';
+    } else if (!RegExp(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{6,}$")
+        .hasMatch(value)) {
+      _validationMessage = 'should contain a special character';
+    } else if (!RegExp(r"\d").hasMatch(value)) {
+      _validationMessage = "should at least contain a digit";
+    } else {
+      _validationMessage = null;
+    }
+  }
 
   /// to check if the form is validated
   signIn() async {
@@ -42,6 +73,36 @@ class SignInPageViewModel extends FormViewModel {
     userLocationService.locatePosition();
   }
 
+  /// to check if the form is validated
+  bool validateAndSave() {
+    final form = formKey.currentState;
+    if (form!.validate()) {
+      form.save();
+      return true;
+    }
+    return false;
+  }
+
+  /// calling the login endpoint
+  toVerify() async {
+    if (validateAndSave()) {
+      setBusy(true);
+      notifyListeners();
+      await _authService.signIn(emailValue, passwordValue);
+      loadDetails() async {
+        userAddress = await UserSecureStorage.getCurrentAddress();
+        name = await UserSecureStorage.getName();
+      }
+
+      setBusy(false);
+      notifyListeners();
+    } else {
+      setBusy(false);
+      setEmailValidationMessage(validationMessage);
+      notifyListeners();
+    }
+  }
+
   /// calling the login endpoint
 
   // final FirebaseAuthenticationService? _firebaseAuthenticationService =
@@ -58,4 +119,25 @@ class SignInPageViewModel extends FormViewModel {
 
   void navigateToCreateAccount() =>
       _navigationService.navigateTo(Routes.signUpPage);
+}
+
+class SignInValidators {
+  static String? validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Email can\'t be empty';
+    } else if (!RegExp(r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
+        .hasMatch(value)) {
+      return 'Enter a valid email address';
+    }
+    return null;
+  }
+
+  static String? validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Password can\'t be empty';
+    } else if (value.length < 8) {
+      return 'Password must be at least 8 characters long';
+    }
+    return null;
+  }
 }

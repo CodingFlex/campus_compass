@@ -246,6 +246,11 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.13.1"
+  flutter_localizations:
+    dependency: transitive
+    description: flutter
+    source: sdk
+    version: "0.0.0"
   flutter_mapbox_navigation:
     dependency: "direct main"
     description:
@@ -347,6 +352,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "10.7.0"
+  form_builder_validators:
+    dependency: "direct main"
+    description:
+      name: form_builder_validators
+      sha256: "19aa5282b7cede82d0025ab031a98d0554b84aa2ba40f12013471a3b3e22bf02"
+      url: "https://pub.dev"
+    source: hosted
+    version: "9.1.0"
   gap:
     dependency: "direct main"
     description:
@@ -563,6 +576,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.2.0"
+  intl:
+    dependency: transitive
+    description:
+      name: intl
+      sha256: "3bc132a9dbce73a7e4a21a17d06e1878839ffbf975568bc875c60537824b0c4d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.18.1"
   introduction_screen:
     dependency: "direct main"
     description:
@@ -755,6 +776,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.2"
+  responsive_sizer:
+    dependency: "direct main"
+    description:
+      name: responsive_sizer
+      sha256: "6aefee6065c0883681bc7559147a24d8fa1846d296a216abcda25ff349340712"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.3.1"
   sanitize_html:
     dependency: transitive
     description:

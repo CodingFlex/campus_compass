@@ -1,7 +1,9 @@
 import 'package:campus_compass/app/app.router.dart';
 import 'package:campus_compass/services/auth_service.dart';
 import 'package:campus_compass/ui/map/maps.dart';
+import 'package:campus_compass/utils/widgets/form_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -16,11 +18,9 @@ import 'sign_up_view.form.dart';
 import 'sign_up_viewmodel.dart';
 
 @FormView(fields: [
-  FormTextField(
-      name: 'fullName', validator: SignUpFormValidation.validateFullName),
-  FormTextField(name: 'email', validator: SignUpFormValidation.validateEmail),
-  FormTextField(
-      name: 'password', validator: SignUpFormValidation.validatePassword),
+  FormTextField(name: 'fullName'),
+  FormTextField(name: 'email'),
+  FormTextField(name: 'password'),
   FormTextField(
     name: 'confirmPassword',
   ),
@@ -65,43 +65,74 @@ class SignUpPage extends StatelessWidget with $SignUpPage {
         onCreateAccountTapped: () => _navigationService.navigateToSignInPage(),
         form: Column(
           children: [
-            BoxInputField(
-                controller: fullNameController,
-                placeholder: 'Full name',
-                leading: Icon(
-                  Icons.person_2_outlined,
-                  color: Color.fromARGB(255, 80, 80, 80),
-                )),
+            CustomisedTextFormField(
+              leading: Icon(
+                Icons.person_2_outlined,
+                color: Color.fromARGB(255, 80, 80, 80),
+              ),
+              validator: FormBuilderValidators.compose([
+                FormBuilderValidators.required(),
+                FormBuilderValidators.match(r'^[a-zA-Z ]+$',
+                    errorText: 'Only alphabets are allowed'),
+              ]),
+              hintText: 'Full Name',
+              showSuffixIcon: false,
+              controller: fullNameController,
+            ),
             verticalSpaceRegular,
-            BoxInputField(
-                controller: emailController,
-                placeholder: 'Email',
-                leading: Icon(
-                  Icons.email_outlined,
-                  color: Color.fromARGB(255, 80, 80, 80),
-                )),
+            CustomisedTextFormField(
+              leading: Icon(
+                Icons.email_outlined,
+                color: Color.fromARGB(255, 80, 80, 80),
+              ),
+              validator: FormBuilderValidators.compose([
+                FormBuilderValidators.required(),
+                FormBuilderValidators.email(),
+              ]),
+              hintText: 'Email',
+              showSuffixIcon: false,
+              controller: emailController,
+            ),
             verticalSpaceRegular,
-            BoxInputField(
-                controller: passwordController,
-                password: true,
-                placeholder: 'Password',
-                leading: Icon(
-                  Icons.lock_open,
-                  color: Color.fromARGB(255, 80, 80, 80),
-                )),
+            CustomisedTextFormField(
+              leading: Icon(
+                Icons.lock_outline,
+                color: Color.fromARGB(255, 80, 80, 80),
+              ),
+              validator: FormBuilderValidators.compose([
+                FormBuilderValidators.required(),
+                FormBuilderValidators.minLength(8),
+                FormBuilderValidators.match(r'(?=.*?[#?!@$%^&*-])',
+                    errorText:
+                        'passwords must have at least one special character'),
+                FormBuilderValidators.match(r'(?=.*?[0-9])',
+                    errorText: 'passwords must have at least one number'),
+              ]),
+              hintText: 'Password',
+              showSuffixIcon: true,
+              controller: passwordController,
+            ),
             verticalSpaceRegular,
-            BoxInputField(
-                controller: confirmPasswordController,
-                password: true,
-                placeholder: 'Confirm password',
-                validator: model.showValidationMessage
-                    ? (value) => SignUpFormValidation.validateConfirmPassword(
-                        value, passwordController)
-                    : null,
-                leading: Icon(
-                  Icons.lock_open,
-                  color: Color.fromARGB(255, 80, 80, 80),
-                )),
+            CustomisedTextFormField(
+              leading: Icon(
+                Icons.lock_outline,
+                color: Color.fromARGB(255, 80, 80, 80),
+              ),
+              validator: FormBuilderValidators.compose([
+                FormBuilderValidators.required(),
+                FormBuilderValidators.equal(passwordController.text,
+                    errorText: 'Passwords do not match'),
+                FormBuilderValidators.minLength(8),
+                FormBuilderValidators.match(r'(?=.*?[#?!@$%^&*-])',
+                    errorText:
+                        'passwords must have at least one special character'),
+                FormBuilderValidators.match(r'(?=.*?[0-9])',
+                    errorText: 'passwords must have at least one number'),
+              ]),
+              hintText: 'Confirm password',
+              showSuffixIcon: true,
+              controller: confirmPasswordController,
+            ),
           ],
         ),
         showTermsText: true,

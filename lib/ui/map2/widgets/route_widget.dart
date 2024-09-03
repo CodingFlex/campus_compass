@@ -35,13 +35,6 @@ class RouteWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(top: 5, bottom: 10, left: 10, right: 10),
-      decoration: const BoxDecoration(
-        color: Color.fromARGB(255, 255, 255, 255),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(40),
-          topRight: Radius.circular(40),
-        ),
-      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[

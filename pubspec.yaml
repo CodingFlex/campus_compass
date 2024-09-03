@@ -63,6 +63,8 @@ dependencies:
   dropdown_button2: ^2.3.9
   is_first_run: ^1.0.0
   jwt_decoder: ^2.0.1
+  form_builder_validators: ^9.1.0
+  responsive_sizer: ^3.3.1
   
 
    

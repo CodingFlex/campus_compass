@@ -33,6 +33,9 @@ class MapViewModel extends ReactiveViewModel {
       locator<SupplementDatasetService>();
   final UserLocationService userLocationService =
       locator<UserLocationService>();
+
+  final DraggableScrollableController sheetController =
+      DraggableScrollableController();
   Completer<GoogleMapController> controllerGoogleMap = Completer();
   GoogleMapController? googleMapController;
   Address? initialPosition;
@@ -64,6 +67,7 @@ class MapViewModel extends ReactiveViewModel {
 
   Timer? searchOnStoppedTyping;
   bool isResponseForDestination = false;
+  bool isRouteInitiated = false;
   bool isLoading = false;
   bool isLoadingRouteDetails = false;
   bool extendBottomSheet = false;
@@ -123,6 +127,12 @@ class MapViewModel extends ReactiveViewModel {
   }
 
   void onChangeHandler(String value, bool isDestination) {
+    sheetController.animateTo(
+      0.8,
+      duration: Duration(milliseconds: 500),
+      curve: Curves.easeOut,
+    );
+
     isResponseForDestination = isDestination;
     extendBottomSheet = true;
     showProceedButton = false;
@@ -179,6 +189,12 @@ class MapViewModel extends ReactiveViewModel {
     double localSelectionLatitude,
     String localSelectionPlaceName,
   ) async {
+    notifyListeners();
+    sheetController.animateTo(
+      0.4,
+      duration: Duration(milliseconds: 500),
+      curve: Curves.easeOut,
+    );
     Address address = Address();
     address.placeName = localSelectionPlaceName;
     address.latitude = localSelectionLatitude;
@@ -196,6 +212,12 @@ class MapViewModel extends ReactiveViewModel {
     context, {
     required bool isDestination,
   }) async {
+    notifyListeners();
+    sheetController.animateTo(
+      0.4,
+      duration: Duration(milliseconds: 500),
+      curve: Curves.easeOut,
+    );
     final placeDetailsUrl = Uri.tryParse(
         "https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=AIzaSyCcgEzOMRr0OeiQ_L9Hp7ycMKi4v3D-oWs");
 

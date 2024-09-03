@@ -40,20 +40,6 @@ class PreviewWidget extends StatelessWidget {
                 topLeft: Radius.circular(40),
                 topRight: Radius.circular(40),
               ),
-              border: Border(
-                top: BorderSide(
-                  color: kcPrimaryColor, // adjust the color as needed
-                  width: 2, // adjust the width as needed
-                ),
-                left: BorderSide(
-                  color: kcPrimaryColor, // adjust the color as needed
-                  width: 2, // adjust the width as needed
-                ),
-                right: BorderSide(
-                  color: kcPrimaryColor, // adjust the color as needed
-                  width: 2, // adjust the width as needed
-                ),
-              ),
             ),
             child: SingleChildScrollView(
               child: Column(
@@ -209,6 +195,7 @@ class PreviewWidget extends StatelessWidget {
                                     model.initialPosition!,
                                     model.finalPosition!,
                                   );
+                                  model.isRouteInitiated = true;
                                 } else {
                                   // Optionally show an error message or handle the case where positions are null
                                 }

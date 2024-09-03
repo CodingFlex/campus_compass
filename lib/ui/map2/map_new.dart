@@ -1,38 +1,34 @@
+// background_widget.dart
+import 'dart:async';
+import 'package:campus_compass/app/app.locator.dart';
+import 'package:campus_compass/app/app.router.dart';
+import 'package:campus_compass/constants/assets.dart';
 import 'package:campus_compass/services/user_location_service.dart';
-import 'package:campus_compass/ui/map2/assistants/assistantMethods.dart';
-import 'package:campus_compass/ui/map2/widgets/route_widget.dart';
+import 'package:campus_compass/ui/map2/map.dart';
+import 'package:campus_compass/ui/map2/map_viewmodel.dart';
+import 'package:campus_compass/ui/map2/widgets/map_preview.dart';
 import 'package:campus_compass/utils/shared/app_colors.dart';
-import 'package:campus_compass/utils/shared/text_styles.dart';
+import 'package:campus_compass/utils/shared/ui_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:provider/provider.dart';
-import 'package:stacked/stacked.dart';
-import 'package:draggable_bottom_sheet/draggable_bottom_sheet.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
-import 'dart:async';
 
-import '../../app/app.locator.dart';
-import '../../services/user_details_service.dart';
-import '../../utils/widgets/box_input_field.dart';
-import 'map_viewmodel.dart';
+import '../../../utils/shared/text_styles.dart';
 
-import 'widgets/map_background.dart';
-
-import 'widgets/map_preview.dart';
-
-class MapScreen2 extends StatefulWidget {
-  @override
-  State<MapScreen2> createState() => _MapScreen2State();
-}
-
-class _MapScreen2State extends State<MapScreen2> {
+class BackgroundWidget extends StatefulWidget {
   static final CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(7.307042, 5.1397549),
     zoom: 100,
   );
 
+  @override
+  State<BackgroundWidget> createState() => _BackgroundWidgetState();
+}
+
+class _BackgroundWidgetState extends State<BackgroundWidget> {
   @override
   Widget build(BuildContext context) {
     final _locatePosition = locator<UserLocationService>();
@@ -131,7 +127,7 @@ class _MapScreen2State extends State<MapScreen2> {
         body: Stack(children: [
           GoogleMap(
             mapType: MapType.normal,
-            initialCameraPosition: _kGooglePlex,
+            initialCameraPosition: BackgroundWidget._kGooglePlex,
             myLocationEnabled: true,
             myLocationButtonEnabled: false,
             zoomGesturesEnabled: true,
@@ -144,43 +140,20 @@ class _MapScreen2State extends State<MapScreen2> {
             compassEnabled: true,
           ),
           DraggableScrollableSheet(
-            controller: model.sheetController,
-            snap: true,
-            initialChildSize: 0.3,
-            maxChildSize: !model.isRouteInitiated ? 0.8 : 0.3,
-            minChildSize: 0.3,
+            // Add DraggableScrollableSheet here
             builder: (BuildContext context, scrollController) {
               return Container(
                 clipBehavior: Clip.hardEdge,
                 decoration: BoxDecoration(
                   color: Theme.of(context).canvasColor,
                   borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
-                  ),
-                  border: Border(
-                    top: BorderSide(
-                      color: kcPrimaryColor, // adjust the color as needed
-                      width: 2, // adjust the width as needed
-                    ),
-                    left: BorderSide(
-                      color: kcPrimaryColor, // adjust the color as needed
-                      width: 2, // adjust the width as needed
-                    ),
-                    right: BorderSide(
-                      color: kcPrimaryColor, // adjust the color as needed
-                      width: 2, // adjust the width as needed
-                    ),
+                    topLeft: Radius.circular(25),
+                    topRight: Radius.circular(25),
                   ),
                 ),
                 child: CustomScrollView(
                   controller: scrollController,
-                  slivers: [
-                    SliverFillRemaining(
-                        hasScrollBody:
-                            model.sheetController == 0.3 ? false : true,
-                        child: PreviewWidget(model: model)),
-                  ],
+                  slivers: [PreviewWidget(model: model)],
                 ),
               );
             },
