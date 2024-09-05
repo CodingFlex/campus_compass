@@ -23,33 +23,6 @@ class SignInPageViewModel extends FormViewModel {
 
   String? get validationMessage => _validationMessage;
 
-  void onPasswordChanged(String value) {
-    if (!_hasStartedTyping && value.isNotEmpty) {
-      _hasStartedTyping = true;
-    }
-    _validatePassword(value);
-    notifyListeners();
-  }
-
-  void _validatePassword(String value) {
-    if (!_hasStartedTyping) {
-      _validationMessage = null;
-    } else if (value.isEmpty) {
-      _validationMessage = "";
-    } else if (!RegExp(r"^.{8,}$").hasMatch(value)) {
-      _validationMessage = 'minimum of 8 characters';
-    } else if (!RegExp(r"^(?=.*[a-z])(?=.*[A-Z]).{6,}$").hasMatch(value)) {
-      _validationMessage = 'should contain at least small and capital letter';
-    } else if (!RegExp(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{6,}$")
-        .hasMatch(value)) {
-      _validationMessage = 'should contain a special character';
-    } else if (!RegExp(r"\d").hasMatch(value)) {
-      _validationMessage = "should at least contain a digit";
-    } else {
-      _validationMessage = null;
-    }
-  }
-
   /// to check if the form is validated
   signIn() async {
     setBusy(true);
@@ -59,6 +32,9 @@ class SignInPageViewModel extends FormViewModel {
       emailValue,
       passwordValue,
     );
+    // String? userId = await UserSecureStorage.getUserId.toString();
+    // _authService.updateVerifiedStatus(userId);
+
     loadDetails() async {
       userAddress = await UserSecureStorage.getCurrentAddress();
       name = await UserSecureStorage.getName();
@@ -84,24 +60,6 @@ class SignInPageViewModel extends FormViewModel {
   }
 
   /// calling the login endpoint
-  toVerify() async {
-    if (validateAndSave()) {
-      setBusy(true);
-      notifyListeners();
-      await _authService.signIn(emailValue, passwordValue);
-      loadDetails() async {
-        userAddress = await UserSecureStorage.getCurrentAddress();
-        name = await UserSecureStorage.getName();
-      }
-
-      setBusy(false);
-      notifyListeners();
-    } else {
-      setBusy(false);
-      setEmailValidationMessage(validationMessage);
-      notifyListeners();
-    }
-  }
 
   /// calling the login endpoint
 

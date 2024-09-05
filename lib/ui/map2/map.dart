@@ -1,4 +1,5 @@
 import 'package:campus_compass/services/user_location_service.dart';
+import 'package:campus_compass/ui/contribute/contribute.dart';
 import 'package:campus_compass/ui/map2/assistants/assistantMethods.dart';
 import 'package:campus_compass/ui/map2/widgets/route_widget.dart';
 import 'package:campus_compass/utils/shared/app_colors.dart';
@@ -107,6 +108,21 @@ class _MapScreen2State extends State<MapScreen2> {
                         ],
                       ),
                     ),
+                    PopupMenuItem(
+                      value: 3,
+                      child: Row(
+                        children: <Widget>[
+                          Icon(
+                            FontAwesomeIcons.plus,
+                            size: 15,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text('Contribute', style: bodyStyle),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                   onSelected: (value) {
                     if (value == 1) {
@@ -119,6 +135,13 @@ class _MapScreen2State extends State<MapScreen2> {
                       model.resetMap();
                     } else if (value == 2) {
                       model.showLogOutConfirmationDialog();
+                    } else if (value == 3) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ContributeView(),
+                        ),
+                      );
                     }
                   },
                 ),

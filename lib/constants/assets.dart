@@ -9,4 +9,9 @@ class Assets {
   static const String location = 'assets/images/Location-2.png';
   static const String personplaceholder = 'assets/images/personplaceholder.png';
   static const String futa = 'assets/images/futa.jpeg';
+  static const String map1 = 'assets/images/map1.png';
+  static const String map2 = 'assets/images/map2.png';
+  static const String map3 = 'assets/images/map3.png';
+  static const String collab = 'assets/images/collab.png';
+  static const String collab1 = 'assets/images/collab1.png';
 }

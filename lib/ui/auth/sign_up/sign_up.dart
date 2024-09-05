@@ -38,6 +38,12 @@ class SignUpPage extends StatelessWidget with $SignUpPage {
       builder: (context, model, child) => Scaffold(
           body: AuthenticationLayout(
         busy: model.isBusy,
+        active: (emailController.text.isEmpty ||
+                passwordController.text.isEmpty ||
+                fullNameController.text.isEmpty ||
+                confirmPasswordController.text.isEmpty)
+            ? false
+            : true,
         onMainButtonTapped: () async {
           FocusManager.instance.primaryFocus?.unfocus();
           await model.signUp();
@@ -72,7 +78,7 @@ class SignUpPage extends StatelessWidget with $SignUpPage {
               ),
               validator: FormBuilderValidators.compose([
                 FormBuilderValidators.required(),
-                FormBuilderValidators.match(r'^[a-zA-Z ]+$',
+                FormBuilderValidators.match(RegExp(r'^[a-zA-Z ]+$'),
                     errorText: 'Only alphabets are allowed'),
               ]),
               hintText: 'Full Name',
@@ -102,10 +108,10 @@ class SignUpPage extends StatelessWidget with $SignUpPage {
               validator: FormBuilderValidators.compose([
                 FormBuilderValidators.required(),
                 FormBuilderValidators.minLength(8),
-                FormBuilderValidators.match(r'(?=.*?[#?!@$%^&*-])',
+                FormBuilderValidators.match(RegExp(r'(?=.*?[#?!@$%^&*-])'),
                     errorText:
                         'passwords must have at least one special character'),
-                FormBuilderValidators.match(r'(?=.*?[0-9])',
+                FormBuilderValidators.match(RegExp(r'(?=.*?[0-9])'),
                     errorText: 'passwords must have at least one number'),
               ]),
               hintText: 'Password',
@@ -123,10 +129,10 @@ class SignUpPage extends StatelessWidget with $SignUpPage {
                 FormBuilderValidators.equal(passwordController.text,
                     errorText: 'Passwords do not match'),
                 FormBuilderValidators.minLength(8),
-                FormBuilderValidators.match(r'(?=.*?[#?!@$%^&*-])',
+                FormBuilderValidators.match(RegExp(r'(?=.*?[#?!@$%^&*-])'),
                     errorText:
                         'passwords must have at least one special character'),
-                FormBuilderValidators.match(r'(?=.*?[0-9])',
+                FormBuilderValidators.match(RegExp(r'(?=.*?[0-9])'),
                     errorText: 'passwords must have at least one number'),
               ]),
               hintText: 'Confirm password',

@@ -77,7 +77,8 @@ class RouteWidget extends StatelessWidget {
                                       fontWeight: FontWeight.w700)),
                               Text(model.tripDetails!.durationText.toString(),
                                   style: heading3Style.copyWith(
-                                      fontWeight: FontWeight.bold)),
+                                      fontWeight: FontWeight.bold,
+                                      overflow: TextOverflow.ellipsis)),
                             ],
                           ),
                           Container(
@@ -96,7 +97,8 @@ class RouteWidget extends StatelessWidget {
                                       fontWeight: FontWeight.w700)),
                               Text(model.tripDetails!.distanceText.toString(),
                                   style: heading3Style.copyWith(
-                                      fontWeight: FontWeight.bold)),
+                                      fontWeight: FontWeight.bold,
+                                      overflow: TextOverflow.ellipsis)),
                             ],
                           ),
                         ],
@@ -119,26 +121,47 @@ class RouteWidget extends StatelessWidget {
                       ),
                     )),
           const Gap(2),
-          BoxButton(
-              leading: Icon(
-                FontAwesomeIcons.locationArrow,
-                color: Colors.white,
+          GestureDetector(
+            onTap: model.tripDetails?.durationText != null
+                ? () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) {
+                        return TurnByTurn(
+                          source: model.startTripLatLng,
+                          destination: model.destTripLatLng,
+                        );
+                      }),
+                    );
+                  }
+                : null,
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.6,
+              height: 50,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: (model.tripDetails?.durationText != null ||
+                        model.tripDetails?.durationText != null)
+                    ? kcPrimaryColor
+                    : kcMediumGreyColor,
+                borderRadius: BorderRadius.circular(8),
               ),
-              title: 'Start Navigation',
-              width: MediaQuery.sizeOf(context).width * 0.5,
-              onTap: model.tripDetails?.durationText != null
-                  ? () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (_) {
-                          return TurnByTurn(
-                            source: model.startTripLatLng,
-                            destination: model.destTripLatLng,
-                          );
-                        }),
-                      );
-                    }
-                  : null),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    FontAwesomeIcons.arrowUp,
+                    color: Colors.white,
+                  ),
+                  Gap(5),
+                  Text(
+                    'Start Navigation',
+                    style: subheadingStyle.copyWith(color: Colors.white),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );

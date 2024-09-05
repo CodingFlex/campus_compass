@@ -260,6 +260,7 @@ class MapViewModel extends ReactiveViewModel {
     List<Map<String, dynamic>> filteredPlaceList = [];
 
     if (placeName.isNotEmpty) {
+      // Filter local dataset based on place name (no boundary check)
       for (var record in locationDataset) {
         if (record.data['place_name']
             .toLowerCase()
@@ -267,6 +268,7 @@ class MapViewModel extends ReactiveViewModel {
           filteredPlaceList.add(record.data);
         }
       }
+
       // Parse filteredPlaceList to fit the PlacePredictions class
       List<PlacePredictions> localPlacePredictions =
           filteredPlaceList.map((record) {
@@ -282,7 +284,7 @@ class MapViewModel extends ReactiveViewModel {
         );
       }).toList();
 
-      // Combine localPlacePredictions with Google Places API results
+      // Fetch Google Places API results
       if (placeName.length > 1) {
         final autoCompleteUrl = Uri.tryParse(
             "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$placeName&location=7.3070,5.1398&radius=100&types=geocode&key=AIzaSyCcgEzOMRr0OeiQ_L9Hp7ycMKi4v3D-oWs");
@@ -293,10 +295,36 @@ class MapViewModel extends ReactiveViewModel {
         }
         if (res["status"] == "OK") {
           final predictions = res["predictions"];
-          print(predictions);
-          final googlePlacePredictions = (predictions as List)
-              .map((e) => PlacePredictions.fromJson(e))
-              .toList();
+          final List<PlacePredictions> googlePlacePredictions = [];
+
+          // For each Google Place prediction, get the place details to retrieve coordinates
+          for (var prediction in predictions) {
+            String placeId = prediction['place_id'];
+
+            // Fetch place details to get coordinates
+            final placeDetailsUrl = Uri.tryParse(
+                "https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&fields=geometry&key=AIzaSyCcgEzOMRr0OeiQ_L9Hp7ycMKi4v3D-oWs");
+
+            var detailsRes = await RequestAssistant.getRequest(placeDetailsUrl);
+            if (detailsRes != "failed" && detailsRes["status"] == "OK") {
+              var location = detailsRes["result"]["geometry"]["location"];
+              double latitude = location["lat"];
+              double longitude = location["lng"];
+
+              // Check if the coordinates are within Akure bounds
+              if (_isWithinAkureBounds(latitude, longitude)) {
+                googlePlacePredictions.add(PlacePredictions(
+                  main_text: prediction['structured_formatting']['main_text'],
+                  secondary_text: prediction['structured_formatting']
+                      ['secondary_text'],
+                  place_id: placeId,
+                  coordinates: [latitude, longitude],
+                ));
+              }
+            }
+          }
+
+          // Combine local data with filtered Google Places predictions (with boundary check)
           placePredictionList = [
             ...localPlacePredictions,
             ...googlePlacePredictions,
@@ -311,6 +339,17 @@ class MapViewModel extends ReactiveViewModel {
     setBusy(false);
     isLoading = false;
     notifyListeners();
+  }
+
+// Helper function to check if coordinates are within Akure bounds
+  bool _isWithinAkureBounds(double latitude, double longitude) {
+    const double northBoundary = 7.3400;
+    const double southBoundary = 7.1700;
+    const double eastBoundary = 5.2500;
+    const double westBoundary = 5.0900;
+
+    return (latitude <= northBoundary && latitude >= southBoundary) &&
+        (longitude <= eastBoundary && longitude >= westBoundary);
   }
 
   Future<void> getPlaceDirection(

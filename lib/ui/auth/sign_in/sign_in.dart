@@ -33,6 +33,10 @@ class SignInPage extends StatelessWidget with $SignInPage {
           body: AuthenticationLayout(
               busy: model.isBusy,
               signin: true,
+              active: (emailController.text.isEmpty ||
+                      passwordController.text.isEmpty)
+                  ? false
+                  : true,
               onMainButtonTapped: () async {
                 FocusManager.instance.primaryFocus?.unfocus();
                 model.signIn();
@@ -70,10 +74,11 @@ class SignInPage extends StatelessWidget with $SignInPage {
                       validator: FormBuilderValidators.compose([
                         FormBuilderValidators.required(),
                         FormBuilderValidators.minLength(8),
-                        FormBuilderValidators.match(r'(?=.*?[#?!@$%^&*-])',
+                        FormBuilderValidators.match(
+                            RegExp(r'(?=.*?[#?!@$%^&*-])'),
                             errorText:
                                 'passwords must have at least one special character'),
-                        FormBuilderValidators.match(r'(?=.*?[0-9])',
+                        FormBuilderValidators.match(RegExp(r'(?=.*?[0-9])'),
                             errorText:
                                 'passwords must have at least one number'),
                       ]),

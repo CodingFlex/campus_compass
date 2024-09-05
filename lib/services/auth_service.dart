@@ -23,7 +23,6 @@ class AuthService {
 
   Future<void> signUp(
     String? fullNameValue,
-    String? levelValue,
     String? emailValue,
     String? passwordValue,
     String? confirmPasswordValue,
@@ -31,7 +30,6 @@ class AuthService {
     final body = <String, dynamic>{
       "name": fullNameValue,
       "email": emailValue,
-      "level": levelValue,
       "password": passwordValue,
       "passwordConfirm": confirmPasswordValue
     };
@@ -41,6 +39,7 @@ class AuthService {
       final record =
           await _pocketBaseService.pb.collection('users').create(body: body);
       print(record.data);
+
       await _otpService.sendOtp(emailValue!);
       ToastService.showSuccess(
         title: 'Sign up successful',
@@ -119,10 +118,12 @@ class AuthService {
       final authData = await _pocketBaseService.pb
           .collection('users')
           .authWithPassword(emailValue!, passwordValue!);
-      print(authData.token);
+      print(authData);
+      print(authData.record?.id.toString());
       await UserSecureStorage.setAccessKey(authData.token);
       await UserSecureStorage.setName(authData.record?.data['name']);
       await UserSecureStorage.setEmail(authData.record?.data['email']);
+      await UserSecureStorage.setUserId(authData.record?.id.toString());
 
       _navigationService.clearStackAndShow(Routes.mapPage);
       await _supplementDatasetService.fetchDataSetRecords();
@@ -131,7 +132,7 @@ class AuthService {
         description: 'Sign in successful',
       );
     } catch (e) {
-      print('Error during sign up: $e');
+      print('Error during sign in: $e');
 
       String errorMessage = 'An error occurred';
 
@@ -148,5 +149,19 @@ class AuthService {
       );
     }
     //secureStorage.write(key: "name", value: name)
+  }
+
+  Future<void> updateVerifiedStatus(String userId) async {
+    try {
+      await _pocketBaseService.pb.collection('users').update(
+        userId,
+        body: {
+          "verified": true,
+        },
+      );
+      print('User verified status updated successfully');
+    } catch (e) {
+      print('Error updating verified status: $e');
+    }
   }
 }

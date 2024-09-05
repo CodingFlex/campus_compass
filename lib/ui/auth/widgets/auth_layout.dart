@@ -13,6 +13,7 @@ import '../../../utils/widgets/box_text.dart';
 class AuthenticationLayout extends StatelessWidget {
   final String? title;
   final String? subtitle;
+  final bool active;
   final bool? signin;
   final String? mainButtonTitle;
   final Widget? form;
@@ -30,6 +31,7 @@ class AuthenticationLayout extends StatelessWidget {
     Key? key,
     this.title,
     this.signin,
+    this.active = false,
     this.subtitle,
     this.mainButtonTitle,
     this.form,
@@ -104,13 +106,13 @@ class AuthenticationLayout extends StatelessWidget {
             ),
           if (validationMessage != null) verticalSpaceRegular,
           GestureDetector(
-            onTap: onMainButtonTapped,
+            onTap: active ? onMainButtonTapped : null,
             child: Container(
               width: double.infinity,
               height: 50,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: kcPrimaryColor,
+                color: active ? kcPrimaryColor : kcMediumGreyColor,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: busy

@@ -1,3 +1,4 @@
+import 'package:campus_compass/services/contribution_service.dart';
 import 'package:campus_compass/services/pocketbase_service.dart';
 import 'package:campus_compass/services/supplement_dataset_service.dart';
 import 'package:campus_compass/services/user_location_service.dart';
@@ -33,6 +34,7 @@ import '../services/auth_service.dart';
     LazySingleton(classType: OTPService),
     LazySingleton(classType: MapViewModel),
     LazySingleton(classType: SupplementDatasetService),
+    LazySingleton(classType: ContributionService),
   ],
   logger: StackedLogger(),
 )

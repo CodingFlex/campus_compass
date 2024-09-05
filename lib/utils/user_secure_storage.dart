@@ -22,6 +22,12 @@ class UserSecureStorage {
 
   static const _source = 'source';
   static const _destination = 'destination';
+  static const _id = 'id';
+
+  static Future setUserId(String? id) async =>
+      await _storage.write(key: _id, value: id);
+
+  static Future<String?> getUserId() async => await _storage.read(key: _id);
 
   // Methods for source
   static Future setSource(String source) async =>

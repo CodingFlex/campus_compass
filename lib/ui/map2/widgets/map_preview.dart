@@ -3,6 +3,7 @@ import 'package:campus_compass/ui/map2/widgets/route_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:stacked/stacked.dart';
 
 import 'package:campus_compass/app/app.locator.dart';
@@ -59,7 +60,7 @@ class PreviewWidget extends StatelessWidget {
                   RichText(
                     text: TextSpan(
                       style: headlineStyle.copyWith(
-                          fontSize: 19, color: Colors.black),
+                          fontSize: 17.sp, color: Colors.black),
                       children: [
                         const TextSpan(text: 'Hey '),
                         WidgetSpan(
@@ -70,11 +71,13 @@ class PreviewWidget extends StatelessWidget {
                             child: Text(
                               model.name ?? '...',
                               style: headlineStyle.copyWith(
-                                  color: Colors.black, fontSize: 19),
+                                  color: Colors.black, fontSize: 17.sp),
                             ),
                           ),
                         ),
-                        const TextSpan(text: ', where to?'),
+                        const TextSpan(
+                          text: ', where to?',
+                        ),
                       ],
                     ),
                   ),
@@ -98,7 +101,7 @@ class PreviewWidget extends StatelessWidget {
                             child: Text(
                               'Current location: ${model.userAddress ?? 'Loading...'}',
                               style: headlineStyle.copyWith(
-                                fontSize: 16,
+                                fontSize: 16.sp,
                                 color: kcPrimaryColor,
                               ),
                               overflow: TextOverflow.clip,

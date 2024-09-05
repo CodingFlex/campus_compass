@@ -29,7 +29,6 @@ class SignUpPageViewModel extends FormViewModel {
 
     await _authService.signUp(
       fullNameValue,
-      levelValue,
       emailValue,
       passwordValue,
       confirmPasswordValue,

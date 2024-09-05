@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 
 import 'package:campus_compass/constants/assets.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 import '../../app/app.locator.dart';
@@ -27,8 +28,8 @@ class OnboardingPageState extends State<OnboardingPage> {
     const bodyStyle = TextStyle(fontSize: 19.0);
 
     final pageDecoration = PageDecoration(
-      titleTextStyle: headlineStyle.copyWith(fontSize: 32.0),
-      bodyTextStyle: bodyStyle.copyWith(fontSize: 30.0),
+      titleTextStyle: headlineStyle.copyWith(fontSize: 22.sp),
+      bodyTextStyle: bodyStyle.copyWith(fontSize: 22.sp),
       bodyPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
       pageColor: Colors.white,
       imagePadding: EdgeInsets.zero,
