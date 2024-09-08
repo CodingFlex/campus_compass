@@ -150,43 +150,6 @@ class AuthenticationLayout extends StatelessWidget {
             ),
           ),
           verticalSpaceTiny,
-          Align(
-              alignment: Alignment.center,
-              child: BoxText.body(
-                'Or',
-              )),
-          verticalSpaceTiny,
-          if (Platform.isIOS)
-            AppleAuthButton(
-              onPressed: onSignInWithApple ?? () {},
-              // darkMode: true,
-              text: 'CONTINUE WITH APPLE',
-              style: AuthButtonStyle(
-                borderColor: Colors.black,
-                borderWidth: 0.5,
-                buttonColor: Colors.white,
-                iconSize: 24,
-                iconBackground: Colors.white,
-                buttonType: AuthButtonType.icon,
-                height: 50,
-                textStyle: bodyStyle.copyWith(color: Colors.black),
-              ),
-            ),
-          Gap(10),
-          GoogleAuthButton(
-            text: 'CONTINUE WITH GOOGLE',
-            onPressed: onSignInWithGoogle ?? () {},
-            style: AuthButtonStyle(
-              borderColor: Colors.black,
-              borderWidth: 0.5,
-              buttonColor: Colors.white,
-              iconSize: 24,
-              iconBackground: Colors.white,
-              buttonType: AuthButtonType.secondary,
-              height: 50,
-              textStyle: bodyStyle.copyWith(color: Colors.black),
-            ),
-          )
         ],
       ),
     );

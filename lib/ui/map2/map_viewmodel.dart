@@ -260,7 +260,7 @@ class MapViewModel extends ReactiveViewModel {
     List<Map<String, dynamic>> filteredPlaceList = [];
 
     if (placeName.isNotEmpty) {
-      // Filter local dataset based on place name (no boundary check)
+      // Filter local dataset based on place name
       for (var record in locationDataset) {
         if (record.data['place_name']
             .toLowerCase()
@@ -284,15 +284,24 @@ class MapViewModel extends ReactiveViewModel {
         );
       }).toList();
 
-      // Fetch Google Places API results
+      // Immediately display local predictions
+      placePredictionList = [...localPlacePredictions];
+      isLoading = false;
+      notifyListeners(); // Notify listeners to update the UI with local results
+
+      // Fetch Google Places API results asynchronously
       if (placeName.length > 1) {
         final autoCompleteUrl = Uri.tryParse(
-            "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$placeName&location=7.3070,5.1398&radius=100&types=geocode&key=AIzaSyCcgEzOMRr0OeiQ_L9Hp7ycMKi4v3D-oWs");
+            "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$placeName&location=7.2500,5.1950&radius=1000&types=geocode&key=AIzaSyCcgEzOMRr0OeiQ_L9Hp7ycMKi4v3D-oWs");
 
         var res = await RequestAssistant.getRequest(autoCompleteUrl);
         if (res == "failed") {
+          setBusy(false);
+          isLoading = false;
+          notifyListeners();
           return;
         }
+
         if (res["status"] == "OK") {
           final predictions = res["predictions"];
           final List<PlacePredictions> googlePlacePredictions = [];
@@ -324,11 +333,12 @@ class MapViewModel extends ReactiveViewModel {
             }
           }
 
-          // Combine local data with filtered Google Places predictions (with boundary check)
+          // Add Google Places predictions to the existing local predictions
           placePredictionList = [
-            ...localPlacePredictions,
-            ...googlePlacePredictions,
+            ...placePredictionList, // Keep the local predictions
+            ...googlePlacePredictions, // Add Google Places results
           ];
+          notifyListeners(); // Notify listeners to update the UI with combined results
         }
       }
     } else {
@@ -336,6 +346,7 @@ class MapViewModel extends ReactiveViewModel {
       placePredictionList = [];
       isLoading = false;
     }
+
     setBusy(false);
     isLoading = false;
     notifyListeners();

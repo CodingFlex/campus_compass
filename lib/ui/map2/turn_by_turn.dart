@@ -62,14 +62,17 @@ class _TurnByTurnState extends State<TurnByTurn> {
         showEndOfRouteFeedback: true,
         enableRefresh: true,
         showReportFeedbackButton: true,
+        longPressDestinationEnabled: false,
         language: "en");
 
     // Configure waypoints
     sourceWaypoint = WayPoint(
+        isSilent: true,
         name: "Source",
         latitude: widget.source?.latitude,
         longitude: widget.source?.longitude);
     destinationWaypoint = WayPoint(
+        isSilent: true,
         name: "Destination",
         latitude: widget.destination?.latitude,
         longitude: widget.destination?.longitude);
