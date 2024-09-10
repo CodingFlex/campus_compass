@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:campus_compass/app/app.locator.dart';
 import 'package:campus_compass/app/app.router.dart';
 import 'package:campus_compass/services/auth_service.dart';
+import 'package:campus_compass/services/connection_listener.dart';
 import 'package:campus_compass/services/pocketbase_service.dart';
 import 'package:campus_compass/services/supplement_dataset_service.dart';
 import 'package:campus_compass/services/user_details_service.dart';
@@ -15,19 +16,20 @@ import 'package:campus_compass/ui/map2/models/placepredictions.dart';
 import 'package:campus_compass/utils/shared/app_colors.dart';
 import 'package:campus_compass/utils/user_secure_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
-import '../map/progress_dialog.dart';
-
 class MapViewModel extends ReactiveViewModel {
   final UserDetailsService userDetailsService = locator<UserDetailsService>();
   final NavigationService navigationService = locator<NavigationService>();
+
   final PocketBaseService pocketBaseService = locator<PocketBaseService>();
   final AuthService _authService = locator<AuthService>();
+  final connection = locator<ConnectionViewModel>();
   final _dialogService = locator<DialogService>();
   final SupplementDatasetService _supplementDatasetService =
       locator<SupplementDatasetService>();
@@ -72,8 +74,10 @@ class MapViewModel extends ReactiveViewModel {
   bool isLoadingRouteDetails = false;
   bool extendBottomSheet = false;
   bool? _logOutConfirmationResult;
+  String googleMapsApiKey = dotenv.env['GOOGLE_MAPS_KEY']!;
 
   getUserDetails() async {
+    connection.startListeningForInternetChanges();
     name = await UserSecureStorage.getName();
     print('getting user details');
     userAddress = await UserSecureStorage.getCurrentAddress();
@@ -218,8 +222,9 @@ class MapViewModel extends ReactiveViewModel {
       duration: Duration(milliseconds: 500),
       curve: Curves.easeOut,
     );
+
     final placeDetailsUrl = Uri.tryParse(
-        "https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=AIzaSyCcgEzOMRr0OeiQ_L9Hp7ycMKi4v3D-oWs");
+        "https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=$googleMapsApiKey");
 
     var res = await RequestAssistant.getRequest(placeDetailsUrl);
 
@@ -292,7 +297,7 @@ class MapViewModel extends ReactiveViewModel {
       // Fetch Google Places API results asynchronously
       if (placeName.length > 1) {
         final autoCompleteUrl = Uri.tryParse(
-            "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$placeName&location=7.2500,5.1950&radius=1000&types=geocode&key=AIzaSyCcgEzOMRr0OeiQ_L9Hp7ycMKi4v3D-oWs");
+            "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$placeName&location=7.2500,5.1950&radius=1000&types=geocode&key=$googleMapsApiKey");
 
         var res = await RequestAssistant.getRequest(autoCompleteUrl);
         if (res == "failed") {
@@ -312,7 +317,7 @@ class MapViewModel extends ReactiveViewModel {
 
             // Fetch place details to get coordinates
             final placeDetailsUrl = Uri.tryParse(
-                "https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&fields=geometry&key=AIzaSyCcgEzOMRr0OeiQ_L9Hp7ycMKi4v3D-oWs");
+                "https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&fields=geometry&key=$googleMapsApiKey");
 
             var detailsRes = await RequestAssistant.getRequest(placeDetailsUrl);
             if (detailsRes != "failed" && detailsRes["status"] == "OK") {

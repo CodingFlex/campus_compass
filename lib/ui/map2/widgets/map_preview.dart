@@ -1,4 +1,5 @@
 // preview_widget.dart
+import 'package:campus_compass/ui/map2/widgets/divider.dart';
 import 'package:campus_compass/ui/map2/widgets/route_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -8,7 +9,7 @@ import 'package:stacked/stacked.dart';
 
 import 'package:campus_compass/app/app.locator.dart';
 import 'package:campus_compass/constants/assets.dart';
-import 'package:campus_compass/ui/map/divider.dart';
+
 import 'package:campus_compass/ui/map2/widgets/map_textfield.dart';
 import 'package:campus_compass/ui/map2/widgets/place_button.dart';
 import 'package:campus_compass/utils/shared/app_colors.dart';
@@ -119,11 +120,28 @@ class PreviewWidget extends StatelessWidget {
                           padding: const EdgeInsets.all(10),
                           child: Column(
                             children: [
-                              GestureDetector(
-                                onTap: () => model.useCurrentLocation(),
-                                child: const Icon(
-                                  Icons.my_location,
-                                  color: kcPrimaryColor,
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.transparent,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: kcPrimaryColor.withOpacity(
+                                          0.2), // Adjust opacity as needed
+                                      spreadRadius: 5,
+                                      blurRadius: 7,
+                                      offset: Offset(
+                                          0, 1), // changes position of shadow
+                                    ),
+                                  ],
+                                  borderRadius: BorderRadius.circular(
+                                      50), // Adjust as needed
+                                ),
+                                child: GestureDetector(
+                                  onTap: () => model.useCurrentLocation(),
+                                  child: const Icon(
+                                    Icons.my_location,
+                                    color: kcPrimaryColor,
+                                  ),
                                 ),
                               ),
                               const Gap(3),

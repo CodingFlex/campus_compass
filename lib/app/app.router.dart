@@ -7,7 +7,8 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 
 import 'package:campus_compass/ui/auth/otp/verify_mail_screen.dart';
-import 'package:campus_compass/ui/map/maps.dart';
+import 'package:campus_compass/ui/exceptions/network_exception.dart';
+
 import 'package:campus_compass/ui/map2/map.dart';
 import 'package:campus_compass/ui/onboarding/onboarding_page.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,7 @@ class Routes {
   static const onboardingPage = '/onboarding-page';
   static const verifyMail = '/verifyMail-page';
   static const mapPage = '/map-page';
+  static const networkExceptionPage = '/network-exception-page';
 
   static const all = <String>{
     signInPage,
@@ -34,7 +36,8 @@ class Routes {
     splashPage,
     onboardingPage,
     mapPage,
-    verifyMail
+    verifyMail,
+    networkExceptionPage
   };
 }
 
@@ -63,6 +66,10 @@ class StackedRouter extends RouterBase {
     RouteDef(
       Routes.mapPage,
       page: MapScreen2,
+    ),
+    RouteDef(
+      Routes.networkExceptionPage,
+      page: NetworkExceptionView,
     ),
   ];
 
@@ -100,6 +107,12 @@ class StackedRouter extends RouterBase {
     MapScreen2: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => MapScreen2(),
+        settings: data,
+      );
+    },
+    NetworkExceptionView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => NetworkExceptionView(),
         settings: data,
       );
     },
@@ -189,6 +202,20 @@ extension NavigatorStateExtension on NavigationService {
         transition,
   ]) async {
     return navigateTo<dynamic>(Routes.mapPage,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToNetworkExceptionScreen([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.networkExceptionPage,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

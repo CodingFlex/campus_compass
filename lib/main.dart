@@ -1,9 +1,12 @@
 import 'dart:async';
 
+import 'package:campus_compass/services/connection_listener.dart';
 import 'package:campus_compass/services/map_renderer.dart';
 import 'package:campus_compass/services/user_location_service.dart';
+import 'package:campus_compass/ui/exceptions/network_exception.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -18,12 +21,13 @@ import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platf
 import 'package:provider/provider.dart';
 
 import 'services/user_details_service.dart';
-import 'ui/map/DataHandler/appData.dart';
+
 import 'ui/map2/map_viewmodel.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // GMService.initializeMapRenderer();
+  await dotenv.load();
   setupLocator();
   initializeLocationAndSave();
   SystemChrome.setPreferredOrientations([
@@ -31,13 +35,7 @@ void main() async {
   ]);
 
   runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => AppData()),
-        // Add other providers here if needed
-      ],
-      child: MyApp(),
-    ),
+    MyApp(),
   );
 }
 

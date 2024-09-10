@@ -14,4 +14,6 @@ class Assets {
   static const String map3 = 'assets/images/map3.png';
   static const String collab = 'assets/images/collab.png';
   static const String collab1 = 'assets/images/collab1.png';
+  static const String noNetwork = 'assets/images/nonetwork.jpg';
+  static const String switchImage = 'assets/images/switch.png';
 }

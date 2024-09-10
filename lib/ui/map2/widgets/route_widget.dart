@@ -9,7 +9,6 @@ import 'package:stacked/stacked.dart';
 
 import 'package:campus_compass/app/app.locator.dart';
 import 'package:campus_compass/constants/assets.dart';
-import 'package:campus_compass/ui/map/divider.dart';
 import 'package:campus_compass/ui/map2/widgets/map_textfield.dart';
 import 'package:campus_compass/ui/map2/widgets/place_button.dart';
 import 'package:campus_compass/utils/shared/app_colors.dart';

@@ -6,6 +6,7 @@
 
 // ignore_for_file: public_member_api_docs, implementation_imports, depend_on_referenced_packages
 
+import 'package:campus_compass/services/connection_listener.dart';
 import 'package:campus_compass/services/contribution_service.dart';
 import 'package:campus_compass/services/otp_service.dart';
 import 'package:campus_compass/services/supplement_dataset_service.dart';
@@ -40,4 +41,5 @@ Future<void> setupLocator({
   locator.registerLazySingleton(() => MapViewModel());
   locator.registerLazySingleton(() => SupplementDatasetService());
   locator.registerLazySingleton(() => ContributionService());
+  locator.registerLazySingleton(() => ConnectionViewModel());
 }
