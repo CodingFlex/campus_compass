@@ -16,13 +16,6 @@ class ContributeViewModel extends BaseViewModel {
   String? currentAddress;
   bool contributeBusy = false;
 
-  final List<String> items = [
-    'School Building',
-    'Restaurant and Eatery',
-    'Lecture Theatre',
-    'Lab',
-    'Other'
-  ];
   Future<void> fetchLocation() async {
     setBusy(true);
     try {
@@ -58,6 +51,4 @@ class ContributeViewModel extends BaseViewModel {
     contributeBusy = false;
     notifyListeners();
   }
-
-  void setSelectedValue(String newValue) {}
 }

@@ -1,13 +1,8 @@
 import 'package:campus_compass/constants/assets.dart';
-import 'package:campus_compass/ui/contribute/contribute_viewmodel.dart';
 import 'package:campus_compass/ui/exceptions/exception_viewmodel.dart';
 import 'package:campus_compass/utils/shared/app_colors.dart';
 import 'package:campus_compass/utils/shared/text_styles.dart';
-import 'package:campus_compass/utils/widgets/box_button.dart';
-import 'package:campus_compass/utils/widgets/box_drop_down.dart';
-import 'package:campus_compass/utils/widgets/box_input_field.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:gap/gap.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:stacked/stacked.dart';

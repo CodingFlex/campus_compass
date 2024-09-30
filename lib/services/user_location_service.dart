@@ -2,9 +2,6 @@ import 'dart:async';
 
 import 'package:campus_compass/app/app.locator.dart';
 import 'package:campus_compass/services/user_details_service.dart';
-import 'package:campus_compass/ui/map2/assistants/assistantMethods.dart';
-import 'package:campus_compass/ui/map2/models/address.dart';
-import 'package:campus_compass/utils/user_secure_storage.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 

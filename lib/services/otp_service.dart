@@ -2,7 +2,6 @@ import 'package:email_otp/email_otp.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 import '../app/app.locator.dart';
-import '../app/app.router.dart';
 import '../utils/toast_service.dart';
 
 class OTPService {

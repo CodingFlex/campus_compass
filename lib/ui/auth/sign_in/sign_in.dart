@@ -1,6 +1,5 @@
 import 'package:campus_compass/services/auth_service.dart';
 import 'package:campus_compass/utils/shared/ui_helpers.dart';
-import 'package:campus_compass/utils/widgets/box_input_field.dart';
 import 'package:campus_compass/utils/widgets/form_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -10,7 +9,6 @@ import 'package:stacked_services/stacked_services.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../app/app.router.dart';
-import '../sign_up/sign_up_viewmodel.dart';
 import 'sign_in_view_model.dart';
 import 'sign_in_view.form.dart';
 import '../widgets/auth_layout.dart';

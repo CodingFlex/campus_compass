@@ -1,9 +1,7 @@
 import 'package:campus_compass/ui/map2/assistants/assistantMethods.dart';
-import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import '../app/app.locator.dart';
 import '../utils/user_secure_storage.dart';
 
 class UserDetailsService {

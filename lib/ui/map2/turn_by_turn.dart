@@ -1,5 +1,3 @@
-import 'package:campus_compass/ui/map2/map_viewmodel.dart';
-import 'package:campus_compass/ui/map2/models/address.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mapbox_navigation/flutter_mapbox_navigation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';

@@ -5,7 +5,6 @@ import 'package:campus_compass/utils/toast_service.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:stacked/stacked.dart';
 
-import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class ExceptionViewModel extends BaseViewModel {

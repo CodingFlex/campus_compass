@@ -1,25 +1,16 @@
 import 'package:campus_compass/services/user_location_service.dart';
 import 'package:campus_compass/ui/contribute/contribute.dart';
-import 'package:campus_compass/ui/map2/assistants/assistantMethods.dart';
-import 'package:campus_compass/ui/map2/widgets/route_widget.dart';
 import 'package:campus_compass/utils/shared/app_colors.dart';
 import 'package:campus_compass/utils/shared/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:provider/provider.dart';
 import 'package:stacked/stacked.dart';
-import 'package:draggable_bottom_sheet/draggable_bottom_sheet.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:stacked_services/stacked_services.dart';
-import 'dart:async';
 
 import '../../app/app.locator.dart';
-import '../../services/user_details_service.dart';
-import '../../utils/widgets/box_input_field.dart';
 import 'map_viewmodel.dart';
 
-import 'widgets/map_background.dart';
 
 import 'widgets/map_preview.dart';
 

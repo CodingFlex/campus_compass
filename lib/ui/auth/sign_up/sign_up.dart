@@ -10,7 +10,6 @@ import 'package:stacked_services/stacked_services.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../utils/shared/ui_helpers.dart';
-import '../../../utils/widgets/box_input_field.dart';
 
 import '../widgets/auth_layout.dart';
 import 'sign_up_view.form.dart';

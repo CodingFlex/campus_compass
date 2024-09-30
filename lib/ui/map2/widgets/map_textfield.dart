@@ -1,6 +1,5 @@
 import 'package:campus_compass/ui/map2/map_viewmodel.dart';
 import 'package:flutter/material.dart';
-import 'package:stacked/stacked.dart';
 
 import '../../../utils/widgets/box_input_field.dart';
 

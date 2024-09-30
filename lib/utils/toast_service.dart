@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:campus_compass/utils/shared/app_colors.dart';
 import 'package:campus_compass/utils/shared/text_styles.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';

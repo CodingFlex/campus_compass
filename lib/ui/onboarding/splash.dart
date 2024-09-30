@@ -1,6 +1,5 @@
 import 'package:another_flutter_splash_screen/another_flutter_splash_screen.dart';
 import 'package:campus_compass/constants/assets.dart';
-import 'package:campus_compass/services/pocketbase_service.dart';
 import 'package:campus_compass/services/user_details_service.dart';
 import 'package:campus_compass/utils/user_secure_storage.dart';
 import 'package:flutter/material.dart';

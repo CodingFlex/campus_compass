@@ -5,20 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:stacked/stacked.dart';
 
-import 'package:campus_compass/app/app.locator.dart';
-import 'package:campus_compass/constants/assets.dart';
 
 import 'package:campus_compass/ui/map2/widgets/map_textfield.dart';
 import 'package:campus_compass/ui/map2/widgets/place_button.dart';
 import 'package:campus_compass/utils/shared/app_colors.dart';
 import 'package:campus_compass/utils/shared/ui_helpers.dart';
-import 'package:campus_compass/utils/widgets/box_text.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../utils/shared/text_styles.dart';
-import '../../../utils/widgets/box_input_field.dart';
 import '../map_viewmodel.dart';
 
 class PreviewWidget extends StatelessWidget {

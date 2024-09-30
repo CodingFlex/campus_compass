@@ -11,7 +11,6 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 import '../../../app/app.locator.dart';
-import '../../../constants/colors.dart';
 import '../../../utils/shared/app_colors.dart';
 import '../../../utils/shared/text_styles.dart';
 

@@ -1,4 +1,3 @@
-import 'package:campus_compass/utils/shared/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class DividerWidget extends StatelessWidget {

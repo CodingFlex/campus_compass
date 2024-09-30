@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:campus_compass/app/app.router.dart';
-import 'package:stacked/stacked.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:stacked_services/stacked_services.dart';
 

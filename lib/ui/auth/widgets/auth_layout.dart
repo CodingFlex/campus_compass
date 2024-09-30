@@ -1,10 +1,7 @@
-import 'dart:io';
 
-import 'package:auth_buttons/auth_buttons.dart';
 import 'package:campus_compass/constants/assets.dart';
 import 'package:campus_compass/utils/shared/text_styles.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 
 import '../../../utils/shared/app_colors.dart';
 import '../../../utils/shared/ui_helpers.dart';

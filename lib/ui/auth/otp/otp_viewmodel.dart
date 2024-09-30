@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:campus_compass/app/app.locator.dart';
 import 'package:campus_compass/app/app.router.dart';
 import 'package:campus_compass/services/otp_service.dart';
-import 'package:campus_compass/utils/user_secure_storage.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
