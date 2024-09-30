@@ -20,7 +20,7 @@ class ContributionService {
 
   Future<void> sendContribution(
     String placeName,
-    String placeType,
+    String? placeType,
     double longitude,
     double latitude,
   ) async {

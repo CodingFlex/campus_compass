@@ -8,12 +8,21 @@ import 'package:stacked/stacked.dart';
 
 class ContributeViewModel extends BaseViewModel {
   final TextEditingController placeNameController = TextEditingController();
-  final TextEditingController placeTypeController = TextEditingController();
+  String? placeType;
   final ContributionService _contributionService =
       locator<ContributionService>();
+  String? selectedValue;
   Position? currentPosition;
   String? currentAddress;
   bool contributeBusy = false;
+
+  final List<String> items = [
+    'School Building',
+    'Restaurant and Eatery',
+    'Lecture Theatre',
+    'Lab',
+    'Other'
+  ];
   Future<void> fetchLocation() async {
     setBusy(true);
     try {
@@ -32,16 +41,23 @@ class ContributeViewModel extends BaseViewModel {
     setBusy(false);
   }
 
-  void sendContribution() async {
+  void sendContribution({
+    required String placeName,
+    required String? placeType,
+    required double longitude,
+    required double latitude,
+  }) async {
     contributeBusy = true;
     notifyListeners();
     await _contributionService.sendContribution(
-      placeNameController.text,
-      placeTypeController.text,
-      currentPosition!.longitude,
-      currentPosition!.latitude,
+      placeName,
+      placeType,
+      longitude,
+      latitude,
     );
     contributeBusy = false;
     notifyListeners();
   }
+
+  void setSelectedValue(String newValue) {}
 }

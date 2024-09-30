@@ -14,7 +14,7 @@ class ToastService {
     _toastification.show(
       type: ToastificationType.success,
       style: ToastificationStyle.flatColored,
-      autoCloseDuration: const Duration(seconds: 3),
+      autoCloseDuration: const Duration(seconds: 4),
       title: Text(
         title,
         style: heading3Style.copyWith(color: Colors.green),

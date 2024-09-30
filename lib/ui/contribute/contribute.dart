@@ -5,6 +5,7 @@ import 'package:campus_compass/utils/shared/text_styles.dart';
 import 'package:campus_compass/utils/widgets/box_button.dart';
 import 'package:campus_compass/utils/widgets/box_drop_down.dart';
 import 'package:campus_compass/utils/widgets/box_input_field.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:gap/gap.dart';
@@ -84,49 +85,45 @@ class ContributeView extends StatelessWidget {
                 SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Please enter the name and type of the place you want to add',
-                        style: heading3Style.copyWith(fontSize: 16.sp),
-                      ),
-                      Gap(10),
-                      BoxInputField(
-                        width: 400,
-                        controller: model.placeNameController,
-                        placeholder: 'Place Name',
-                        trailing: Icon(Icons.location_on_outlined),
-                        // validator: FormBuilderValidators.compose([
-                        //   FormBuilderValidators.required(),
-                        //   FormBuilderValidators.match(RegExp(r'^[a-zA-Z ]+$'),
-                        //       errorText: 'Only alphabets are allowed'),
-                        // ]),
-                      ),
-                      Gap(20),
-                      BoxDropdownField(
-                        width: 400,
-                        items: items,
-                        selectedItem: model.placeTypeController.text.isNotEmpty
-                            ? model.placeTypeController.text
-                            : null,
-                        onChanged: (value) {
-                          if (value != null) {
-                            model.placeTypeController.text = value;
-                          }
-                        },
-                        placeholder: 'Select an option',
-                      ),
-                    ],
+                  child: Center(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Please enter the name and type of the place you want to contribute',
+                          style: heading3Style.copyWith(fontSize: 16.sp),
+                        ),
+                        Gap(20),
+                        BoxInputField(
+                          width: 400,
+                          controller: model.placeNameController,
+                          placeholder: 'Place Name',
+
+                          trailing: Icon(Icons.location_on_outlined),
+                          // validator: FormBuilderValidators.compose([
+                          //   FormBuilderValidators.required(),
+                          //   FormBuilderValidators.match(RegExp(r'^[a-zA-Z ]+$'),
+                          //       errorText: 'Only alphabets are allowed'),
+                          // ]),
+                        ),
+                        Gap(20),
+                        BoxDropDown(model: model),
+                      ],
+                    ),
                   ),
                 ),
                 Gap(30),
                 GestureDetector(
                   onTap: (model.placeNameController.text.isEmpty ||
-                          model.placeTypeController.text.isEmpty)
+                          model.placeType == null)
                       ? null
                       : () {
-                          model.sendContribution();
+                          model.sendContribution(
+                            placeName: model.placeNameController.text,
+                            placeType: model.placeType,
+                            longitude: model.currentPosition!.longitude,
+                            latitude: model.currentPosition!.latitude,
+                          );
                         },
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.6,
@@ -134,7 +131,8 @@ class ContributeView extends StatelessWidget {
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: (model.placeNameController.text.isEmpty ||
-                              model.placeTypeController.text.isEmpty)
+                              model.placeType == null ||
+                              model.contributeBusy)
                           ? kcMediumGreyColor
                           : kcPrimaryColor,
                       borderRadius: BorderRadius.circular(8),

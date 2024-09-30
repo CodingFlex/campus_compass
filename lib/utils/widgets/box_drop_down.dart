@@ -1,67 +1,74 @@
+import 'package:campus_compass/ui/contribute/contribute_viewmodel.dart';
 import 'package:flutter/material.dart';
 
 import 'package:campus_compass/utils/shared/text_styles.dart';
 
 import '../shared/app_colors.dart';
 
-class BoxDropdownField extends StatelessWidget {
-  final List<String> items;
-  final String? selectedItem;
-  final void Function(String?)? onChanged;
-  final String placeholder;
-  final double? height;
-  final double? width;
-  final Widget? leading;
-  final Widget? trailing;
-
-  BoxDropdownField({
-    Key? key,
-    required this.items,
-    this.selectedItem,
-    this.placeholder = '',
-    this.height,
-    this.width,
-    this.leading,
-    this.trailing,
-    this.onChanged,
-  }) : super(key: key);
+class BoxDropDown extends StatefulWidget {
+  final ContributeViewModel model;
+  const BoxDropDown({
+    super.key,
+    required this.model,
+  });
 
   @override
-  Widget build(BuildContext context) {
-    // Check if selectedItem is in the items list, otherwise set it to null
-    final effectiveValue = items.contains(selectedItem) ? selectedItem : null;
+  State<BoxDropDown> createState() => _BoxDropDownState();
+}
 
-    return Theme(
-      data: ThemeData(primaryColor: kcPrimaryColor),
-      child: Container(
-        height: height,
-        width: width,
-        decoration: BoxDecoration(
-          color: kcVeryLightGreyColor,
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(
-            color: kcLightGreyColor,
-          ),
+class _BoxDropDownState extends State<BoxDropDown> {
+  String? _dropDownValue;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 400,
+      decoration: BoxDecoration(
+        color: kcVeryLightGreyColor,
+        border: Border.all(
+          color: kcVeryLightGreyColor, // Set border color
+          width: 1.0, // Set border width
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: DropdownButtonHideUnderline(
-          child: DropdownButton<String>(
-            value: effectiveValue,
-            items: items.map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
-            onChanged: onChanged,
-            style: bodyStyle.copyWith(
-              color: Colors.black,
-              overflow: TextOverflow.ellipsis,
-            ),
-            hint: Text(
-              placeholder,
-              style: bodyStyle.copyWith(color: Colors.black),
-            ),
+        borderRadius:
+            BorderRadius.all(Radius.circular(5.0) // Set rounded corner radius
+                ),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: DropdownButton(
+            hint: _dropDownValue == null
+                ? Text('Place Type')
+                : Text(
+                    _dropDownValue!,
+                    style: TextStyle(color: kcPrimaryColor),
+                  ),
+            isExpanded: true,
+            iconSize: 30.0,
+            style: TextStyle(color: kcPrimaryColor),
+            items: [
+              'School Building',
+              'Restaurant and Eatery',
+              'Lecture Theatre',
+              'Lab',
+              'Other'
+            ].map(
+              (val) {
+                return DropdownMenuItem<String>(
+                  value: val,
+                  child: Text(
+                    val,
+                    style: bodyStyle,
+                  ),
+                );
+              },
+            ).toList(),
+            onChanged: (val) {
+              setState(() {
+                _dropDownValue = val;
+                widget.model.placeType = val;
+                widget.model.notifyListeners();
+              });
+            },
           ),
         ),
       ),
