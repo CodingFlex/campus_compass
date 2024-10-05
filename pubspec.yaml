@@ -68,19 +68,14 @@ dependencies:
   internet_connection_checker: ^2.0.0
   flutter_dotenv: ^5.1.0
 
-  
-  
 
-   
 
   stacked_shared: any
   google_maps_flutter_android: any
   google_maps_flutter_platform_interface: any
 dev_dependencies:
   flutter_launcher_icons: "^0.13.1"
- 
 
-  flutter_test: any
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true

@@ -29,73 +29,65 @@ class SignInPage extends StatelessWidget with $SignInPage {
       onDispose: (model) => disposeForm(),
       builder: (context, model, child) => Scaffold(
           body: AuthenticationLayout(
-              busy: model.isBusy,
-              signin: true,
-              active: (emailController.text.isEmpty ||
-                      passwordController.text.isEmpty)
-                  ? false
-                  : true,
-              onMainButtonTapped: () async {
-                FocusManager.instance.primaryFocus?.unfocus();
-                model.signIn();
-              },
-              // onCreateAccountTapped: model.navigateToCreateAccount,
-              validationMessage: model.validationMessage,
-              title: 'Welcome Back',
-              subtitle: 'Sign in to access your personalized campus guide',
-              mainButtonTitle: 'Sign In',
-              onCreateAccountTapped: () =>
-                  _navigationService.navigateToSignUpPage(),
-              form: Form(
-                key: model.formKey,
-                child: Column(
-                  children: [
-                    CustomisedTextFormField(
-                      leading: Icon(
-                        Icons.email_outlined,
-                        color: Color.fromARGB(255, 80, 80, 80),
-                      ),
-                      validator: FormBuilderValidators.compose([
-                        FormBuilderValidators.required(),
-                        FormBuilderValidators.email(),
-                      ]),
-                      hintText: 'Email',
-                      showSuffixIcon: false,
-                      controller: emailController,
-                    ),
-                    verticalSpaceRegular,
-                    CustomisedTextFormField(
-                      leading: Icon(
-                        Icons.lock_outline,
-                        color: Color.fromARGB(255, 80, 80, 80),
-                      ),
-                      validator: FormBuilderValidators.compose([
-                        FormBuilderValidators.required(),
-                        FormBuilderValidators.minLength(8),
-                        FormBuilderValidators.match(
-                            RegExp(r'(?=.*?[#?!@$%^&*-])'),
-                            errorText:
-                                'passwords must have at least one special character'),
-                        FormBuilderValidators.match(RegExp(r'(?=.*?[0-9])'),
-                            errorText:
-                                'passwords must have at least one number'),
-                      ]),
-                      hintText: 'Password',
-                      showSuffixIcon: true,
-                      controller: passwordController,
-                    ),
-                  ],
+        busy: model.isBusy,
+        signin: true,
+        active:
+            (emailController.text.isEmpty || passwordController.text.isEmpty)
+                ? false
+                : true,
+        onMainButtonTapped: () async {
+          FocusManager.instance.primaryFocus?.unfocus();
+          model.signIn();
+        },
+        // onCreateAccountTapped: model.navigateToCreateAccount,
+        validationMessage: model.validationMessage,
+        title: 'Welcome Back',
+        subtitle: 'Sign in to access your personalized campus guide',
+        mainButtonTitle: 'Sign In',
+        onCreateAccountTapped: () => _navigationService.navigateToSignUpPage(),
+        form: Form(
+          key: model.formKey,
+          child: Column(
+            children: [
+              CustomisedTextFormField(
+                leading: Icon(
+                  Icons.email_outlined,
+                  color: Color.fromARGB(255, 80, 80, 80),
                 ),
+                validator: FormBuilderValidators.compose([
+                  FormBuilderValidators.required(),
+                  FormBuilderValidators.email(),
+                ]),
+                hintText: 'Email',
+                showSuffixIcon: false,
+                controller: emailController,
               ),
-              onForgotPassword: () {
-                _navigationService.navigateTo(Routes.signUpPage);
-              },
-              onSignInWithGoogle: () {
-                _authService.signInWithGoogle();
-              },
-              onSignInWithApple: () {
-                _authService.signInWithGoogle();
-              })),
+              verticalSpaceRegular,
+              CustomisedTextFormField(
+                leading: Icon(
+                  Icons.lock_outline,
+                  color: Color.fromARGB(255, 80, 80, 80),
+                ),
+                validator: FormBuilderValidators.compose([
+                  FormBuilderValidators.required(),
+                  FormBuilderValidators.minLength(8),
+                  FormBuilderValidators.match(RegExp(r'(?=.*?[#?!@$%^&*-])'),
+                      errorText:
+                          'passwords must have at least one special character'),
+                  FormBuilderValidators.match(RegExp(r'(?=.*?[0-9])'),
+                      errorText: 'passwords must have at least one number'),
+                ]),
+                hintText: 'Password',
+                showSuffixIcon: true,
+                controller: passwordController,
+              ),
+            ],
+          ),
+        ),
+        onForgotPassword: () {
+          _navigationService.navigateTo(Routes.signUpPage);
+        },
+      )),
       viewModelBuilder: () => SignInPageViewModel(),
     );
   }
